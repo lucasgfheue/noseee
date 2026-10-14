@@ -13,6 +13,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 /** Pieza única del campamento: coloca la plantilla camp.nbt. */
 public class CampPiece extends TemplateStructurePiece {
+    /** Índice de la capa de suelo dentro de la plantilla (debajo hay 2 capas de tierra). */
+    public static final int FLOOR_LAYER = 2;
+
     private static final ResourceLocation TEMPLATE =
             ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "campamento/camp");
 

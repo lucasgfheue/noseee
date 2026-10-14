@@ -25,15 +25,16 @@ public final class CampSpawner {
 
     /** Despeja, rellena y coloca el campamento con su esquina mínima en (x0, z0). */
     public static void build(ServerLevel level, int x0, int z0, int groundTop) {
-        BlockPos origin = new BlockPos(x0, groundTop - 1, z0);
+        // groundTop = primer aire sobre el suelo; la capa de suelo de la plantilla es el índice FLOOR_LAYER
+        BlockPos origin = new BlockPos(x0, groundTop - 1 - CampPiece.FLOOR_LAYER, z0);
 
         // Despejar árboles y plantas dentro del área y rellenar huecos debajo
         for (int dx = 0; dx < SIZE; dx++) {
             for (int dz = 0; dz < SIZE; dz++) {
-                for (int y = 0; y < 9; y++) {
+                for (int y = 0; y < 12; y++) {
                     BlockPos q = origin.offset(dx, y, dz);
                     BlockState st = level.getBlockState(q);
-                    if (y >= 1 && !st.isAir() && (st.is(BlockTags.LEAVES) || st.is(BlockTags.LOGS)
+                    if (y > CampPiece.FLOOR_LAYER && !st.isAir() && (st.is(BlockTags.LEAVES) || st.is(BlockTags.LOGS)
                             || st.canBeReplaced())) {
                         level.setBlock(q, Blocks.AIR.defaultBlockState(), 2);
                     }

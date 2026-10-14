@@ -76,6 +76,13 @@ public class WerewolfEntity extends Monster {
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         // Sólo caza jugadores cuando es una bestia (de noche)
+        // También ataca a los campistas
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<CampistaEntity>(this, CampistaEntity.class, 10, false, false, null) {
+            @Override
+            public boolean canUse() {
+                return WerewolfEntity.this.isWolf() && super.canUse();
+            }
+        });
         // mustSee = false: te detecta a través de las paredes
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<Player>(this, Player.class, 10, false, false, null) {
             @Override

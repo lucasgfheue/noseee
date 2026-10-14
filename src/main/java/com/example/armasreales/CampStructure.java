@@ -41,7 +41,7 @@ public class CampStructure extends Structure {
                 int x = x0 + dx, z = z0 + dz;
                 int h = gen.getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, accessor, random);
                 NoiseColumn column = gen.getBaseColumn(x, z, accessor, random);
-                BlockState top = column.getBlock(h - 1);
+                BlockState top = column.getBlock(h);          // h ya es el bloque superior
                 if (!top.getFluidState().isEmpty()) {
                     return Optional.empty();                 // agua: no se genera aquí
                 }
@@ -54,7 +54,8 @@ public class CampStructure extends Structure {
         if (max - min > 6) {
             return Optional.empty();                         // demasiado desnivel
         }
-        BlockPos origin = new BlockPos(x0, Math.round(sum / (float) n) - 1, z0);
+        // h es la altura del bloque superior; la capa del suelo de la plantilla es la 3ª (índice 2)
+        BlockPos origin = new BlockPos(x0, Math.round(sum / (float) n) - CampPiece.FLOOR_LAYER, z0);
         return Optional.of(new GenerationStub(origin,
                 builder -> builder.addPiece(new CampPiece(context.structureTemplateManager(), origin))));
     }
