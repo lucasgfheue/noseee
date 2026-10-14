@@ -3,7 +3,15 @@ package com.example.armasreales;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.npc.InventoryCarrier;
+import net.minecraft.world.entity.ai.goal.Goal;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.List;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -63,6 +71,7 @@ public class CampistaEntity extends AbstractVillager {
 
     public CampistaEntity(EntityType<? extends CampistaEntity> type, Level level) {
         super(type, level);
+        this.setCanPickUpLoot(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -85,6 +94,7 @@ public class CampistaEntity extends AbstractVillager {
         });
         this.goalSelector.addGoal(2, new CampistaShootGoal(this));
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.1, false));
+        this.goalSelector.addGoal(3, new GoToFoodGoal());
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.35));
         this.goalSelector.addGoal(5, new InteractGoal(this, Player.class, 3.0f, 1.0f));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0f));
@@ -240,23 +250,83 @@ public class CampistaEntity extends AbstractVillager {
         }
     }
 
-    /** Come un alimento de la mochila (el que más cura primero) y se cura. */
+    /** Alimento comestible sin efectos raros (no sirven la carne podrida, el pez globo, etc.). */
+    private static FoodProperties edible(ItemStack stack) {
+        FoodProperties fp = stack.get(DataComponents.FOOD);
+        return fp != null && fp.effects().isEmpty() ? fp : null;
+    }
+
+    /** Come el alimento de la mochila que más cura y se cura. */
     private void tryEat(ServerLevel level) {
-        Item[] foods = {Items.BREAD, Items.APPLE, Items.CARROT, Items.POTATO};
-        float[] heal = {6.0f, 4.0f, 3.0f, 3.0f};
-        for (int f = 0; f < foods.length; f++) {
-            for (int i = 0; i < this.getInventory().getContainerSize(); i++) {
-                ItemStack st = this.getInventory().getItem(i);
-                if (st.is(foods[f])) {
-                    st.shrink(1);
-                    this.getInventory().setItem(i, st.isEmpty() ? ItemStack.EMPTY : st);
-                    this.heal(heal[f]);
-                    this.eatCooldown = 40;
-                    level.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(foods[f])),
-                            this.getX(), this.getEyeY() - 0.2, this.getZ(), 8, 0.2, 0.1, 0.2, 0.05);
-                    return;
-                }
+        int best = -1;
+        int bestNutrition = 0;
+        for (int i = 0; i < this.getInventory().getContainerSize(); i++) {
+            FoodProperties fp = edible(this.getInventory().getItem(i));
+            if (fp != null && fp.nutrition() > bestNutrition) {
+                best = i;
+                bestNutrition = fp.nutrition();
             }
+        }
+        if (best < 0) {
+            return;
+        }
+        ItemStack st = this.getInventory().getItem(best);
+        ItemStack shown = st.copyWithCount(1);
+        st.shrink(1);
+        this.getInventory().setItem(best, st.isEmpty() ? ItemStack.EMPTY : st);
+        this.heal(Math.max(2.0f, bestNutrition));
+        this.eatCooldown = 40;
+        level.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, shown),
+                this.getX(), this.getEyeY() - 0.2, this.getZ(), 8, 0.2, 0.1, 0.2, 0.05);
+    }
+
+    // ------------------------------------------------------------------ Recoger comida del suelo
+
+    @Override
+    public boolean wantsToPickUp(ItemStack stack) {
+        return edible(stack) != null && this.getInventory().canAddItem(stack);
+    }
+
+    @Override
+    protected void pickUpItem(ItemEntity itemEntity) {
+        InventoryCarrier.pickUpItem(this, this, itemEntity);
+    }
+
+    /** Va a buscar la comida que le tiran. */
+    private class GoToFoodGoal extends Goal {
+        private ItemEntity food;
+
+        GoToFoodGoal() {
+            this.setFlags(EnumSet.of(Flag.MOVE));
+        }
+
+        @Override
+        public boolean canUse() {
+            if (CampistaEntity.this.getTarget() != null || CampistaEntity.this.isTrading()
+                    || CampistaEntity.this.tickCount % 10 != 0) {
+                return false;
+            }
+            List<ItemEntity> items = CampistaEntity.this.level().getEntitiesOfClass(ItemEntity.class,
+                    CampistaEntity.this.getBoundingBox().inflate(12.0, 4.0, 12.0),
+                    e -> e.isAlive() && CampistaEntity.this.wantsToPickUp(e.getItem()));
+            this.food = items.stream().min(Comparator.comparingDouble(CampistaEntity.this::distanceToSqr)).orElse(null);
+            return this.food != null;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.food != null && this.food.isAlive() && CampistaEntity.this.getTarget() == null
+                    && !CampistaEntity.this.getNavigation().isDone();
+        }
+
+        @Override
+        public void start() {
+            CampistaEntity.this.getNavigation().moveTo(this.food, 1.1);
+        }
+
+        @Override
+        public void stop() {
+            this.food = null;
         }
     }
 
