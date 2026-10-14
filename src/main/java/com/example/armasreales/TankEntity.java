@@ -1,6 +1,8 @@
 package com.example.armasreales;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -220,6 +222,39 @@ public class TankEntity extends Mob {
             this.updateWheels();
         } else if (this.level() instanceof ServerLevel level) {
             this.showDamage(level);
+            if (this.getControllingPassenger() != null && this.tickCount % 2 == 0) {
+                this.crushBlocks(level);
+            }
+        }
+    }
+
+    /** Destruye todos los bloques que se crucen con el casco, para que nunca se atasque. */
+    private void crushBlocks(ServerLevel level) {
+        Vec3 delta = this.getDeltaMovement();
+        boolean moving = delta.x * delta.x + delta.z * delta.z > 1.0E-4;
+        boolean turning = this.getControllingPassenger() instanceof Player p && Math.abs(p.xxa) > 0.0f;
+        if (!moving && !turning && !this.horizontalCollision) {
+            return;
+        }
+        Vec3 f = Vec3.directionFromRotation(0.0f, this.getYRot());
+        double rx = -f.z;
+        double rz = f.x;
+        int baseY = Mth.floor(this.getY() + 0.1);
+        int height = (int) Math.ceil(2.0 * SCALE);
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        for (double a = -3.5; a <= 3.5; a += 0.5) {
+            for (double b = -2.5; b <= 2.5; b += 0.5) {
+                int x = Mth.floor(this.getX() + f.x * a + rx * b);
+                int z = Mth.floor(this.getZ() + f.z * a + rz * b);
+                for (int dy = 0; dy < height; dy++) {
+                    pos.set(x, baseY + dy, z);
+                    BlockState st = level.getBlockState(pos);
+                    if (st.isAir() || st.getDestroySpeed(level, pos) < 0.0f) {
+                        continue;
+                    }
+                    level.destroyBlock(pos, false);
+                }
+            }
         }
     }
 
