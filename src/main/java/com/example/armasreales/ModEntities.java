@@ -89,6 +89,16 @@ public class ModEntities {
                             .updateInterval(2)
                             .build("proyectil_bomba"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<ArmedZombie>> ZOMBI =
+            ENTITIES.register("zombi", () ->
+                    EntityType.Builder.<ArmedZombie>of(ArmedZombie::new, MobCategory.MONSTER)
+                            .sized(0.6f, 1.95f)
+                            .eyeHeight(1.74f)
+                            .passengerAttachments(2.0125f)
+                            .ridingOffset(-0.7f)
+                            .clientTrackingRange(8)
+                            .build("zombi"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<BeamEntity>> BEAM =
             ENTITIES.register("rayo", () ->
                     EntityType.Builder.<BeamEntity>of(BeamEntity::new, MobCategory.MISC)

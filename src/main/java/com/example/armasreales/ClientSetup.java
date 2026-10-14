@@ -40,6 +40,9 @@ public class ClientSetup {
         event.registerEntityRenderer(ModEntities.ACID_PROJECTILE.get(),
                 context -> new ThrownItemRenderer<>(context, 2.2F, true));
 
+        // Zombi con variantes
+        event.registerEntityRenderer(ModEntities.ZOMBI.get(), ArmedZombieRenderer::new);
+
         // Calabaza luminosa (brilla a máxima luz), cuchillo y bomba
         event.registerEntityRenderer(ModEntities.PUMPKIN_PROJECTILE.get(),
                 context -> new ThrownItemRenderer<>(context, 2.2F, true));

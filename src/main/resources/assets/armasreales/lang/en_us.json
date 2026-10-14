@@ -28,5 +28,7 @@
   "item.armasreales.bomba": "Bomb",
   "entity.armasreales.proyectil_calabaza": "Explosive Pumpkin",
   "entity.armasreales.cuchillo_lanzado": "Thrown Knife",
-  "entity.armasreales.proyectil_bomba": "Bomb"
+  "entity.armasreales.proyectil_bomba": "Bomb",
+  "entity.armasreales.zombi": "Zombie",
+  "item.armasreales.zombi_spawn_egg": "Zombie Spawn Egg"
 }

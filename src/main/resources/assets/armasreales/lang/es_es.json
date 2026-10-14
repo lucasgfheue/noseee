@@ -28,5 +28,7 @@
   "item.armasreales.bomba": "Bomba",
   "entity.armasreales.proyectil_calabaza": "Calabaza explosiva",
   "entity.armasreales.cuchillo_lanzado": "Cuchillo arrojado",
-  "entity.armasreales.proyectil_bomba": "Bomba"
+  "entity.armasreales.proyectil_bomba": "Bomba",
+  "entity.armasreales.zombi": "Zombi",
+  "item.armasreales.zombi_spawn_egg": "Generar Zombi"
 }

@@ -2,7 +2,6 @@ package com.example.armasreales;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
@@ -18,7 +17,7 @@ public final class Bullets {
     /** Punto final del disparo y la entidad alcanzada (puede ser null). */
     public record Hit(Vec3 end, Entity entity, double distance) {}
 
-    public static Hit trace(ServerLevel level, Player player, Vec3 eye, Vec3 dir, double range) {
+    public static Hit trace(ServerLevel level, Entity player, Vec3 eye, Vec3 dir, double range) {
         Vec3 end = eye.add(dir.scale(range));
         BlockHitResult blockHit = level.clip(new ClipContext(
                 eye, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));

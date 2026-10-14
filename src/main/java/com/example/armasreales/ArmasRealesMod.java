@@ -1,10 +1,15 @@
 package com.example.armasreales;
 
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 @Mod(ArmasRealesMod.MOD_ID)
@@ -17,11 +22,19 @@ public class ArmasRealesMod {
         modBus.addListener(this::addToCreativeTabs);
         modBus.addListener(this::registerPayloads);
         modBus.addListener(this::registerAttributes);
+        modBus.addListener(this::registerSpawns);
     }
 
     private void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.TANK.get(), TankEntity.createAttributes().build());
         event.put(ModEntities.TWIN_TANK.get(), TankEntity.createAttributes().build());
+        event.put(ModEntities.ZOMBI.get(), Zombie.createAttributes().build());
+    }
+
+    private void registerSpawns(RegisterSpawnPlacementsEvent event) {
+        event.register(ModEntities.ZOMBI.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.OR);
     }
 
     private void registerPayloads(RegisterPayloadHandlersEvent event) {
@@ -29,6 +42,9 @@ public class ArmasRealesMod {
     }
 
     private void addToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+            event.accept(ModItems.ZOMBI_SPAWN_EGG);
+        }
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             event.accept(ModItems.PISTOLA);
             event.accept(ModItems.MUNICION_PISTOLA);

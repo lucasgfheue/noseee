@@ -1,6 +1,7 @@
 package com.example.armasreales;
 
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -89,4 +90,9 @@ public class ModItems {
 
     public static final DeferredItem<BombItem> BOMBA = ITEMS.registerItem(
             "bomba", BombItem::new, new Item.Properties().stacksTo(16));
+
+    public static final DeferredItem<SpawnEggItem> ZOMBI_SPAWN_EGG = ITEMS.registerItem(
+            "zombi_spawn_egg",
+            props -> new SpawnEggItem(ModEntities.ZOMBI.get(), 0x5C7F4B, 0x3B4D8A, props),
+            new Item.Properties());
 }
