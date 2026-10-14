@@ -29,11 +29,16 @@ public class ArmasRealesMod {
         event.put(ModEntities.TANK.get(), TankEntity.createAttributes().build());
         event.put(ModEntities.TWIN_TANK.get(), TankEntity.createAttributes().build());
         event.put(ModEntities.ZOMBI.get(), Zombie.createAttributes().build());
+        event.put(ModEntities.HOMBRE_LOBO.get(), WerewolfEntity.createAttributes().build());
     }
 
     private void registerSpawns(RegisterSpawnPlacementsEvent event) {
         event.register(ModEntities.ZOMBI.get(), SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.OR);
+        // Sin la restricción de oscuridad: también aparece de día, con forma humana
+        event.register(ModEntities.HOMBRE_LOBO.get(), SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkAnyLightMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
     }
 
@@ -44,6 +49,7 @@ public class ArmasRealesMod {
     private void addToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
             event.accept(ModItems.ZOMBI_SPAWN_EGG);
+            event.accept(ModItems.HOMBRE_LOBO_SPAWN_EGG);
         }
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             event.accept(ModItems.PISTOLA);
@@ -65,6 +71,8 @@ public class ArmasRealesMod {
             event.accept(ModItems.CUCHILLO);
             event.accept(ModItems.CANON_CALABAZAS);
             event.accept(ModItems.BOMBA);
+            event.accept(ModItems.ZOMBI_SPAWN_EGG);
+            event.accept(ModItems.HOMBRE_LOBO_SPAWN_EGG);
         }
     }
 }
