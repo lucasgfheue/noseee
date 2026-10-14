@@ -1,0 +1,7 @@
+{
+  "type": "armasreales:campamento",
+  "biomes": "#armasreales:has_campamento",
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "spawn_overrides": {}
+}

@@ -19,12 +19,13 @@ public class ArmasRealesMod {
     public ArmasRealesMod(IEventBus modBus) {
         ModItems.ITEMS.register(modBus);
         ModEntities.ENTITIES.register(modBus);
+        ModStructures.TYPES.register(modBus);
+        ModStructures.PIECES.register(modBus);
         modBus.addListener(this::addToCreativeTabs);
         modBus.addListener(this::registerPayloads);
         modBus.addListener(this::registerAttributes);
         modBus.addListener(this::registerSpawns);
-        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(CampSpawner::onChunkLoad);
-        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(CampSpawner::onServerTick);
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(CampSpawner::onCommands);
     }
 
     private void registerAttributes(EntityAttributeCreationEvent event) {
