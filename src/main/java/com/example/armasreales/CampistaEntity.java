@@ -18,10 +18,13 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.InteractGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.ai.goal.LookAtTradingPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.TradeWithPlayerGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -54,7 +57,7 @@ public class CampistaEntity extends AbstractVillager {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return net.minecraft.world.entity.Mob.createMobAttributes()
+        return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.5)
                 .add(Attributes.ATTACK_DAMAGE, 3.0)
@@ -64,8 +67,13 @@ public class CampistaEntity extends AbstractVillager {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
-        this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
+        // Mirar al cliente sólo si no están peleando (así pueden seguir disparando mientras se comercia)
+        this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this) {
+            @Override
+            public boolean canUse() {
+                return CampistaEntity.this.getTarget() == null && super.canUse();
+            }
+        });
         this.goalSelector.addGoal(2, new CampistaShootGoal(this));
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.1, false));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.35));
@@ -74,6 +82,9 @@ public class CampistaEntity extends AbstractVillager {
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         // Neutrales: si golpean a uno, todos los campistas cercanos atacan a ese jugador
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+        // Atacan a los monstruos hostiles (menos los creepers)
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<Mob>(this, Mob.class, 5, true, false,
+                e -> e instanceof Enemy && !(e instanceof Creeper)));
     }
 
     // ------------------------------------------------------------------ Apariencia
@@ -108,7 +119,7 @@ public class CampistaEntity extends AbstractVillager {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (this.isAlive() && !this.isTrading() && !this.isBaby() && this.getTarget() == null) {
+        if (this.isAlive() && !this.isTrading() && !this.isBaby()) {
             if (!this.level().isClientSide) {
                 this.setTradingPlayer(player);
                 this.openTradingScreen(player, this.getDisplayName(), 1);
@@ -160,6 +171,15 @@ public class CampistaEntity extends AbstractVillager {
     @Override
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
         return false;
+    }
+
+    @Override
+    protected void customServerAiStep() {
+        super.customServerAiStep();
+        // Se queda quieto mientras comercian, salvo que estén peleando
+        if (this.isTrading() && this.getTarget() == null) {
+            this.getNavigation().stop();
+        }
     }
 
     // Sin sonidos propios (nada de sonidos de aldeano)
