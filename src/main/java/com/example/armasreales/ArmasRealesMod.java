@@ -17,6 +17,7 @@ public class ArmasRealesMod {
     public static final String MOD_ID = "armasreales";
 
     public ArmasRealesMod(IEventBus modBus) {
+        ModBlocks.BLOCKS.register(modBus);
         ModItems.ITEMS.register(modBus);
         ModEntities.ENTITIES.register(modBus);
         ModStructures.TYPES.register(modBus);
@@ -78,6 +79,7 @@ public class ArmasRealesMod {
             event.accept(ModItems.ESCOPETA);
             event.accept(ModItems.CARTUCHO_ESCOPETA);
             event.accept(ModItems.FRANCOTIRADOR);
+            event.accept(ModItems.RADIO);
             event.accept(ModItems.MUNICION_FRANCOTIRADOR);
             event.accept(ModItems.CUCHILLO);
             event.accept(ModItems.CANON_CALABAZAS);

@@ -40,5 +40,6 @@
   "item.armasreales.francotirador": "Sniper Rifle",
   "item.armasreales.municion_francotirador": "Sniper Ammo",
   "entity.armasreales.soldado": "Soldier",
-  "item.armasreales.soldado_spawn_egg": "Soldier Spawn Egg"
+  "item.armasreales.soldado_spawn_egg": "Soldier Spawn Egg",
+  "block.armasreales.radio": "Radio"
 }

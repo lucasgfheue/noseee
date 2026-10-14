@@ -121,4 +121,7 @@ public class ModItems {
             "soldado_spawn_egg",
             props -> new SpawnEggItem(ModEntities.SOLDADO.get(), 0x4B5B3A, 0x2B2B2B, props),
             new Item.Properties());
+
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> RADIO = ITEMS.registerSimpleBlockItem(
+            "radio", ModBlocks.RADIO);
 }

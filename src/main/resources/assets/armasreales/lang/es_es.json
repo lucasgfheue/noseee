@@ -40,5 +40,6 @@
   "item.armasreales.francotirador": "Francotirador",
   "item.armasreales.municion_francotirador": "Munición de francotirador",
   "entity.armasreales.soldado": "Soldado",
-  "item.armasreales.soldado_spawn_egg": "Generar Soldado"
+  "item.armasreales.soldado_spawn_egg": "Generar Soldado",
+  "block.armasreales.radio": "Radio"
 }

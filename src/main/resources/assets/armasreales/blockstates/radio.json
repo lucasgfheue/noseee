@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "armasreales:block/radio"
+    },
+    "facing=east": {
+      "model": "armasreales:block/radio",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "armasreales:block/radio",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "armasreales:block/radio",
+      "y": 270
+    }
+  }
+}
