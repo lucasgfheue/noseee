@@ -23,6 +23,8 @@ public class ArmasRealesMod {
         modBus.addListener(this::registerPayloads);
         modBus.addListener(this::registerAttributes);
         modBus.addListener(this::registerSpawns);
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(CampSpawner::onChunkLoad);
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(CampSpawner::onServerTick);
     }
 
     private void registerAttributes(EntityAttributeCreationEvent event) {

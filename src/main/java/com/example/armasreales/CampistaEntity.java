@@ -6,7 +6,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -18,6 +17,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.InteractGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.LookAtTradingPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.TradeWithPlayerGoal;
@@ -29,6 +30,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.item.Item;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.level.ItemLike;
 
 /**
@@ -49,6 +57,7 @@ public class CampistaEntity extends AbstractVillager {
         return net.minecraft.world.entity.Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.5)
+                .add(Attributes.ATTACK_DAMAGE, 3.0)
                 .add(Attributes.FOLLOW_RANGE, 48.0);
     }
 
@@ -57,10 +66,14 @@ public class CampistaEntity extends AbstractVillager {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
         this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
+        this.goalSelector.addGoal(2, new CampistaShootGoal(this));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.1, false));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.35));
         this.goalSelector.addGoal(5, new InteractGoal(this, Player.class, 3.0f, 1.0f));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+        // Neutrales: si golpean a uno, todos los campistas cercanos atacan a ese jugador
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
     }
 
     // ------------------------------------------------------------------ Apariencia
@@ -95,7 +108,7 @@ public class CampistaEntity extends AbstractVillager {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (this.isAlive() && !this.isTrading() && !this.isBaby()) {
+        if (this.isAlive() && !this.isTrading() && !this.isBaby() && this.getTarget() == null) {
             if (!this.level().isClientSide) {
                 this.setTradingPlayer(player);
                 this.openTradingScreen(player, this.getDisplayName(), 1);
@@ -112,21 +125,21 @@ public class CampistaEntity extends AbstractVillager {
 
     @Override
     protected void updateTrades() {
-        // Armas -> hierro y diamantes
-        add(ModItems.PISTOLA.get(), 1, Items.IRON_INGOT, 4, 6);
-        add(ModItems.AK47.get(), 1, Items.DIAMOND, 2, 4);
-        add(ModItems.ESCOPETA.get(), 1, Items.DIAMOND, 1, 4);
-        add(ModItems.ESCOPETA.get(), 1, Items.IRON_INGOT, 8, 6);
-        // Comida -> hierro
-        add(Items.BREAD, 6, Items.IRON_INGOT, 1, 16);
-        add(Items.APPLE, 8, Items.IRON_INGOT, 1, 16);
-        add(Items.CARROT, 10, Items.IRON_INGOT, 1, 16);
-        add(Items.POTATO, 10, Items.IRON_INGOT, 1, 16);
-        // Comida -> diamantes
-        add(Items.BREAD, 24, Items.DIAMOND, 1, 8);
-        add(Items.APPLE, 28, Items.DIAMOND, 1, 8);
-        add(Items.CARROT, 32, Items.DIAMOND, 1, 8);
-        add(Items.POTATO, 32, Items.DIAMOND, 1, 8);
+        // Tú pagas con hierro y diamantes; ellos te dan armas, comida y balas
+        add(Items.IRON_INGOT, 4, ModItems.PISTOLA.get(), 1, 6);
+        add(Items.DIAMOND, 2, ModItems.AK47.get(), 1, 4);
+        add(Items.DIAMOND, 1, ModItems.ESCOPETA.get(), 1, 4);
+        add(Items.IRON_INGOT, 8, ModItems.ESCOPETA.get(), 1, 6);
+        // Comida
+        add(Items.IRON_INGOT, 1, Items.BREAD, 6, 16);
+        add(Items.IRON_INGOT, 1, Items.APPLE, 8, 16);
+        add(Items.IRON_INGOT, 1, Items.CARROT, 10, 16);
+        add(Items.IRON_INGOT, 1, Items.POTATO, 10, 16);
+        // Balas
+        add(Items.IRON_INGOT, 1, ModItems.MUNICION_PISTOLA.get(), 12, 16);
+        add(Items.IRON_INGOT, 1, ModItems.CARTUCHO_ESCOPETA.get(), 8, 16);
+        add(Items.IRON_INGOT, 2, ModItems.MUNICION_FUSIL.get(), 16, 16);
+        add(Items.DIAMOND, 1, ModItems.MUNICION_FUSIL.get(), 48, 8);
     }
 
     @Override
@@ -149,18 +162,41 @@ public class CampistaEntity extends AbstractVillager {
         return false;
     }
 
+    // Sin sonidos propios (nada de sonidos de aldeano)
     @Override
     protected SoundEvent getAmbientSound() {
-        return this.isTrading() ? SoundEvents.VILLAGER_TRADE : SoundEvents.VILLAGER_AMBIENT;
+        return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.VILLAGER_HURT;
+        return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.VILLAGER_DEATH;
+        return null;
+    }
+
+    @Override
+    public void notifyTradeUpdated(ItemStack stack) {
+        // en silencio
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
+                                        MobSpawnType reason, @Nullable SpawnGroupData data) {
+        SpawnGroupData result = super.finalizeSpawn(level, difficulty, reason, data);
+        this.setSkin(level.getRandom().nextInt(SKINS));
+        if (this.getMainHandItem().isEmpty()) {
+            Item gun = switch (level.getRandom().nextInt(3)) {
+                case 0 -> ModItems.PISTOLA.get();
+                case 1 -> ModItems.AK47.get();
+                default -> ModItems.ESCOPETA.get();
+            };
+            this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(gun));
+        }
+        return result;
     }
 }
