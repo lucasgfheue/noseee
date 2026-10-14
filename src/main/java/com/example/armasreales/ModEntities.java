@@ -65,6 +65,30 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque_doble"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<PumpkinProjectile>> PUMPKIN_PROJECTILE =
+            ENTITIES.register("proyectil_calabaza", () ->
+                    EntityType.Builder.<PumpkinProjectile>of(PumpkinProjectile::new, MobCategory.MISC)
+                            .sized(0.5f, 0.5f)
+                            .clientTrackingRange(8)
+                            .updateInterval(2)
+                            .build("proyectil_calabaza"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrownKnife>> KNIFE_PROJECTILE =
+            ENTITIES.register("cuchillo_lanzado", () ->
+                    EntityType.Builder.<ThrownKnife>of(ThrownKnife::new, MobCategory.MISC)
+                            .sized(0.3f, 0.3f)
+                            .clientTrackingRange(8)
+                            .updateInterval(1)
+                            .build("cuchillo_lanzado"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<BombProjectile>> BOMB_PROJECTILE =
+            ENTITIES.register("proyectil_bomba", () ->
+                    EntityType.Builder.<BombProjectile>of(BombProjectile::new, MobCategory.MISC)
+                            .sized(0.4f, 0.4f)
+                            .clientTrackingRange(8)
+                            .updateInterval(2)
+                            .build("proyectil_bomba"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<BeamEntity>> BEAM =
             ENTITIES.register("rayo", () ->
                     EntityType.Builder.<BeamEntity>of(BeamEntity::new, MobCategory.MISC)

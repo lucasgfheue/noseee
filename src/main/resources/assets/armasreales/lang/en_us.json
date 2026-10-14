@@ -18,5 +18,15 @@
   "item.armasreales.tanque": "Tank",
   "entity.armasreales.tanque": "Tank",
   "item.armasreales.tanque_doble": "Twin-barrel Tank",
-  "entity.armasreales.tanque_doble": "Twin-barrel Tank"
+  "entity.armasreales.tanque_doble": "Twin-barrel Tank",
+  "item.armasreales.ak47": "AK-47",
+  "item.armasreales.municion_fusil": "Rifle Ammo",
+  "item.armasreales.escopeta": "Shotgun",
+  "item.armasreales.cartucho_escopeta": "Shotgun Shell",
+  "item.armasreales.cuchillo": "Knife",
+  "item.armasreales.canon_calabazas": "Pumpkin Cannon",
+  "item.armasreales.bomba": "Bomb",
+  "entity.armasreales.proyectil_calabaza": "Explosive Pumpkin",
+  "entity.armasreales.cuchillo_lanzado": "Thrown Knife",
+  "entity.armasreales.proyectil_bomba": "Bomb"
 }

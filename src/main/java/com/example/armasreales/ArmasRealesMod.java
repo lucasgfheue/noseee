@@ -42,6 +42,13 @@ public class ArmasRealesMod {
             event.accept(ModItems.RIFLE_VIOLETA);
             event.accept(ModItems.TANQUE);
             event.accept(ModItems.TANQUE_DOBLE);
+            event.accept(ModItems.AK47);
+            event.accept(ModItems.MUNICION_FUSIL);
+            event.accept(ModItems.ESCOPETA);
+            event.accept(ModItems.CARTUCHO_ESCOPETA);
+            event.accept(ModItems.CUCHILLO);
+            event.accept(ModItems.CANON_CALABAZAS);
+            event.accept(ModItems.BOMBA);
         }
     }
 }

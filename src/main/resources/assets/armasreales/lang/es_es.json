@@ -18,5 +18,15 @@
   "item.armasreales.tanque": "Tanque",
   "entity.armasreales.tanque": "Tanque",
   "item.armasreales.tanque_doble": "Tanque doble",
-  "entity.armasreales.tanque_doble": "Tanque doble"
+  "entity.armasreales.tanque_doble": "Tanque doble",
+  "item.armasreales.ak47": "AK-47",
+  "item.armasreales.municion_fusil": "Munición de fusil",
+  "item.armasreales.escopeta": "Escopeta",
+  "item.armasreales.cartucho_escopeta": "Cartucho de escopeta",
+  "item.armasreales.cuchillo": "Cuchillo",
+  "item.armasreales.canon_calabazas": "Cañón de calabazas",
+  "item.armasreales.bomba": "Bomba",
+  "entity.armasreales.proyectil_calabaza": "Calabaza explosiva",
+  "entity.armasreales.cuchillo_lanzado": "Cuchillo arrojado",
+  "entity.armasreales.proyectil_bomba": "Bomba"
 }

@@ -67,4 +67,26 @@ public class ModItems {
             "tanque_doble",
             props -> new TankItem(props, () -> ModEntities.TWIN_TANK.get()),
             new Item.Properties().stacksTo(1));
+
+    public static final DeferredItem<Item> MUNICION_FUSIL = ITEMS.registerItem(
+            "municion_fusil", Item::new, new Item.Properties());
+
+    public static final DeferredItem<AkItem> AK47 = ITEMS.registerItem(
+            "ak47", AkItem::new, new Item.Properties().stacksTo(1).durability(600));
+
+    public static final DeferredItem<Item> CARTUCHO_ESCOPETA = ITEMS.registerItem(
+            "cartucho_escopeta", Item::new, new Item.Properties());
+
+    public static final DeferredItem<ShotgunItem> ESCOPETA = ITEMS.registerItem(
+            "escopeta", ShotgunItem::new, new Item.Properties().stacksTo(1).durability(300));
+
+    /** Cuchillo: máximo 3 por casilla. */
+    public static final DeferredItem<KnifeItem> CUCHILLO = ITEMS.registerItem(
+            "cuchillo", KnifeItem::new, new Item.Properties().stacksTo(3).attributes(KnifeItem.attributes()));
+
+    public static final DeferredItem<PumpkinCannonItem> CANON_CALABAZAS = ITEMS.registerItem(
+            "canon_calabazas", PumpkinCannonItem::new, new Item.Properties().stacksTo(1).durability(150));
+
+    public static final DeferredItem<BombItem> BOMBA = ITEMS.registerItem(
+            "bomba", BombItem::new, new Item.Properties().stacksTo(16));
 }
