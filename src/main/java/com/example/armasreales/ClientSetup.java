@@ -44,6 +44,7 @@ public class ClientSetup {
         event.registerEntityRenderer(ModEntities.HOMBRE_LOBO.get(), WerewolfRenderer::new);
         event.registerEntityRenderer(ModEntities.CAMPISTA.get(), CampistaRenderer::new);
         event.registerEntityRenderer(ModEntities.ANCIANO.get(), AncianoRenderer::new);
+        event.registerEntityRenderer(ModEntities.SOLDADO.get(), SoldadoRenderer::new);
 
         // Zombi con variantes
         event.registerEntityRenderer(ModEntities.ZOMBI.get(), ArmedZombieRenderer::new);
@@ -77,7 +78,8 @@ public class ClientSetup {
         event.registerItem(holdGun, ModItems.PISTOLA.get(), ModItems.RIFLE_LASER.get(),
                 ModItems.LANZADOR_TNT.get(), ModItems.PISTOLA_BENGALAS.get(), ModItems.RIFLE_PLASMA.get(),
                 ModItems.TASER.get(), ModItems.PISTOLA_ACIDA.get(), ModItems.RIFLE_VIOLETA.get(),
-                ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get());
+                ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get(),
+                ModItems.FRANCOTIRADOR.get());
     }
 
     /** Propiedad "aiming": el modelo del arma cambia mientras apuntas (rotación para brazo levantado). */
@@ -88,7 +90,8 @@ public class ClientSetup {
             Item[] guns = {ModItems.PISTOLA.get(), ModItems.RIFLE_LASER.get(), ModItems.LANZADOR_TNT.get(),
                     ModItems.PISTOLA_BENGALAS.get(), ModItems.RIFLE_PLASMA.get(),
                     ModItems.TASER.get(), ModItems.PISTOLA_ACIDA.get(), ModItems.RIFLE_VIOLETA.get(),
-                    ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get()};
+                    ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get(),
+                ModItems.FRANCOTIRADOR.get()};
             for (Item gun : guns) {
                 ItemProperties.register(gun, aiming, (stack, level, entity, seed) ->
                         entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);

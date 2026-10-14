@@ -36,5 +36,9 @@
   "entity.armasreales.campista": "Camper",
   "item.armasreales.campista_spawn_egg": "Camper Spawn Egg",
   "entity.armasreales.anciano": "Old Man",
-  "item.armasreales.anciano_spawn_egg": "Old Man Spawn Egg"
+  "item.armasreales.anciano_spawn_egg": "Old Man Spawn Egg",
+  "item.armasreales.francotirador": "Sniper Rifle",
+  "item.armasreales.municion_francotirador": "Sniper Ammo",
+  "entity.armasreales.soldado": "Soldier",
+  "item.armasreales.soldado_spawn_egg": "Soldier Spawn Egg"
 }

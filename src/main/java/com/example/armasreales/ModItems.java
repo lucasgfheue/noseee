@@ -110,4 +110,15 @@ public class ModItems {
             "anciano_spawn_egg",
             props -> new SpawnEggItem(ModEntities.ANCIANO.get(), 0xE6E6E6, 0x6B6B6B, props),
             new Item.Properties());
+
+    public static final DeferredItem<Item> MUNICION_FRANCOTIRADOR = ITEMS.registerItem(
+            "municion_francotirador", Item::new, new Item.Properties());
+
+    public static final DeferredItem<SniperItem> FRANCOTIRADOR = ITEMS.registerItem(
+            "francotirador", SniperItem::new, new Item.Properties().stacksTo(1).durability(250));
+
+    public static final DeferredItem<SpawnEggItem> SOLDADO_SPAWN_EGG = ITEMS.registerItem(
+            "soldado_spawn_egg",
+            props -> new SpawnEggItem(ModEntities.SOLDADO.get(), 0x4B5B3A, 0x2B2B2B, props),
+            new Item.Properties());
 }

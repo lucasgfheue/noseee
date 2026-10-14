@@ -35,6 +35,7 @@ public class ArmasRealesMod {
         event.put(ModEntities.HOMBRE_LOBO.get(), WerewolfEntity.createAttributes().build());
         event.put(ModEntities.CAMPISTA.get(), CampistaEntity.createAttributes().build());
         event.put(ModEntities.ANCIANO.get(), AncianoEntity.createAttributes().build());
+        event.put(ModEntities.SOLDADO.get(), SoldadoEntity.createAttributes().build());
     }
 
     private void registerSpawns(RegisterSpawnPlacementsEvent event) {
@@ -57,6 +58,7 @@ public class ArmasRealesMod {
             event.accept(ModItems.HOMBRE_LOBO_SPAWN_EGG);
             event.accept(ModItems.CAMPISTA_SPAWN_EGG);
             event.accept(ModItems.ANCIANO_SPAWN_EGG);
+            event.accept(ModItems.SOLDADO_SPAWN_EGG);
         }
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             event.accept(ModItems.PISTOLA);
@@ -75,6 +77,8 @@ public class ArmasRealesMod {
             event.accept(ModItems.MUNICION_FUSIL);
             event.accept(ModItems.ESCOPETA);
             event.accept(ModItems.CARTUCHO_ESCOPETA);
+            event.accept(ModItems.FRANCOTIRADOR);
+            event.accept(ModItems.MUNICION_FRANCOTIRADOR);
             event.accept(ModItems.CUCHILLO);
             event.accept(ModItems.CANON_CALABAZAS);
             event.accept(ModItems.BOMBA);
@@ -82,6 +86,7 @@ public class ArmasRealesMod {
             event.accept(ModItems.HOMBRE_LOBO_SPAWN_EGG);
             event.accept(ModItems.CAMPISTA_SPAWN_EGG);
             event.accept(ModItems.ANCIANO_SPAWN_EGG);
+            event.accept(ModItems.SOLDADO_SPAWN_EGG);
         }
     }
 }

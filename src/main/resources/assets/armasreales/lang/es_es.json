@@ -36,5 +36,9 @@
   "entity.armasreales.campista": "Campista",
   "item.armasreales.campista_spawn_egg": "Generar Campista",
   "entity.armasreales.anciano": "Anciano",
-  "item.armasreales.anciano_spawn_egg": "Generar Anciano"
+  "item.armasreales.anciano_spawn_egg": "Generar Anciano",
+  "item.armasreales.francotirador": "Francotirador",
+  "item.armasreales.municion_francotirador": "Munición de francotirador",
+  "entity.armasreales.soldado": "Soldado",
+  "item.armasreales.soldado_spawn_egg": "Generar Soldado"
 }

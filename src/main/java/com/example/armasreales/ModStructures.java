@@ -25,6 +25,12 @@ public final class ModStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> TOWER_PIECE =
             PIECES.register("torre_radio", () -> (StructurePieceType) (ctx, tag) -> new RadioTowerPiece(ctx, tag));
 
+    public static final DeferredHolder<StructureType<?>, StructureType<MilitaryBaseStructure>> BASE =
+            TYPES.register("base_militar", () -> () -> MilitaryBaseStructure.CODEC);
+
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> BASE_PIECE =
+            PIECES.register("base_militar", () -> (StructurePieceType) (ctx, tag) -> new MilitaryBasePiece(ctx, tag));
+
     private ModStructures() {
     }
 }

@@ -132,4 +132,12 @@ public class ModEntities {
                             .eyeHeight(1.62f)
                             .clientTrackingRange(10)
                             .build("anciano"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<SoldadoEntity>> SOLDADO =
+            ENTITIES.register("soldado", () ->
+                    EntityType.Builder.<SoldadoEntity>of(SoldadoEntity::new, MobCategory.MONSTER)
+                            .sized(0.6f, 1.95f)
+                            .eyeHeight(1.62f)
+                            .clientTrackingRange(10)
+                            .build("soldado"));
 }

@@ -23,6 +23,18 @@ public final class CampSpawner {
     private CampSpawner() {
     }
 
+    /** Coloca la base militar (61x61) con su esquina mínima en (x0, z0). */
+    public static void buildBase(ServerLevel level, int x0, int z0, int groundTop) {
+        BlockPos origin = new BlockPos(x0, groundTop - CampPiece.FLOOR_LAYER, z0);
+        net.minecraft.world.level.levelgen.structure.BoundingBox area =
+                new net.minecraft.world.level.levelgen.structure.BoundingBox(x0, origin.getY(), z0, x0 + 60, origin.getY() + 30, z0 + 60);
+        MilitaryBasePiece.prepare(level, area, groundTop, area);
+        StructureTemplate template = level.getStructureManager().getOrCreate(
+                ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "base_militar/base"));
+        template.placeInWorld(level, origin, origin, new StructurePlaceSettings().setIgnoreEntities(false),
+                level.getRandom(), 2);
+    }
+
     /** Coloca la plantilla de la torre de radio (9x9) con su esquina mínima en (x0, z0). */
     public static void buildTower(ServerLevel level, int x0, int z0, int groundTop) {
         BlockPos origin = new BlockPos(x0, groundTop - 1 - CampPiece.FLOOR_LAYER, z0);
@@ -85,6 +97,16 @@ public final class CampSpawner {
                     int top = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, c.getX(), c.getZ());
                     build(level, c.getX() - SIZE / 2, c.getZ() - SIZE / 2, top);
                     ctx.getSource().sendSuccess(() -> Component.literal("Campamento colocado"), true);
+                    return 1;
+                }));
+        event.getDispatcher().register(Commands.literal("basemilitar").requires(src -> src.hasPermission(2))
+                .executes(ctx -> {
+                    ServerPlayer player = ctx.getSource().getPlayerOrException();
+                    ServerLevel level = player.serverLevel();
+                    BlockPos c = player.blockPosition().relative(player.getDirection(), 40);
+                    int top = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, c.getX(), c.getZ()) - 1;
+                    buildBase(level, c.getX() - 30, c.getZ() - 30, top);
+                    ctx.getSource().sendSuccess(() -> Component.literal("Base militar colocada"), true);
                     return 1;
                 }));
         event.getDispatcher().register(Commands.literal("torreradio").requires(src -> src.hasPermission(2))
