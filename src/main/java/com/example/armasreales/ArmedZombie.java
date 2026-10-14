@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
  * AK-47 7 %). Dispara sus armas y arroja cuchillos o bombas que lleve en la mano secundaria.
  */
 public class ArmedZombie extends Zombie {
-    public static final int VARIANTS = 6;
+    public static final int VARIANTS = 12;
     public static final float CHANCE_PISTOL = 0.20f;
     public static final float CHANCE_SHOTGUN = 0.15f;
     public static final float CHANCE_AK = 0.07f;
