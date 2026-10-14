@@ -45,12 +45,13 @@ public class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<TankEntity>> TANK =
             ENTITIES.register("tanque", () ->
                     EntityType.Builder.<TankEntity>of(TankEntity::new, MobCategory.MISC)
-                            // La hitbox de Minecraft es siempre cuadrada: 2x2 de base y 2 de alto.
-                            // El casco mide 3 de largo, así que sobresale 0.5 por delante y por detrás.
-                            .sized(2.0f, 2.0f)
-                            // Asiento del conductor: la cadera a 1.3 (el jugador sentado asoma por la escotilla)
-                            .passengerAttachments(1.3f)
-                            .clientTrackingRange(10)
+                            // La hitbox de Minecraft es siempre cuadrada: 4x4 de base y 4 de alto.
+                            // El casco mide 6 de largo, así que sobresale 1 por delante y por detrás.
+                            .sized(2.0f * TankEntity.SCALE, 2.0f * TankEntity.SCALE)
+                            // Asiento del conductor: la cadera a 1.4 x escala (asoma por la escotilla)
+                            .passengerAttachments(1.4f * TankEntity.SCALE)
+                            .fireImmune()
+                            .clientTrackingRange(12)
                             .updateInterval(1)
                             .build("tanque"));
 

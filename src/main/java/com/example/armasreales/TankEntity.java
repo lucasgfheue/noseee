@@ -1,6 +1,10 @@
 package com.example.armasreales;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -10,27 +14,37 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.MinecartTNT;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Tanque: casco de 3 de largo x 2 de ancho x 2 de alto.
+ * Tanque: casco de 6 de largo x 4 de ancho x 4 de alto (el modelo original de 3x2x2 al doble).
  *
  * - Se monta con clic derecho. W/S avanzan y retroceden, A/D giran el casco.
- * - Velocidad igual a la de un cerdo montado (atributo 0.25 y la misma fórmula que el cerdo).
- * - Sube escalones de 1 bloque (atributo STEP_HEIGHT = 1.0).
+ * - Velocidad igual a la de un cerdo montado y sube escalones de 1 bloque.
  * - La torreta y el cañón siguen hacia donde mira el conductor; clic izquierdo dispara.
- * - Las ruedas giran según lo que avanza el tanque (sólo visual, se calcula en el cliente).
+ * - Invulnerable a todo salvo a explosiones de TNT (lanzador de TNT, TNT encendido y vagoneta con TNT).
+ * - Clic derecho con un tinte negro, azul, amarillo, verde o rojo le cambia el color.
+ * - Shift + clic derecho con la mano vacía lo recoge.
  */
 public class TankEntity extends Mob {
+    /** Factor de tamaño respecto al modelo original (3x2x2). */
+    public static final float SCALE = 2.0f;
+
     /** Giro del casco con A/D, en grados por tick. */
     private static final float TURN_SPEED = 3.0f;
 
@@ -39,16 +53,28 @@ public class TankEntity extends Mob {
     public static final float MAX_PITCH = 8.0f;
 
     /** Dónde está el eje del cañón respecto al tanque (debe coincidir con TankRenderer). */
-    public static final double PIVOT_Y = 1.24;
-    public static final double PIVOT_FORWARD = 0.72;
-    public static final double BARREL_LENGTH = 1.4;
+    public static final double PIVOT_Y = 1.24 * SCALE;
+    public static final double PIVOT_FORWARD = 0.72 * SCALE;
+    public static final double BARREL_LENGTH = 1.4 * SCALE;
 
     private static final float SHELL_SPEED = 3.2f;
     private static final int COOLDOWN_TICKS = 40;
+    private static final float MAX_HEALTH = 200.0f;
 
     /** Radio de las ruedas y separación entre orugas (para animarlas), en bloques. */
-    private static final float WHEEL_RADIUS = 0.34f;
-    private static final float HALF_GAUGE = 0.8f;
+    private static final float WHEEL_RADIUS = 0.34f * SCALE;
+    private static final float HALF_GAUGE = 0.8f * SCALE;
+
+    /** Skins: 0 = original (verde militar) y 1..5 = tintes. */
+    public static final int SKIN_DEFAULT = 0;
+    public static final int SKIN_BLACK = 1;
+    public static final int SKIN_BLUE = 2;
+    public static final int SKIN_YELLOW = 3;
+    public static final int SKIN_GREEN = 4;
+    public static final int SKIN_RED = 5;
+
+    private static final EntityDataAccessor<Integer> DATA_SKIN =
+            SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.INT);
 
     // Ángulos de las ruedas (grados), lado izquierdo y derecho. Sólo se usan en el cliente.
     public float wheelAngleL, wheelAngleR, wheelAngleLO, wheelAngleRO;
@@ -62,13 +88,52 @@ public class TankEntity extends Mob {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 100.0)
+                .add(Attributes.MAX_HEALTH, MAX_HEALTH)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)   // igual que el cerdo
                 .add(Attributes.STEP_HEIGHT, 1.0)       // sube 1 bloque
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0);
     }
 
-    // ------------------------------------------------------------------ Conducción
+    // ------------------------------------------------------------------ Skins
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_SKIN, SKIN_DEFAULT);
+    }
+
+    public int getSkin() {
+        return this.entityData.get(DATA_SKIN);
+    }
+
+    public void setSkin(int skin) {
+        this.entityData.set(DATA_SKIN, skin);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("Skin", this.getSkin());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setSkin(tag.getInt("Skin"));
+    }
+
+    private static int skinForDye(DyeColor color) {
+        return switch (color) {
+            case BLACK -> SKIN_BLACK;
+            case BLUE -> SKIN_BLUE;
+            case YELLOW -> SKIN_YELLOW;
+            case GREEN -> SKIN_GREEN;
+            case RED -> SKIN_RED;
+            default -> -1;
+        };
+    }
+
+    // ------------------------------------------------------------------ Interacción
 
     @Override
     public LivingEntity getControllingPassenger() {
@@ -77,6 +142,37 @@ public class TankEntity extends Mob {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack held = player.getItemInHand(hand);
+
+        // 1) Tinte: cambia el color
+        if (held.getItem() instanceof DyeItem dye) {
+            int skin = skinForDye(dye.getDyeColor());
+            if (skin < 0 || skin == this.getSkin()) {
+                return InteractionResult.PASS;   // tinte sin skin, o ya tiene ese color
+            }
+            if (!this.level().isClientSide) {
+                this.setSkin(skin);
+                this.level().playSound(null, this.blockPosition(), SoundEvents.SLIME_SQUISH,
+                        SoundSource.PLAYERS, 1.0f, 1.3f);
+                if (!player.getAbilities().instabuild) {
+                    held.shrink(1);
+                }
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+
+        // 2) Shift + mano vacía: lo recoge (sólo si está vacío)
+        if (player.isSecondaryUseActive() && held.isEmpty() && !this.isVehicle()) {
+            if (!this.level().isClientSide) {
+                if (!player.getAbilities().instabuild) {
+                    this.spawnAtLocation(ModItems.TANQUE.get());
+                }
+                this.discard();
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+
+        // 3) Montar
         if (player.isSecondaryUseActive() || this.isVehicle()) {
             return InteractionResult.PASS;
         }
@@ -85,6 +181,8 @@ public class TankEntity extends Mob {
         }
         return InteractionResult.sidedSuccess(this.level().isClientSide);
     }
+
+    // ------------------------------------------------------------------ Conducción
 
     @Override
     protected void tickRidden(Player player, Vec3 travelVector) {
@@ -110,7 +208,7 @@ public class TankEntity extends Mob {
         return (float) (this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.225);
     }
 
-    // ------------------------------------------------------------------ Tick: ruedas y cañón
+    // ------------------------------------------------------------------ Tick: ruedas, humo y cañón
 
     @Override
     public void tick() {
@@ -120,6 +218,24 @@ public class TankEntity extends Mob {
         }
         if (this.level().isClientSide) {
             this.updateWheels();
+        } else if (this.level() instanceof ServerLevel level) {
+            this.showDamage(level);
+        }
+    }
+
+    /** Con poca vida sale humo del motor, y con muy poca, fuego. */
+    private void showDamage(ServerLevel level) {
+        float ratio = this.getHealth() / this.getMaxHealth();
+        if (ratio >= 0.5f || this.tickCount % 4 != 0) {
+            return;
+        }
+        Vec3 back = Vec3.directionFromRotation(0.0f, this.getYRot()).scale(-1.2 * SCALE);
+        double x = this.getX() + back.x;
+        double y = this.getY() + 1.0 * SCALE;
+        double z = this.getZ() + back.z;
+        level.sendParticles(ParticleTypes.LARGE_SMOKE, x, y, z, 2, 0.3, 0.2, 0.3, 0.02);
+        if (ratio < 0.25f) {
+            level.sendParticles(ParticleTypes.FLAME, x, y, z, 2, 0.3, 0.1, 0.3, 0.02);
         }
     }
 
@@ -171,12 +287,12 @@ public class TankEntity extends Mob {
         shell.shoot(dir.x, dir.y, dir.z, SHELL_SPEED, 0.0f);
         level.addFreshEntity(shell);
 
-        level.sendParticles(ParticleTypes.FLAME, muzzle.x, muzzle.y, muzzle.z, 12, 0.1, 0.1, 0.1, 0.05);
-        level.sendParticles(ParticleTypes.LARGE_SMOKE, muzzle.x, muzzle.y, muzzle.z, 8, 0.15, 0.15, 0.15, 0.03);
+        level.sendParticles(ParticleTypes.FLAME, muzzle.x, muzzle.y, muzzle.z, 12, 0.15, 0.15, 0.15, 0.05);
+        level.sendParticles(ParticleTypes.LARGE_SMOKE, muzzle.x, muzzle.y, muzzle.z, 8, 0.2, 0.2, 0.2, 0.03);
         level.playSound(null, this.blockPosition(), SoundEvents.FIREWORK_ROCKET_LARGE_BLAST,
-                SoundSource.PLAYERS, 2.0f, 0.5f);
+                SoundSource.PLAYERS, 3.0f, 0.5f);
         level.playSound(null, this.blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST,
-                SoundSource.PLAYERS, 2.0f, 0.4f);
+                SoundSource.PLAYERS, 3.0f, 0.4f);
 
         if (!creative) {
             ammo.shrink(1);
@@ -184,31 +300,54 @@ public class TankEntity extends Mob {
         this.cannonCooldown = COOLDOWN_TICKS;
     }
 
-    // ------------------------------------------------------------------ Daño, recogida y otros
+    // ------------------------------------------------------------------ Daño: sólo el TNT
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (this.level().isClientSide || this.isRemoved()) {
             return false;
         }
-        // Un jugador que no lo está conduciendo lo golpea para recogerlo
-        if (source.getEntity() instanceof Player player && !this.hasPassenger(player)) {
-            if (!player.getAbilities().instabuild) {
-                this.spawnAtLocation(ModItems.TANQUE.get());
-            }
-            this.discard();
-            return true;
-        }
-        // Sólo /kill y el vacío pueden destruirlo
+        // /kill y el vacío siempre funcionan
         if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return super.hurt(source, amount);
         }
+        // Sólo explosiones cuyo origen directo sea el lanzador de TNT (o este cañón), TNT encendido o vagoneta con TNT
+        Entity direct = source.getDirectEntity();
+        if (source.is(DamageTypeTags.IS_EXPLOSION) && isTntSource(direct)) {
+            // Sus propios obuses no le hacen daño
+            if (direct instanceof TntProjectile shell && shell.getOwner() != null
+                    && this.hasPassenger(shell.getOwner())) {
+                return false;
+            }
+            return super.hurt(source, amount);
+        }
+        return false;
+    }
+
+    private static boolean isTntSource(Entity entity) {
+        return entity instanceof TntProjectile || entity instanceof PrimedTnt || entity instanceof MinecartTNT;
+    }
+
+    /** Inmune a todos los efectos de poción (veneno, wither, parálisis del taser, etc.). */
+    @Override
+    public boolean canBeAffected(MobEffectInstance effect) {
         return false;
     }
 
     @Override
     public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
+    }
+
+    @Override
+    public void die(DamageSource source) {
+        if (this.level() instanceof ServerLevel level) {
+            level.sendParticles(ParticleTypes.EXPLOSION_EMITTER, this.getX(), this.getY() + SCALE, this.getZ(),
+                    1, 0.0, 0.0, 0.0, 0.0);
+            level.sendParticles(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY() + SCALE, this.getZ(),
+                    40, SCALE, SCALE * 0.5, SCALE, 0.05);
+        }
+        super.die(source);
     }
 
     @Override

@@ -24,8 +24,13 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
     private static final ResourceLocation TEXTURE =
             ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "textures/entity/tanque.png");
 
-    private static final int[] OLIVE = {72, 90, 52};
-    private static final int[] DARK_OLIVE = {50, 64, 38};
+    /** Colores del casco y la torreta por skin: 0 original, 1 negro, 2 azul, 3 amarillo, 4 verde, 5 rojo. */
+    private static final int[][] MAIN = {
+            {72, 90, 52}, {44, 44, 48}, {52, 92, 170}, {226, 186, 40}, {64, 170, 70}, {190, 45, 40}};
+    /** Tono más oscuro de cada skin (guardabarros, detalles). */
+    private static final int[][] DARK = {
+            {50, 64, 38}, {24, 24, 27}, {32, 60, 120}, {170, 135, 25}, {36, 112, 44}, {130, 28, 25}};
+
     private static final int[] TRACK = {34, 34, 36};
     private static final int[] WHEEL = {62, 64, 68};
     private static final int[] STEEL = {96, 100, 108};
@@ -40,7 +45,7 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
 
     public TankRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.shadowRadius = 1.3f;
+        this.shadowRadius = 1.3f * TankEntity.SCALE;
     }
 
     @Override
@@ -50,7 +55,7 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
 
     @Override
     public boolean shouldRender(TankEntity entity, Frustum frustum, double x, double y, double z) {
-        return frustum.isVisible(entity.getBoundingBox().inflate(1.5));
+        return frustum.isVisible(entity.getBoundingBox().inflate(3.0));
     }
 
     @Override
@@ -59,13 +64,18 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
         ps.pushPose();
         // El casco mira hacia +Z local: rotar -yaw hace que +Z coincida con el frente del tanque
         ps.mulPose(Axis.YP.rotationDegrees(-entityYaw));
+        // El modelo está dibujado en 3x2x2; la escala lo lleva al tamaño real del tanque
+        ps.scale(TankEntity.SCALE, TankEntity.SCALE, TankEntity.SCALE);
+        int skin = Mth.clamp(tank.getSkin(), 0, MAIN.length - 1);
+        int[] main = MAIN[skin];
+        int[] dark = DARK[skin];
         VertexConsumer vc = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
 
         float angleL = Mth.lerp(partialTick, tank.wheelAngleLO, tank.wheelAngleL);
         float angleR = Mth.lerp(partialTick, tank.wheelAngleRO, tank.wheelAngleR);
 
-        drawTracks(ps, vc, light, angleL, angleR);
-        drawHull(ps, vc, light);
+        drawTracks(ps, vc, light, angleL, angleR, dark);
+        drawHull(ps, vc, light, main, dark);
 
         // Torreta y cañón: siguen hacia donde mira el conductor
         float relYaw = 0.0f;
@@ -75,7 +85,7 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
             relYaw = Mth.wrapDegrees(rider.getViewYRot(partialTick) - entityYaw);
             pitch = Mth.clamp(rider.getViewXRot(partialTick), TankEntity.MIN_PITCH, TankEntity.MAX_PITCH);
         }
-        drawTurret(ps, vc, light, relYaw, pitch);
+        drawTurret(ps, vc, light, relYaw, pitch, main, dark);
 
         ps.popPose();
         super.render(tank, entityYaw, partialTick, ps, buffer, light);
@@ -83,7 +93,7 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
 
     // ------------------------------------------------------------------ Piezas
 
-    private void drawTracks(PoseStack ps, VertexConsumer vc, int light, float angleL, float angleR) {
+    private void drawTracks(PoseStack ps, VertexConsumer vc, int light, float angleL, float angleR, int[] dark) {
         for (int side = 1; side >= -1; side -= 2) {          // +1 = izquierda, -1 = derecha
             float x1 = side > 0 ? 0.6f : -1.0f;
             float x2 = side > 0 ? 1.0f : -0.6f;
@@ -97,7 +107,7 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
                 wheel(ps, vc, light, side * WHEEL_X, WHEEL_Y, z, angle, side);
             }
             // Guardabarros
-            box(ps, vc, light, x1, 0.71f, -1.5f, x2, 0.79f, 1.5f, DARK_OLIVE);
+            box(ps, vc, light, x1, 0.71f, -1.5f, x2, 0.79f, 1.5f, dark);
         }
     }
 
@@ -120,10 +130,10 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
         ps.popPose();
     }
 
-    private void drawHull(PoseStack ps, VertexConsumer vc, int light) {
-        box(ps, vc, light, -0.6f, 0.22f, -1.4f, 0.6f, 0.95f, 1.4f, OLIVE);              // casco
+    private void drawHull(PoseStack ps, VertexConsumer vc, int light, int[] main, int[] dark) {
+        box(ps, vc, light, -0.6f, 0.22f, -1.4f, 0.6f, 0.95f, 1.4f, main);              // casco
         box(ps, vc, light, -0.45f, 0.95f, -1.3f, 0.45f, 1.02f, -0.55f, STEEL);           // rejilla del motor
-        box(ps, vc, light, -0.6f, 0.95f, 0.8f, 0.6f, 1.0f, 1.4f, DARK_OLIVE);            // placa delantera
+        box(ps, vc, light, -0.6f, 0.95f, 0.8f, 0.6f, 1.0f, 1.4f, dark);            // placa delantera
         box(ps, vc, light, -0.5f, 0.62f, 1.4f, -0.34f, 0.78f, 1.44f, YELLOW);            // faros
         box(ps, vc, light, 0.34f, 0.62f, 1.4f, 0.5f, 0.78f, 1.44f, YELLOW);
         box(ps, vc, light, -0.5f, 0.62f, -1.44f, -0.34f, 0.74f, -1.4f, RED);             // luces traseras
@@ -131,26 +141,27 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
         box(ps, vc, light, 0.3f, 0.4f, -1.55f, 0.46f, 0.56f, -1.4f, STEEL);              // escape
     }
 
-    private void drawTurret(PoseStack ps, VertexConsumer vc, int light, float relYaw, float pitch) {
+    private void drawTurret(PoseStack ps, VertexConsumer vc, int light, float relYaw, float pitch,
+                            int[] main, int[] dark) {
         ps.pushPose();
         ps.translate(0.0, 0.95, 0.0);
         ps.mulPose(Axis.YP.rotationDegrees(-relYaw));
 
-        box(ps, vc, light, -0.55f, 0.0f, -0.65f, 0.55f, 0.55f, 0.55f, OLIVE);            // torreta
-        box(ps, vc, light, -0.28f, 0.14f, 0.55f, 0.28f, 0.44f, 0.72f, DARK_OLIVE);       // mantelete
-        box(ps, vc, light, -0.4f, 0.1f, -0.9f, 0.4f, 0.45f, -0.65f, DARK_OLIVE);         // caja trasera
+        box(ps, vc, light, -0.55f, 0.0f, -0.65f, 0.55f, 0.55f, 0.55f, main);            // torreta
+        box(ps, vc, light, -0.28f, 0.14f, 0.55f, 0.28f, 0.44f, 0.72f, dark);       // mantelete
+        box(ps, vc, light, -0.4f, 0.1f, -0.9f, 0.4f, 0.45f, -0.65f, dark);         // caja trasera
         // Escotilla (anillo): por aquí asoma el conductor
-        box(ps, vc, light, -0.42f, 0.55f, 0.26f, 0.42f, 0.68f, 0.32f, DARK_OLIVE);
-        box(ps, vc, light, -0.42f, 0.55f, -0.32f, 0.42f, 0.68f, -0.26f, DARK_OLIVE);
-        box(ps, vc, light, 0.36f, 0.55f, -0.26f, 0.42f, 0.68f, 0.26f, DARK_OLIVE);
-        box(ps, vc, light, -0.42f, 0.55f, -0.26f, -0.36f, 0.68f, 0.26f, DARK_OLIVE);
+        box(ps, vc, light, -0.42f, 0.55f, 0.26f, 0.42f, 0.68f, 0.32f, dark);
+        box(ps, vc, light, -0.42f, 0.55f, -0.32f, 0.42f, 0.68f, -0.26f, dark);
+        box(ps, vc, light, 0.36f, 0.55f, -0.26f, 0.42f, 0.68f, 0.26f, dark);
+        box(ps, vc, light, -0.42f, 0.55f, -0.26f, -0.36f, 0.68f, 0.26f, dark);
         box(ps, vc, light, 0.46f, 0.55f, -0.6f, 0.5f, 1.05f, -0.56f, BLACK);             // antena
 
         // Cañón: gira hacia arriba/abajo alrededor del mantelete
         ps.translate(0.0, 0.29, 0.72);
         ps.mulPose(Axis.XP.rotationDegrees(pitch));
         box(ps, vc, light, -0.085f, -0.085f, 0.0f, 0.085f, 0.085f, 1.4f, STEEL);
-        box(ps, vc, light, -0.125f, -0.125f, 1.1f, 0.125f, 0.125f, 1.4f, DARK_OLIVE);    // freno de boca
+        box(ps, vc, light, -0.125f, -0.125f, 1.1f, 0.125f, 0.125f, 1.4f, dark);    // freno de boca
         box(ps, vc, light, -0.05f, -0.05f, 1.4f, 0.05f, 0.05f, 1.41f, BLACK);            // boca
         ps.popPose();
     }

@@ -28,6 +28,9 @@ public final class Paralysis {
     private Paralysis() {}
 
     public static void apply(LivingEntity target, int ticks) {
+        if (target instanceof TankEntity) {
+            return;   // el tanque es inmune
+        }
         if (!(target.level() instanceof ServerLevel level)) {
             return;
         }
