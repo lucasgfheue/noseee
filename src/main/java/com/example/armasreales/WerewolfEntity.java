@@ -38,10 +38,15 @@ import org.jetbrains.annotations.Nullable;
  */
 public class WerewolfEntity extends Monster {
     public static final int HUMAN_SKINS = 4;
+    /** Pelaje de la bestia: 0 marrón, 1 negro, 2 blanco. */
+    public static final int FUR_VARIANTS = 3;
 
     private static final EntityDataAccessor<Boolean> DATA_WOLF =
             SynchedEntityData.defineId(WerewolfEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_SKIN =
+            SynchedEntityData.defineId(WerewolfEntity.class, EntityDataSerializers.INT);
+
+    private static final EntityDataAccessor<Integer> DATA_FUR =
             SynchedEntityData.defineId(WerewolfEntity.class, EntityDataSerializers.INT);
 
     public WerewolfEntity(EntityType<? extends WerewolfEntity> type, Level level) {
@@ -53,20 +58,22 @@ public class WerewolfEntity extends Monster {
                 .add(Attributes.MAX_HEALTH, 30.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.ATTACK_DAMAGE, 3.0)
-                .add(Attributes.FOLLOW_RANGE, 40.0)
+                .add(Attributes.FOLLOW_RANGE, 48.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.0);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new WerewolfBreakGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.9));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         // Sólo caza jugadores cuando es una bestia (de noche)
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<Player>(this, Player.class, true) {
+        // mustSee = false: te detecta a través de las paredes
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<Player>(this, Player.class, 10, false, false, null) {
             @Override
             public boolean canUse() {
                 return WerewolfEntity.this.isWolf() && super.canUse();
@@ -81,10 +88,15 @@ public class WerewolfEntity extends Monster {
         super.defineSynchedData(builder);
         builder.define(DATA_WOLF, false);
         builder.define(DATA_SKIN, 0);
+        builder.define(DATA_FUR, 0);
     }
 
     public boolean isWolf() {
         return this.entityData.get(DATA_WOLF);
+    }
+
+    public int getFur() {
+        return Math.floorMod(this.entityData.get(DATA_FUR), FUR_VARIANTS);
     }
 
     public int getHumanSkin() {
@@ -96,6 +108,7 @@ public class WerewolfEntity extends Monster {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Wolf", this.isWolf());
         tag.putInt("HumanSkin", this.getHumanSkin());
+        tag.putInt("Fur", this.getFur());
     }
 
     @Override
@@ -103,6 +116,7 @@ public class WerewolfEntity extends Monster {
         super.readAdditionalSaveData(tag);
         this.entityData.set(DATA_WOLF, tag.getBoolean("Wolf"));
         this.entityData.set(DATA_SKIN, tag.getInt("HumanSkin"));
+        this.entityData.set(DATA_FUR, tag.getInt("Fur"));
     }
 
     // ------------------------------------------------------------------ Transformación
@@ -119,6 +133,9 @@ public class WerewolfEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
+        if (!this.level().isClientSide) {
+            this.setAggressive(this.getTarget() != null && this.getTarget().isAlive());
+        }
         if (!this.level().isClientSide && this.tickCount % 20 == 0) {
             boolean wantWolf = this.isNightNow();
             if (wantWolf != this.isWolf()) {
@@ -169,6 +186,7 @@ public class WerewolfEntity extends Monster {
                                         MobSpawnType reason, @Nullable SpawnGroupData data) {
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, reason, data);
         this.entityData.set(DATA_SKIN, level.getRandom().nextInt(HUMAN_SKINS));
+        this.entityData.set(DATA_FUR, level.getRandom().nextInt(FUR_VARIANTS));
         boolean wolf = this.isNightNow();
         this.entityData.set(DATA_WOLF, wolf);
         this.applyForm(wolf, false);

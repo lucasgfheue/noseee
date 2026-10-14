@@ -11,8 +11,10 @@ import net.minecraft.resources.ResourceLocation;
 
 /** Dibuja al hombre lobo como jugador (de día) o como bestia con su propio modelo (de noche). */
 public class WerewolfRenderer extends EntityRenderer<WerewolfEntity> {
-    private static final ResourceLocation WOLF_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "textures/entity/hombre_lobo.png");
+    private static final ResourceLocation[] WOLF_TEXTURES = {
+            ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "textures/entity/hombre_lobo.png"),
+            ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "textures/entity/hombre_lobo_negro.png"),
+            ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "textures/entity/hombre_lobo_blanco.png")};
     private static final ResourceLocation[] HUMAN_TEXTURES = new ResourceLocation[WerewolfEntity.HUMAN_SKINS];
 
     static {
@@ -39,7 +41,7 @@ public class WerewolfRenderer extends EntityRenderer<WerewolfEntity> {
                         context, new WerewolfPoseModel(context.bakeLayer(WerewolfModel.LAYER)), 0.7f) {
                     @Override
                     public ResourceLocation getTextureLocation(WerewolfEntity entity) {
-                        return WOLF_TEXTURE;
+                        return WOLF_TEXTURES[entity.getFur()];
                     }
                 };
         wolf.addLayer(new WerewolfEyesLayer(wolf));
@@ -55,6 +57,6 @@ public class WerewolfRenderer extends EntityRenderer<WerewolfEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(WerewolfEntity entity) {
-        return entity.isWolf() ? WOLF_TEXTURE : HUMAN_TEXTURES[entity.getHumanSkin()];
+        return entity.isWolf() ? WOLF_TEXTURES[entity.getFur()] : HUMAN_TEXTURES[entity.getHumanSkin()];
     }
 }
