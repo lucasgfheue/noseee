@@ -81,7 +81,7 @@ public class TankEntity extends Mob {
     // Ángulos de las ruedas (grados), lado izquierdo y derecho. Sólo se usan en el cliente.
     public float wheelAngleL, wheelAngleR, wheelAngleLO, wheelAngleRO;
 
-    private int cannonCooldown = 0;
+    protected int cannonCooldown = 0;
 
     public TankEntity(EntityType<? extends TankEntity> type, Level level) {
         super(type, level);
@@ -167,7 +167,7 @@ public class TankEntity extends Mob {
         if (player.isSecondaryUseActive() && held.isEmpty() && !this.isVehicle()) {
             if (!this.level().isClientSide) {
                 if (!player.getAbilities().instabuild) {
-                    this.spawnAtLocation(ModItems.TANQUE.get());
+                    this.spawnAtLocation(this.getPickupItem());
                 }
                 this.discard();
             }
@@ -299,6 +299,23 @@ public class TankEntity extends Mob {
         if (this.getControllingPassenger() != player || this.cannonCooldown > 0) {
             return;
         }
+        if (!this.fireShell(player, 0.0)) {
+            this.cannonCooldown = 10;
+            return;
+        }
+        this.cannonCooldown = COOLDOWN_TICKS;
+    }
+
+    /** Objeto que se recoge con Shift + click derecho. */
+    protected net.minecraft.world.item.Item getPickupItem() {
+        return ModItems.TANQUE.get();
+    }
+
+    /**
+     * Dispara un proyectil de TNT desde el cañón. lateral desplaza la boca hacia un lado (cañones dobles).
+     * Devuelve false si no hay munición.
+     */
+    protected boolean fireShell(ServerPlayer player, double lateral) {
         ServerLevel level = player.serverLevel();
         boolean creative = player.getAbilities().instabuild;
         ItemStack ammo = AmmoUtil.find(player, Items.TNT);
@@ -306,15 +323,15 @@ public class TankEntity extends Mob {
         if (ammo.isEmpty() && !creative) {
             level.playSound(null, this.blockPosition(), SoundEvents.DISPENSER_FAIL,
                     SoundSource.PLAYERS, 1.0f, 0.7f);
-            this.cannonCooldown = 10;
-            return;
+            return false;
         }
 
         float pitch = Mth.clamp(player.getXRot(), MIN_PITCH, MAX_PITCH);
         float yaw = player.getYRot();
         Vec3 dir = Vec3.directionFromRotation(pitch, yaw);
         Vec3 flat = Vec3.directionFromRotation(0.0f, yaw);
-        Vec3 pivot = this.position().add(0.0, PIVOT_Y, 0.0).add(flat.scale(PIVOT_FORWARD));
+        Vec3 side = new Vec3(-flat.z, 0.0, flat.x);
+        Vec3 pivot = this.position().add(0.0, PIVOT_Y, 0.0).add(flat.scale(PIVOT_FORWARD)).add(side.scale(lateral));
         Vec3 muzzle = pivot.add(dir.scale(BARREL_LENGTH));
 
         TntProjectile shell = new TntProjectile(level, player);
@@ -332,7 +349,7 @@ public class TankEntity extends Mob {
         if (!creative) {
             ammo.shrink(1);
         }
-        this.cannonCooldown = COOLDOWN_TICKS;
+        return true;
     }
 
     // ------------------------------------------------------------------ Daño: sólo el TNT

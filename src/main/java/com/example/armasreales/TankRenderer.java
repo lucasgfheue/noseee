@@ -61,8 +61,12 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
     private static final float WHEEL_Y = 0.34f;
     private static final float WHEEL_X = 0.8f;      // centro de cada oruga (a ambos lados)
 
-    public TankRenderer(EntityRendererProvider.Context context) {
+    /** Si es true dibuja dos cañones paralelos. */
+    private final boolean twin;
+
+    public TankRenderer(EntityRendererProvider.Context context, boolean twin) {
         super(context);
+        this.twin = twin;
         this.shadowRadius = 1.3f * TankEntity.SCALE;
     }
 
@@ -224,8 +228,9 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
         box(ps, vc, light, -0.55f, 0.0f, -0.65f, 0.55f, 0.45f, 0.4f, main);             // torreta
         box(ps, vc, light, -0.5f, 0.45f, -0.6f, 0.5f, 0.55f, 0.3f, main);               // techo
         box(ps, vc, light, -0.5f, 0.05f, 0.4f, 0.5f, 0.4f, 0.55f, main);                // frente biselado
-        box(ps, vc, light, -0.28f, 0.14f, 0.55f, 0.28f, 0.44f, 0.72f, dark);            // mantelete
-        box(ps, vc, light, -0.32f, 0.1f, 0.7f, 0.32f, 0.48f, 0.75f, dark);
+        float mw = twin ? 0.42f : 0.28f;
+        box(ps, vc, light, -mw, 0.14f, 0.55f, mw, 0.44f, 0.72f, dark);                  // mantelete
+        box(ps, vc, light, -mw - 0.04f, 0.1f, 0.7f, mw + 0.04f, 0.48f, 0.75f, dark);
         box(ps, vc, light, -0.4f, 0.1f, -0.9f, 0.4f, 0.45f, -0.65f, dark);              // caja trasera
         box(ps, vc, light, -0.3f, 0.3f, -0.93f, 0.3f, 0.4f, -0.9f, STEEL);
         // Escotilla (anillo): por aquí asoma el conductor
@@ -257,17 +262,32 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
         box(ps, vc, light, 0.46f, 0.62f, -0.6f, 0.5f, 1.05f, -0.56f, BLACK);
         box(ps, vc, light, 0.465f, 1.05f, -0.595f, 0.495f, 1.1f, -0.565f, RED);
 
-        // Cañón: gira hacia arriba/abajo alrededor del mantelete
+        // Cañón (o cañones): giran hacia arriba/abajo alrededor del mantelete
         ps.translate(0.0, 0.29, 0.72);
         ps.mulPose(Axis.XP.rotationDegrees(pitch));
-        box(ps, vc, light, -0.11f, -0.11f, 0.0f, 0.11f, 0.11f, 0.3f, dark);        // culata
-        box(ps, vc, light, -0.085f, -0.085f, 0.3f, 0.085f, 0.085f, 1.4f, GUN);
-        box(ps, vc, light, -0.1f, -0.1f, 0.55f, 0.1f, 0.1f, 0.75f, STEEL);         // evacuador de humos
-        box(ps, vc, light, -0.1f, -0.1f, 0.95f, 0.1f, 0.1f, 1.0f, STEEL);          // anillos
-        box(ps, vc, light, -0.125f, -0.125f, 1.1f, 0.125f, 0.125f, 1.4f, dark);    // freno de boca
-        box(ps, vc, light, -0.13f, -0.04f, 1.17f, 0.13f, 0.04f, 1.2f, BLACK);      // ranuras del freno
-        box(ps, vc, light, -0.13f, -0.04f, 1.27f, 0.13f, 0.04f, 1.3f, BLACK);
-        box(ps, vc, light, -0.05f, -0.05f, 1.4f, 0.05f, 0.05f, 1.41f, BLACK);            // boca
+        if (twin) {
+            box(ps, vc, light, -0.3f, -0.12f, 0.0f, 0.3f, 0.12f, 0.12f, dark);       // soporte compartido
+            for (int side = -1; side <= 1; side += 2) {
+                float c = side * 0.14f;
+                box(ps, vc, light, c - 0.09f, -0.09f, 0.12f, c + 0.09f, 0.09f, 0.35f, dark);   // culata
+                box(ps, vc, light, c - 0.065f, -0.065f, 0.35f, c + 0.065f, 0.065f, 1.4f, GUN);
+                box(ps, vc, light, c - 0.08f, -0.08f, 0.6f, c + 0.08f, 0.08f, 0.78f, STEEL);   // evacuador
+                box(ps, vc, light, c - 0.095f, -0.095f, 1.12f, c + 0.095f, 0.095f, 1.4f, dark); // freno de boca
+                box(ps, vc, light, c - 0.1f, -0.03f, 1.18f, c + 0.1f, 0.03f, 1.21f, BLACK);
+                box(ps, vc, light, c - 0.1f, -0.03f, 1.28f, c + 0.1f, 0.03f, 1.31f, BLACK);
+                box(ps, vc, light, c - 0.04f, -0.04f, 1.4f, c + 0.04f, 0.04f, 1.41f, BLACK);
+            }
+            box(ps, vc, light, -0.3f, -0.03f, 0.8f, 0.3f, 0.03f, 0.88f, STEEL);          // abrazadera
+        } else {
+            box(ps, vc, light, -0.11f, -0.11f, 0.0f, 0.11f, 0.11f, 0.3f, dark);        // culata
+            box(ps, vc, light, -0.085f, -0.085f, 0.3f, 0.085f, 0.085f, 1.4f, GUN);
+            box(ps, vc, light, -0.1f, -0.1f, 0.55f, 0.1f, 0.1f, 0.75f, STEEL);         // evacuador de humos
+            box(ps, vc, light, -0.1f, -0.1f, 0.95f, 0.1f, 0.1f, 1.0f, STEEL);          // anillos
+            box(ps, vc, light, -0.125f, -0.125f, 1.1f, 0.125f, 0.125f, 1.4f, dark);    // freno de boca
+            box(ps, vc, light, -0.13f, -0.04f, 1.17f, 0.13f, 0.04f, 1.2f, BLACK);      // ranuras del freno
+            box(ps, vc, light, -0.13f, -0.04f, 1.27f, 0.13f, 0.04f, 1.3f, BLACK);
+            box(ps, vc, light, -0.05f, -0.05f, 1.4f, 0.05f, 0.05f, 1.41f, BLACK);            // boca
+        }
         ps.popPose();
     }
 

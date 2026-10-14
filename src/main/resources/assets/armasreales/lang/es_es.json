@@ -16,5 +16,7 @@
   "entity.armasreales.proyectil_taser": "Dardo eléctrico",
   "entity.armasreales.proyectil_acido": "Bola de ácido",
   "item.armasreales.tanque": "Tanque",
-  "entity.armasreales.tanque": "Tanque"
+  "entity.armasreales.tanque": "Tanque",
+  "item.armasreales.tanque_doble": "Tanque doble",
+  "entity.armasreales.tanque_doble": "Tanque doble"
 }

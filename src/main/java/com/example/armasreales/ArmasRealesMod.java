@@ -21,6 +21,7 @@ public class ArmasRealesMod {
 
     private void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.TANK.get(), TankEntity.createAttributes().build());
+        event.put(ModEntities.TWIN_TANK.get(), TankEntity.createAttributes().build());
     }
 
     private void registerPayloads(RegisterPayloadHandlersEvent event) {
@@ -40,6 +41,7 @@ public class ArmasRealesMod {
             event.accept(ModItems.PISTOLA_ACIDA);
             event.accept(ModItems.RIFLE_VIOLETA);
             event.accept(ModItems.TANQUE);
+            event.accept(ModItems.TANQUE_DOBLE);
         }
     }
 }

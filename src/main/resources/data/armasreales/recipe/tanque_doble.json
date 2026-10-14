@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "BBB",
+    "TKT",
+    "PPP"
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:tnt"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "K": {
+      "item": "armasreales:tanque"
+    },
+    "B": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "result": {
+    "id": "armasreales:tanque_doble",
+    "count": 1
+  }
+}

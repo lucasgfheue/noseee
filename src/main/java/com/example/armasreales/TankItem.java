@@ -10,8 +10,12 @@ import net.minecraft.world.level.Level;
 
 /** Coloca un tanque sobre el bloque al que apuntas. */
 public class TankItem extends Item {
-    public TankItem(Properties properties) {
+    private final java.util.function.Supplier<? extends net.minecraft.world.entity.EntityType<? extends TankEntity>> type;
+
+    public TankItem(Properties properties,
+                    java.util.function.Supplier<? extends net.minecraft.world.entity.EntityType<? extends TankEntity>> type) {
         super(properties);
+        this.type = type;
     }
 
     @Override
@@ -22,7 +26,7 @@ public class TankItem extends Item {
         }
 
         BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
-        TankEntity tank = ModEntities.TANK.get().create(serverLevel);
+        TankEntity tank = this.type.get().create(serverLevel);
         if (tank == null) {
             return InteractionResult.FAIL;
         }

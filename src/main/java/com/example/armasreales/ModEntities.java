@@ -55,6 +55,16 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<TwinTankEntity>> TWIN_TANK =
+            ENTITIES.register("tanque_doble", () ->
+                    EntityType.Builder.<TwinTankEntity>of(TwinTankEntity::new, MobCategory.MISC)
+                            .sized(2.0f * TankEntity.SCALE, 2.0f * TankEntity.SCALE)
+                            .passengerAttachments(1.4f * TankEntity.SCALE)
+                            .fireImmune()
+                            .clientTrackingRange(12)
+                            .updateInterval(1)
+                            .build("tanque_doble"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<BeamEntity>> BEAM =
             ENTITIES.register("rayo", () ->
                     EntityType.Builder.<BeamEntity>of(BeamEntity::new, MobCategory.MISC)
