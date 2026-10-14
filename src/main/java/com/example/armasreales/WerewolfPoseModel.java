@@ -1,6 +1,6 @@
 package com.example.armasreales;
 
-import net.minecraft.client.model.AbstractZombieModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 
 /**
@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.ModelPart;
  * y la posición lateral de los brazos, lo que desarma modelos con otras proporciones. Aquí se guardan las
  * posiciones originales de cada pieza raíz y se restauran después de la animación.
  */
-public class WerewolfPoseModel extends AbstractZombieModel<WerewolfEntity> {
+public class WerewolfPoseModel extends HumanoidModel<WerewolfEntity> {
     private final ModelPart[] parts;
     private final float[][] home;
 
@@ -35,10 +35,5 @@ public class WerewolfPoseModel extends AbstractZombieModel<WerewolfEntity> {
             parts[i].z = home[i][2];
         }
         this.hat.copyFrom(this.head);
-    }
-
-    @Override
-    public boolean isAggressive(WerewolfEntity entity) {
-        return false;
     }
 }
