@@ -34,5 +34,7 @@
   "entity.armasreales.hombre_lobo": "Werewolf",
   "item.armasreales.hombre_lobo_spawn_egg": "Werewolf Spawn Egg",
   "entity.armasreales.campista": "Camper",
-  "item.armasreales.campista_spawn_egg": "Camper Spawn Egg"
+  "item.armasreales.campista_spawn_egg": "Camper Spawn Egg",
+  "entity.armasreales.anciano": "Old Man",
+  "item.armasreales.anciano_spawn_egg": "Old Man Spawn Egg"
 }

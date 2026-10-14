@@ -34,6 +34,7 @@ public class ArmasRealesMod {
         event.put(ModEntities.ZOMBI.get(), Zombie.createAttributes().build());
         event.put(ModEntities.HOMBRE_LOBO.get(), WerewolfEntity.createAttributes().build());
         event.put(ModEntities.CAMPISTA.get(), CampistaEntity.createAttributes().build());
+        event.put(ModEntities.ANCIANO.get(), AncianoEntity.createAttributes().build());
     }
 
     private void registerSpawns(RegisterSpawnPlacementsEvent event) {
@@ -55,6 +56,7 @@ public class ArmasRealesMod {
             event.accept(ModItems.ZOMBI_SPAWN_EGG);
             event.accept(ModItems.HOMBRE_LOBO_SPAWN_EGG);
             event.accept(ModItems.CAMPISTA_SPAWN_EGG);
+            event.accept(ModItems.ANCIANO_SPAWN_EGG);
         }
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             event.accept(ModItems.PISTOLA);
@@ -79,6 +81,7 @@ public class ArmasRealesMod {
             event.accept(ModItems.ZOMBI_SPAWN_EGG);
             event.accept(ModItems.HOMBRE_LOBO_SPAWN_EGG);
             event.accept(ModItems.CAMPISTA_SPAWN_EGG);
+            event.accept(ModItems.ANCIANO_SPAWN_EGG);
         }
     }
 }

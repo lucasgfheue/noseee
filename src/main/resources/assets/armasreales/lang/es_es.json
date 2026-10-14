@@ -34,5 +34,7 @@
   "entity.armasreales.hombre_lobo": "Hombre lobo",
   "item.armasreales.hombre_lobo_spawn_egg": "Generar Hombre lobo",
   "entity.armasreales.campista": "Campista",
-  "item.armasreales.campista_spawn_egg": "Generar Campista"
+  "item.armasreales.campista_spawn_egg": "Generar Campista",
+  "entity.armasreales.anciano": "Anciano",
+  "item.armasreales.anciano_spawn_egg": "Generar Anciano"
 }

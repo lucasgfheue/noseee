@@ -1,0 +1,7 @@
+{
+  "type": "armasreales:torre_radio",
+  "biomes": "#armasreales:has_torre_radio",
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "spawn_overrides": {}
+}
