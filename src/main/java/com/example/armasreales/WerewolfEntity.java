@@ -206,7 +206,7 @@ public class WerewolfEntity extends Monster {
     }
 
     @Override
-    protected void playAmbientSound() {
+    public void playAmbientSound() {
         if (this.isWolf()) {
             // gruñido muy grave, mezclado con rugido de ravager
             this.playSound(SoundEvents.WOLF_GROWL, 2.0f, 0.4f + this.random.nextFloat() * 0.1f);
@@ -224,7 +224,6 @@ public class WerewolfEntity extends Monster {
     @Override
     protected void playHurtSound(DamageSource source) {
         if (this.isWolf()) {
-            this.resetAmbientSoundTime();
             this.playSound(SoundEvents.RAVAGER_HURT, 1.6f, 0.55f);
             this.playSound(SoundEvents.WOLF_HURT, 1.4f, 0.4f);
         } else {
