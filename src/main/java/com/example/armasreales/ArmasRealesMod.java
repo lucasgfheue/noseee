@@ -37,6 +37,7 @@ public class ArmasRealesMod {
         event.put(ModEntities.CAMPISTA.get(), CampistaEntity.createAttributes().build());
         event.put(ModEntities.ANCIANO.get(), AncianoEntity.createAttributes().build());
         event.put(ModEntities.SOLDADO.get(), SoldadoEntity.createAttributes().build());
+        event.put(ModEntities.TURRET.get(), TurretEntity.createAttributes().build());
     }
 
     private void registerSpawns(RegisterSpawnPlacementsEvent event) {
@@ -80,6 +81,8 @@ public class ArmasRealesMod {
             event.accept(ModItems.CARTUCHO_ESCOPETA);
             event.accept(ModItems.FRANCOTIRADOR);
             event.accept(ModItems.RADIO);
+            event.accept(ModItems.TORRETA);
+            event.accept(ModItems.TORRETA_PESADA);
             event.accept(ModItems.MUNICION_FRANCOTIRADOR);
             event.accept(ModItems.CUCHILLO);
             event.accept(ModItems.CANON_CALABAZAS);

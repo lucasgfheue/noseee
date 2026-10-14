@@ -124,4 +124,10 @@ public class ModItems {
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> RADIO = ITEMS.registerSimpleBlockItem(
             "radio", ModBlocks.RADIO);
+
+    public static final DeferredItem<TurretItem> TORRETA = ITEMS.registerItem(
+            "torreta", props -> new TurretItem(props, TurretEntity.MG), new Item.Properties().stacksTo(1));
+
+    public static final DeferredItem<TurretItem> TORRETA_PESADA = ITEMS.registerItem(
+            "torreta_pesada", props -> new TurretItem(props, TurretEntity.HEAVY), new Item.Properties().stacksTo(1));
 }

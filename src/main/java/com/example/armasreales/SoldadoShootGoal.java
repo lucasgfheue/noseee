@@ -120,7 +120,7 @@ public class SoldadoShootGoal extends Goal {
     }
 
     private static boolean isAlly(Entity e) {
-        return e instanceof SoldadoEntity || e instanceof TankEntity || e instanceof AncianoEntity;
+        return e instanceof SoldadoEntity || e instanceof TankEntity || e instanceof TurretEntity || e instanceof AncianoEntity;
     }
 
     private void fire(ServerLevel level, LivingEntity target, double dist) {

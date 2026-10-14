@@ -43,6 +43,10 @@ public final class GunControl {
                     if (tank.getControllingPassenger() == player && player.isAlive()) {
                         tank.fireCannon(player);
                     }
+                } else if (player.getVehicle() instanceof TurretEntity turret) {
+                    if (player.isAlive()) {
+                        turret.fire(player);
+                    }
                 } else if (stack.getItem() instanceof Gun gun && player.isAlive() && !player.isSpectator()) {
                     s.active = gun.onFirePressed(player, stack);
                 }
@@ -90,6 +94,16 @@ public final class GunControl {
             return;
         }
 
+        if (player.getVehicle() instanceof TurretEntity turret) {
+            // Torreta: dispara cada tick mientras se mantiene el botón (la propia torreta limita la cadencia)
+            if (!player.isAlive() || now - s.lastInputTick > INPUT_TIMEOUT_TICKS) {
+                stop(player, s);
+            } else {
+                turret.fire(player);
+            }
+            return;
+        }
+
         if (!(stack.getItem() instanceof Gun gun) || !player.isAlive()
                 || now - s.lastInputTick > INPUT_TIMEOUT_TICKS) {
             stop(player, s);
@@ -109,7 +123,8 @@ public final class GunControl {
     @SubscribeEvent
     public static void onLeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         if (event.getEntity().getMainHandItem().getItem() instanceof Gun
-                || event.getEntity().getVehicle() instanceof TankEntity) {
+                || event.getEntity().getVehicle() instanceof TankEntity
+                || event.getEntity().getVehicle() instanceof TurretEntity) {
             event.setCanceled(true);
         }
     }

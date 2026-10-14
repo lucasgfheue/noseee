@@ -27,7 +27,8 @@ public final class GunClientEvents {
                 && mc.mouseHandler.isMouseGrabbed()
                 && mc.options.keyAttack.isDown()
                 && (player.getMainHandItem().getItem() instanceof Gun
-                    || player.getVehicle() instanceof TankEntity);
+                    || player.getVehicle() instanceof TankEntity
+                    || player.getVehicle() instanceof TurretEntity);
 
         if (firing) {
             PacketDistributor.sendToServer(new FirePayload(true));
@@ -43,7 +44,8 @@ public final class GunClientEvents {
         Minecraft mc = Minecraft.getInstance();
         if (event.isAttack() && mc.player != null
                 && (mc.player.getMainHandItem().getItem() instanceof Gun
-                    || mc.player.getVehicle() instanceof TankEntity)) {
+                    || mc.player.getVehicle() instanceof TankEntity
+                    || mc.player.getVehicle() instanceof TurretEntity)) {
             event.setCanceled(true);
             event.setSwingHand(false);
         }

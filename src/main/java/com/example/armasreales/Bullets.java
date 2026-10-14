@@ -18,6 +18,12 @@ public final class Bullets {
     public record Hit(Vec3 end, Entity entity, double distance) {}
 
     public static Hit trace(ServerLevel level, Entity player, Vec3 eye, Vec3 dir, double range) {
+        return trace(level, player, eye, dir, range, e -> true);
+    }
+
+    /** Igual que trace, pero ignora además las entidades que no cumplan el filtro (p. ej. la propia torreta). */
+    public static Hit trace(ServerLevel level, Entity player, Vec3 eye, Vec3 dir, double range,
+                            java.util.function.Predicate<Entity> filter) {
         Vec3 end = eye.add(dir.scale(range));
         BlockHitResult blockHit = level.clip(new ClipContext(
                 eye, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
@@ -26,7 +32,7 @@ public final class Bullets {
         }
         AABB box = new AABB(eye, end).inflate(1.0);
         EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
-                level, player, eye, end, box, e -> !e.isSpectator() && e.isPickable());
+                level, player, eye, end, box, e -> !e.isSpectator() && e.isPickable() && filter.test(e));
         Entity target = null;
         if (entityHit != null) {
             target = entityHit.getEntity();

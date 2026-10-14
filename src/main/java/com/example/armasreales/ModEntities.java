@@ -140,4 +140,13 @@ public class ModEntities {
                             .eyeHeight(1.62f)
                             .clientTrackingRange(10)
                             .build("soldado"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<TurretEntity>> TURRET =
+            ENTITIES.register("torreta", () ->
+                    EntityType.Builder.<TurretEntity>of(TurretEntity::new, MobCategory.MISC)
+                            .sized(1.1f, 1.2f)
+                            // Asiento detrás del arma, para ver por encima del escudo
+                            .passengerAttachments(new net.minecraft.world.phys.Vec3(0.0, 0.45, -0.55))
+                            .clientTrackingRange(10)
+                            .build("torreta"));
 }

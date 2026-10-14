@@ -41,5 +41,8 @@
   "item.armasreales.municion_francotirador": "Munición de francotirador",
   "entity.armasreales.soldado": "Soldado",
   "item.armasreales.soldado_spawn_egg": "Generar Soldado",
-  "block.armasreales.radio": "Radio"
+  "block.armasreales.radio": "Radio",
+  "item.armasreales.torreta": "Torreta ametralladora",
+  "item.armasreales.torreta_pesada": "Torreta pesada",
+  "entity.armasreales.torreta": "Torreta"
 }

@@ -41,5 +41,8 @@
   "item.armasreales.municion_francotirador": "Sniper Ammo",
   "entity.armasreales.soldado": "Soldier",
   "item.armasreales.soldado_spawn_egg": "Soldier Spawn Egg",
-  "block.armasreales.radio": "Radio"
+  "block.armasreales.radio": "Radio",
+  "item.armasreales.torreta": "Machine Gun Turret",
+  "item.armasreales.torreta_pesada": "Heavy Turret",
+  "entity.armasreales.torreta": "Turret"
 }
