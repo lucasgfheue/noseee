@@ -1,6 +1,7 @@
 package com.example.armasreales;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -63,9 +64,50 @@ public class WerewolfBreakGoal extends Goal {
         int az = (int) Math.round(dz / len * 1.2);
         int height = Math.max(2, (int) Math.ceil(wolf.getBbHeight()));
         BlockPos base = wolf.blockPosition().offset(ax, 0, az);
+
+        // Las puertas se rompen siempre
+        for (int y = 0; y < height; y++) {
+            BlockState st = level.getBlockState(base.above(y));
+            if (st.is(BlockTags.DOORS) || st.is(BlockTags.TRAPDOORS) || st.is(BlockTags.FENCE_GATES)) {
+                if (tryBreak(level, base.above(y))) {
+                    cooldown = 8;
+                    wolf.swing(InteractionHand.MAIN_HAND);
+                }
+                return;
+            }
+        }
+
+        // ¿Cuántos bloques de alto tiene el obstáculo que tiene delante?
+        int h = 0;
+        while (h < 6 && isSolid(level, base.above(h))) {
+            h++;
+        }
+        if (h == 0) {
+            return;                                   // nada que lo bloquee
+        }
+        if (h <= 2) {
+            // Puede saltar hasta 2 bloques: no rompe nada, salta (si hay espacio libre arriba)
+            boolean roomAbove = true;
+            for (int y = h; y < h + height && roomAbove; y++) {
+                roomAbove = !isSolid(level, base.above(y));
+            }
+            for (int y = 1; y <= height && roomAbove; y++) {
+                roomAbove = !isSolid(level, wolf.blockPosition().above(y).offset(0, 0, 0));
+            }
+            if (roomAbove) {
+                if (wolf.onGround()) {
+                    double vy = h == 1 ? 0.45 : 0.66;
+                    wolf.setDeltaMovement(dx / len * 0.25, vy, dz / len * 0.25);
+                    wolf.hasImpulse = true;
+                }
+                return;
+            }
+        }
+
+        // Más de 2 bloques de alto (o sin espacio para saltar): lo rompe, como el tanque
         boolean broke = false;
-        for (int y = 0; y < height && !broke; y++) {
-            broke = tryBreak(level, base.above(y));
+        for (int y = 0; y < height; y++) {
+            broke |= tryBreak(level, base.above(y));
         }
         if (!broke && target.getY() > wolf.getY() + 1.5) {
             broke = tryBreak(level, wolf.blockPosition().above(height));   // sube cavando
@@ -75,8 +117,13 @@ public class WerewolfBreakGoal extends Goal {
         }
         if (broke) {
             cooldown = 8;
-            wolf.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+            wolf.swing(InteractionHand.MAIN_HAND);
         }
+    }
+
+    private static boolean isSolid(Level level, BlockPos pos) {
+        BlockState st = level.getBlockState(pos);
+        return !st.getCollisionShape(level, pos).isEmpty();
     }
 
     private boolean tryBreak(Level level, BlockPos pos) {
