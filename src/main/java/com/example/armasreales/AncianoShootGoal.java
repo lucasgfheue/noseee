@@ -14,7 +14,7 @@ import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** El anciano apunta y dispara su escopeta (10 perdigones, muy dañina de cerca) desde su silla. */
+/** El anciano apunta y dispara su escopeta (10 perdigones, muy dañina de cerca) (sentado o de pie). */
 public class AncianoShootGoal extends Goal {
     private static final double RANGE = 28.0;
     private final AncianoEntity mob;
@@ -32,7 +32,7 @@ public class AncianoShootGoal extends Goal {
     @Override
     public boolean canUse() {
         LivingEntity t = mob.getTarget();
-        return t != null && t.isAlive() && hasShotgun() && mob.distanceToSqr(t) < RANGE * RANGE
+        return t != null && t.isAlive() && !mob.isSitting() && hasShotgun() && mob.distanceToSqr(t) < RANGE * RANGE
                 && mob.getSensing().hasLineOfSight(t);
     }
 
@@ -43,12 +43,7 @@ public class AncianoShootGoal extends Goal {
 
     @Override
     public void start() {
-        mob.setAggressive(true);
-    }
-
-    @Override
-    public void stop() {
-        mob.setAggressive(false);
+        cooldown = Math.max(cooldown, 15);   // un instante para apuntar tras levantarse
     }
 
     @Override

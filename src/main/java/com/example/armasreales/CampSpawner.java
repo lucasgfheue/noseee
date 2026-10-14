@@ -28,7 +28,7 @@ public final class CampSpawner {
         BlockPos origin = new BlockPos(x0, groundTop - 1 - CampPiece.FLOOR_LAYER, z0);
         for (int dx = 0; dx < 9; dx++) {
             for (int dz = 0; dz < 9; dz++) {
-                for (int y = CampPiece.FLOOR_LAYER + 1; y < 62; y++) {
+                for (int y = CampPiece.FLOOR_LAYER + 1; y < 72; y++) {
                     BlockPos q = origin.offset(dx, y, dz);
                     BlockState st = level.getBlockState(q);
                     if (!st.isAir() && (st.is(BlockTags.LEAVES) || st.is(BlockTags.LOGS) || st.canBeReplaced())) {
