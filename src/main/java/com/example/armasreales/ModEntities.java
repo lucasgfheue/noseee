@@ -116,4 +116,12 @@ public class ModEntities {
                             .noSave()
                             .noSummon()
                             .build("rayo"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<CampistaEntity>> CAMPISTA =
+            ENTITIES.register("campista", () ->
+                    EntityType.Builder.<CampistaEntity>of(CampistaEntity::new, MobCategory.MISC)
+                            .sized(0.6f, 1.95f)
+                            .eyeHeight(1.62f)
+                            .clientTrackingRange(10)
+                            .build("campista"));
 }

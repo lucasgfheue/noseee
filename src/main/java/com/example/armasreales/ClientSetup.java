@@ -42,6 +42,7 @@ public class ClientSetup {
 
         // Hombre lobo (humano de día, bestia de noche)
         event.registerEntityRenderer(ModEntities.HOMBRE_LOBO.get(), WerewolfRenderer::new);
+        event.registerEntityRenderer(ModEntities.CAMPISTA.get(), CampistaRenderer::new);
 
         // Zombi con variantes
         event.registerEntityRenderer(ModEntities.ZOMBI.get(), ArmedZombieRenderer::new);

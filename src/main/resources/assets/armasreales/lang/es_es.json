@@ -32,5 +32,7 @@
   "entity.armasreales.zombi": "Zombi",
   "item.armasreales.zombi_spawn_egg": "Generar Zombi",
   "entity.armasreales.hombre_lobo": "Hombre lobo",
-  "item.armasreales.hombre_lobo_spawn_egg": "Generar Hombre lobo"
+  "item.armasreales.hombre_lobo_spawn_egg": "Generar Hombre lobo",
+  "entity.armasreales.campista": "Campista",
+  "item.armasreales.campista_spawn_egg": "Generar Campista"
 }

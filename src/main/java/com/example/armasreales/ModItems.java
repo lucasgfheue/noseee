@@ -100,4 +100,9 @@ public class ModItems {
             "hombre_lobo_spawn_egg",
             props -> new SpawnEggItem(ModEntities.HOMBRE_LOBO.get(), 0x3A2F2A, 0xE8B923, props),
             new Item.Properties());
+
+    public static final DeferredItem<SpawnEggItem> CAMPISTA_SPAWN_EGG = ITEMS.registerItem(
+            "campista_spawn_egg",
+            props -> new SpawnEggItem(ModEntities.CAMPISTA.get(), 0x5B7A3A, 0xC9A66B, props),
+            new Item.Properties());
 }
