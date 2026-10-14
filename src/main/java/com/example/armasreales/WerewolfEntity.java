@@ -1,5 +1,6 @@
 package com.example.armasreales;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +13,9 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -29,6 +32,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
@@ -151,7 +155,7 @@ public class WerewolfEntity extends Monster {
             level.sendParticles(ParticleTypes.LARGE_SMOKE, getX(), getY(0.5), getZ(), 40, 0.5, 0.9, 0.5, 0.05);
             level.sendParticles(ParticleTypes.POOF, getX(), getY(0.5), getZ(), 20, 0.5, 0.9, 0.5, 0.1);
             if (wolf) {
-                level.playSound(null, this.blockPosition(), SoundEvents.WOLF_HOWL, SoundSource.HOSTILE, 3.0f, 0.5f);
+                level.playSound(null, this.blockPosition(), SoundEvents.WOLF_HOWL, SoundSource.HOSTILE, 3.5f, 0.35f);
             } else {
                 this.setTarget(null);
                 level.playSound(null, this.blockPosition(), SoundEvents.WOLF_WHINE, SoundSource.HOSTILE, 1.5f, 0.7f);
@@ -194,7 +198,7 @@ public class WerewolfEntity extends Monster {
         return result;
     }
 
-    // ------------------------------------------------------------------ Sonidos
+    // ------------------------------------------------------------------ Sonidos (graves y aterradores)
 
     @Override
     protected SoundEvent getAmbientSound() {
@@ -202,13 +206,73 @@ public class WerewolfEntity extends Monster {
     }
 
     @Override
+    protected void playAmbientSound() {
+        if (this.isWolf()) {
+            // gruñido muy grave, mezclado con rugido de ravager
+            this.playSound(SoundEvents.WOLF_GROWL, 2.0f, 0.4f + this.random.nextFloat() * 0.1f);
+            this.playSound(SoundEvents.RAVAGER_AMBIENT, 1.2f, 0.45f);
+        } else {
+            super.playAmbientSound();
+        }
+    }
+
+    @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return this.isWolf() ? SoundEvents.WOLF_HURT : SoundEvents.PLAYER_HURT;
+        return this.isWolf() ? SoundEvents.RAVAGER_HURT : SoundEvents.PLAYER_HURT;
+    }
+
+    @Override
+    protected void playHurtSound(DamageSource source) {
+        if (this.isWolf()) {
+            this.resetAmbientSoundTime();
+            this.playSound(SoundEvents.RAVAGER_HURT, 1.6f, 0.55f);
+            this.playSound(SoundEvents.WOLF_HURT, 1.4f, 0.4f);
+        } else {
+            super.playHurtSound(source);
+        }
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return this.isWolf() ? SoundEvents.WOLF_DEATH : SoundEvents.PLAYER_DEATH;
+        return this.isWolf() ? null : SoundEvents.PLAYER_DEATH;
+    }
+
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (this.isWolf()) {
+            this.playSound(SoundEvents.RAVAGER_DEATH, 2.0f, 0.5f);
+            this.playSound(SoundEvents.WOLF_DEATH, 1.8f, 0.35f);
+        }
+    }
+
+    @Override
+    public void setTarget(@Nullable LivingEntity target) {
+        boolean first = target != null && this.getTarget() == null;
+        super.setTarget(target);
+        if (first && this.isWolf() && !this.level().isClientSide) {
+            // rugido al detectarte
+            this.playSound(SoundEvents.RAVAGER_ROAR, 2.5f, 0.55f);
+            this.playSound(SoundEvents.WOLF_HOWL, 2.0f, 0.35f);
+        }
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity target) {
+        boolean hit = super.doHurtTarget(target);
+        if (hit && this.isWolf()) {
+            this.playSound(SoundEvents.RAVAGER_ATTACK, 1.6f, 0.6f);
+        }
+        return hit;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        if (this.isWolf()) {
+            this.playSound(SoundEvents.RAVAGER_STEP, 0.6f, 0.6f);
+        } else {
+            super.playStepSound(pos, state);
+        }
     }
 
     @Override
