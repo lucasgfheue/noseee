@@ -1,5 +1,8 @@
 package com.example.armasreales;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -48,6 +51,12 @@ import net.minecraft.world.level.ItemLike;
  */
 public class CampistaEntity extends AbstractVillager {
     public static final int SKINS = 5;
+    private static final int HOME_RADIUS = 14;
+
+    private boolean homeSet;
+    private BlockPos home;
+    private boolean stocked;
+    private int eatCooldown;
 
     private static final EntityDataAccessor<Integer> DATA_SKIN =
             SynchedEntityData.defineId(CampistaEntity.class, EntityDataSerializers.INT);
@@ -107,18 +116,42 @@ public class CampistaEntity extends AbstractVillager {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("Skin", this.getSkin());
+        tag.putBoolean("Stocked", this.stocked);
+        if (this.home != null) {
+            tag.putInt("HomeX", this.home.getX());
+            tag.putInt("HomeY", this.home.getY());
+            tag.putInt("HomeZ", this.home.getZ());
+        }
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.setSkin(tag.getInt("Skin"));
+        this.stocked = tag.getBoolean("Stocked");
+        if (tag.contains("HomeX")) {
+            this.home = new BlockPos(tag.getInt("HomeX"), tag.getInt("HomeY"), tag.getInt("HomeZ"));
+            this.homeSet = true;
+            this.restrictTo(this.home, HOME_RADIUS);
+        }
     }
 
     // ------------------------------------------------------------------ Comercio
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack held = player.getItemInHand(hand);
+        if (player.isShiftKeyDown() && (held.is(Items.BREAD) || held.is(Items.APPLE) || held.is(Items.CARROT)
+                || held.is(Items.POTATO))) {
+            // Agachado + clic derecho con comida: se la regalas para su mochila
+            if (!this.level().isClientSide) {
+                ItemStack gift = held.copyWithCount(1);
+                if (this.getInventory().addItem(gift).isEmpty() && !player.getAbilities().instabuild) {
+                    held.shrink(1);
+                }
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
         if (this.isAlive() && !this.isTrading() && !this.isBaby()) {
             if (!this.level().isClientSide) {
                 this.setTradingPlayer(player);
@@ -154,14 +187,6 @@ public class CampistaEntity extends AbstractVillager {
     }
 
     @Override
-    protected void rewardTradeXp(MerchantOffer offer) {
-        if (offer.shouldRewardExp()) {
-            int xp = 3 + this.random.nextInt(4);
-            this.level().addFreshEntity(new ExperienceOrb(this.level(), this.getX(), this.getY() + 0.5, this.getZ(), xp));
-        }
-    }
-
-    @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob partner) {
         return null;
     }
@@ -176,10 +201,106 @@ public class CampistaEntity extends AbstractVillager {
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
+        if (!(this.level() instanceof ServerLevel level)) {
+            return;
+        }
+        // Primer tick: fija el campamento como hogar y llena la mochila
+        if (!this.homeSet) {
+            this.homeSet = true;
+            this.home = this.blockPosition();
+            this.restrictTo(this.home, HOME_RADIUS);
+        }
+        if (!this.stocked) {
+            this.stocked = true;
+            this.getInventory().addItem(new ItemStack(Items.BREAD, 8));
+            this.getInventory().addItem(new ItemStack(Items.APPLE, 6));
+            this.getInventory().addItem(new ItemStack(Items.CARROT, 6));
+            this.getInventory().addItem(new ItemStack(Items.POTATO, 6));
+            this.getInventory().addItem(new ItemStack(ModItems.MUNICION_PISTOLA.get(), 16));
+        }
         // Se queda quieto mientras comercian, salvo que estén peleando
         if (this.isTrading() && this.getTarget() == null) {
             this.getNavigation().stop();
         }
+        // No se alejan del campamento: sueltan objetivos lejanos y vuelven si se alejan
+        if (this.home != null) {
+            double d2 = this.distanceToSqr(this.home.getX() + 0.5, this.home.getY(), this.home.getZ() + 0.5);
+            if (this.getTarget() != null && d2 > 28.0 * 28.0) {
+                this.setTarget(null);
+            }
+            if (this.getTarget() == null && !this.isTrading() && d2 > 18.0 * 18.0 && this.tickCount % 40 == 0) {
+                this.getNavigation().moveTo(this.home.getX() + 0.5, this.home.getY(), this.home.getZ() + 0.5, 1.0);
+            }
+        }
+        // Comer para curarse
+        if (this.eatCooldown > 0) {
+            this.eatCooldown--;
+        } else if (this.getHealth() < this.getMaxHealth() - 3.0f && this.tickCount % 10 == 0) {
+            this.tryEat(level);
+        }
+    }
+
+    /** Come un alimento de la mochila (el que más cura primero) y se cura. */
+    private void tryEat(ServerLevel level) {
+        Item[] foods = {Items.BREAD, Items.APPLE, Items.CARROT, Items.POTATO};
+        float[] heal = {6.0f, 4.0f, 3.0f, 3.0f};
+        for (int f = 0; f < foods.length; f++) {
+            for (int i = 0; i < this.getInventory().getContainerSize(); i++) {
+                ItemStack st = this.getInventory().getItem(i);
+                if (st.is(foods[f])) {
+                    st.shrink(1);
+                    this.getInventory().setItem(i, st.isEmpty() ? ItemStack.EMPTY : st);
+                    this.heal(heal[f]);
+                    this.eatCooldown = 40;
+                    level.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(foods[f])),
+                            this.getX(), this.getEyeY() - 0.2, this.getZ(), 8, 0.2, 0.1, 0.2, 0.05);
+                    return;
+                }
+            }
+        }
+    }
+
+    /** Al comerciar: lo que te da sale de su mochila y lo que le pagas entra en ella. */
+    @Override
+    protected void rewardTradeXp(MerchantOffer offer) {
+        ItemStack result = offer.getResult();
+        int left = result.getCount();
+        for (int i = 0; i < this.getInventory().getContainerSize() && left > 0; i++) {
+            ItemStack st = this.getInventory().getItem(i);
+            if (ItemStack.isSameItemSameComponents(st, result)) {
+                int take = Math.min(left, st.getCount());
+                st.shrink(take);
+                left -= take;
+                this.getInventory().setItem(i, st.isEmpty() ? ItemStack.EMPTY : st);
+            }
+        }
+        ItemStack rest = this.getInventory().addItem(offer.getCostA());
+        if (!rest.isEmpty()) {
+            this.spawnAtLocation(rest);
+        }
+        super_reward(offer);
+    }
+
+    private void super_reward(MerchantOffer offer) {
+        if (offer.shouldRewardExp()) {
+            int xp = 3 + this.random.nextInt(4);
+            this.level().addFreshEntity(new ExperienceOrb(this.level(), this.getX(), this.getY() + 0.5, this.getZ(), xp));
+        }
+    }
+
+    /** Al morir suelta todo lo que lleva en la mochila. */
+    @Override
+    public void die(DamageSource source) {
+        if (!this.level().isClientSide) {
+            for (int i = 0; i < this.getInventory().getContainerSize(); i++) {
+                ItemStack st = this.getInventory().getItem(i);
+                if (!st.isEmpty()) {
+                    this.spawnAtLocation(st.copy());
+                }
+            }
+            this.getInventory().clearContent();
+        }
+        super.die(source);
     }
 
     // Sin sonidos propios (nada de sonidos de aldeano)

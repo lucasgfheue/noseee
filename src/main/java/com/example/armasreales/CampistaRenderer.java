@@ -18,6 +18,7 @@ public class CampistaRenderer extends HumanoidMobRenderer<CampistaEntity, Humano
 
     public CampistaRenderer(EntityRendererProvider.Context context) {
         super(context, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)), 0.5f);
+        this.addLayer(new CampistaBackpackLayer(this, context.bakeLayer(CampistaBackpackLayer.LAYER)));
     }
 
     @Override

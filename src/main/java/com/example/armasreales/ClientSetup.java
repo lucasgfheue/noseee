@@ -59,6 +59,7 @@ public class ClientSetup {
     @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(WerewolfModel.LAYER, WerewolfModel::createBodyLayer);
+        event.registerLayerDefinition(CampistaBackpackLayer.LAYER, CampistaBackpackLayer::createLayer);
     }
 
     /** Los brazos se levantan al frente, como al sostener una ballesta: se ve que sostiene el arma. */
