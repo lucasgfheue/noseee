@@ -3,7 +3,7 @@ package com.example.armasreales;
 import net.minecraft.client.model.AbstractZombieModel;
 import net.minecraft.client.model.geom.ModelPart;
 
-/** Modelo humanoide que levanta los brazos cuando el hombre lobo tiene un objetivo (te ve). */
+/** Modelo humanoide del hombre lobo: siempre con los brazos abajo (nunca los levanta al atacar). */
 public class WerewolfPoseModel extends AbstractZombieModel<WerewolfEntity> {
     public WerewolfPoseModel(ModelPart root) {
         super(root);
@@ -11,6 +11,6 @@ public class WerewolfPoseModel extends AbstractZombieModel<WerewolfEntity> {
 
     @Override
     public boolean isAggressive(WerewolfEntity entity) {
-        return entity.isAggressive();
+        return false;
     }
 }
