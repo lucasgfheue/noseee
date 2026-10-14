@@ -71,8 +71,6 @@ public class ArmasRealesMod {
             event.accept(ModItems.CUCHILLO);
             event.accept(ModItems.CANON_CALABAZAS);
             event.accept(ModItems.BOMBA);
-            event.accept(ModItems.ZOMBI_SPAWN_EGG);
-            event.accept(ModItems.HOMBRE_LOBO_SPAWN_EGG);
         }
     }
 }

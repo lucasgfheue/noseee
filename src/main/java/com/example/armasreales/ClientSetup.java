@@ -40,6 +40,9 @@ public class ClientSetup {
         event.registerEntityRenderer(ModEntities.ACID_PROJECTILE.get(),
                 context -> new ThrownItemRenderer<>(context, 2.2F, true));
 
+        // Hombre lobo (humano de día, bestia de noche)
+        event.registerEntityRenderer(ModEntities.HOMBRE_LOBO.get(), WerewolfRenderer::new);
+
         // Zombi con variantes
         event.registerEntityRenderer(ModEntities.ZOMBI.get(), ArmedZombieRenderer::new);
 
@@ -50,6 +53,11 @@ public class ClientSetup {
                 context -> new ThrownItemRenderer<>(context, 1.4F, false));
         event.registerEntityRenderer(ModEntities.BOMB_PROJECTILE.get(),
                 context -> new ThrownItemRenderer<>(context, 1.6F, false));
+    }
+
+    @SubscribeEvent
+    public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(WerewolfModel.LAYER, WerewolfModel::createBodyLayer);
     }
 
     /** Los brazos se levantan al frente, como al sostener una ballesta: se ve que sostiene el arma. */

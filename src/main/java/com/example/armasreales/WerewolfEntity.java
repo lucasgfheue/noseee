@@ -53,22 +53,20 @@ public class WerewolfEntity extends Monster {
                 .add(Attributes.MAX_HEALTH, 30.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.ATTACK_DAMAGE, 3.0)
-                .add(Attributes.FOLLOW_RANGE, 48.0)
+                .add(Attributes.FOLLOW_RANGE, 40.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.0);
     }
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new WerewolfBreakGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 0.9));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         // Sólo caza jugadores cuando es una bestia (de noche)
-        // mustSee = false: te detecta a través de las paredes
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<Player>(this, Player.class, 10, false, false, null) {
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<Player>(this, Player.class, true) {
             @Override
             public boolean canUse() {
                 return WerewolfEntity.this.isWolf() && super.canUse();
@@ -121,9 +119,6 @@ public class WerewolfEntity extends Monster {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide) {
-            this.setAggressive(this.getTarget() != null && this.getTarget().isAlive());
-        }
         if (!this.level().isClientSide && this.tickCount % 20 == 0) {
             boolean wantWolf = this.isNightNow();
             if (wantWolf != this.isWolf()) {

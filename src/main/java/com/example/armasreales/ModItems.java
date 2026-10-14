@@ -95,4 +95,9 @@ public class ModItems {
             "zombi_spawn_egg",
             props -> new SpawnEggItem(ModEntities.ZOMBI.get(), 0x5C7F4B, 0x3B4D8A, props),
             new Item.Properties());
+
+    public static final DeferredItem<SpawnEggItem> HOMBRE_LOBO_SPAWN_EGG = ITEMS.registerItem(
+            "hombre_lobo_spawn_egg",
+            props -> new SpawnEggItem(ModEntities.HOMBRE_LOBO.get(), 0x3A2F2A, 0xE8B923, props),
+            new Item.Properties());
 }

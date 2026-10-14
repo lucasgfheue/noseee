@@ -1,6 +1,8 @@
 package com.example.armasreales;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.ZombieModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -27,16 +29,16 @@ public class WerewolfRenderer extends EntityRenderer<WerewolfEntity> {
 
     public WerewolfRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.human = new HumanoidMobRenderer<WerewolfEntity, WerewolfPoseModel>(
-                context, new WerewolfPoseModel(context.bakeLayer(ModelLayers.PLAYER)), 0.5f) {
+        this.human = new HumanoidMobRenderer<WerewolfEntity, HumanoidModel<WerewolfEntity>>(
+                context, new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER)), 0.5f) {
             @Override
             public ResourceLocation getTextureLocation(WerewolfEntity entity) {
                 return HUMAN_TEXTURES[entity.getHumanSkin()];
             }
         };
-        MobRenderer<WerewolfEntity, WerewolfPoseModel> wolf =
-                new MobRenderer<WerewolfEntity, WerewolfPoseModel>(
-                        context, new WerewolfPoseModel(context.bakeLayer(WerewolfModel.LAYER)), 0.7f) {
+        MobRenderer<WerewolfEntity, ZombieModel<WerewolfEntity>> wolf =
+                new MobRenderer<WerewolfEntity, ZombieModel<WerewolfEntity>>(
+                        context, new ZombieModel<>(context.bakeLayer(WerewolfModel.LAYER)), 0.7f) {
                     @Override
                     public ResourceLocation getTextureLocation(WerewolfEntity entity) {
                         return WOLF_TEXTURE;

@@ -99,6 +99,14 @@ public class ModEntities {
                             .clientTrackingRange(8)
                             .build("zombi"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<WerewolfEntity>> HOMBRE_LOBO =
+            ENTITIES.register("hombre_lobo", () ->
+                    EntityType.Builder.<WerewolfEntity>of(WerewolfEntity::new, MobCategory.MONSTER)
+                            .sized(0.6f, 1.95f)
+                            .eyeHeight(1.74f)
+                            .clientTrackingRange(10)
+                            .build("hombre_lobo"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<BeamEntity>> BEAM =
             ENTITIES.register("rayo", () ->
                     EntityType.Builder.<BeamEntity>of(BeamEntity::new, MobCategory.MISC)

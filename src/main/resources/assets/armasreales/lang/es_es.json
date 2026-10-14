@@ -30,5 +30,7 @@
   "entity.armasreales.cuchillo_lanzado": "Cuchillo arrojado",
   "entity.armasreales.proyectil_bomba": "Bomba",
   "entity.armasreales.zombi": "Zombi",
-  "item.armasreales.zombi_spawn_egg": "Generar Zombi"
+  "item.armasreales.zombi_spawn_egg": "Generar Zombi",
+  "entity.armasreales.hombre_lobo": "Hombre lobo",
+  "item.armasreales.hombre_lobo_spawn_egg": "Generar Hombre lobo"
 }

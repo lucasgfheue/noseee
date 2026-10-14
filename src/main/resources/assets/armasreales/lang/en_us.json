@@ -30,5 +30,7 @@
   "entity.armasreales.cuchillo_lanzado": "Thrown Knife",
   "entity.armasreales.proyectil_bomba": "Bomb",
   "entity.armasreales.zombi": "Zombie",
-  "item.armasreales.zombi_spawn_egg": "Zombie Spawn Egg"
+  "item.armasreales.zombi_spawn_egg": "Zombie Spawn Egg",
+  "entity.armasreales.hombre_lobo": "Werewolf",
+  "item.armasreales.hombre_lobo_spawn_egg": "Werewolf Spawn Egg"
 }
