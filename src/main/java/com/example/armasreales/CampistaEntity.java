@@ -235,7 +235,7 @@ public class CampistaEntity extends AbstractVillager {
         // Comer para curarse
         if (this.eatCooldown > 0) {
             this.eatCooldown--;
-        } else if (this.getHealth() < this.getMaxHealth() - 3.0f && this.tickCount % 10 == 0) {
+        } else if (this.getHealth() <= this.getMaxHealth() * 0.5f && this.tickCount % 10 == 0) {
             this.tryEat(level);
         }
     }
