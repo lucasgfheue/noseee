@@ -39,6 +39,7 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
         }
     }
 
+    private static final int T_SKIN0 = 8;
     private static final int T_PLATE = 0, T_STEEL = 1, T_TRACK = 2, T_HUB = 3, T_GRILLE = 4, T_FLAT = 5, T_RUBBER = 6;
 
     private static final Mat TRACK = new Mat(new int[]{150, 150, 155}, T_TRACK);
@@ -52,9 +53,11 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
     private static final Mat GLASS = new Mat(new int[]{70, 110, 120}, T_FLAT);
     private static final Mat CABLE = new Mat(new int[]{60, 60, 62}, T_RUBBER);
 
-    private static Mat plate(int[] c) {
-        return new Mat(c, T_PLATE);
-    }
+    private static final Mat BLUE = new Mat(new int[]{60, 110, 255}, T_FLAT, true);
+    private static final Mat ORANGE = new Mat(new int[]{255, 150, 30}, T_FLAT, true);
+
+    /** Skin que se está dibujando (el render siempre corre en un solo hilo). */
+    private int curSkin;
 
     /** Posición (Z) de las 4 ruedas de cada lado. */
     private static final float[] WHEEL_Z = {-1.1f, -0.37f, 0.37f, 1.1f};
@@ -89,8 +92,10 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
         // El modelo está dibujado en 3x2x2; la escala lo lleva al tamaño real del tanque
         ps.scale(TankEntity.SCALE, TankEntity.SCALE, TankEntity.SCALE);
         int skin = Mth.clamp(tank.getSkin(), 0, MAIN.length - 1);
-        Mat main = plate(MAIN[skin]);
-        Mat dark = plate(DARK[skin]);
+        this.curSkin = skin;
+        // Cada skin tiene su propia textura (casillas 8 a 13 del atlas): el diseño cambia, no sólo el color
+        Mat main = new Mat(new int[]{255, 255, 255}, T_SKIN0 + skin);
+        Mat dark = new Mat(new int[]{150, 150, 156}, T_SKIN0 + skin);
         VertexConsumer vc = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
 
         float angleL = Mth.lerp(partialTick, tank.wheelAngleLO, tank.wheelAngleL);
@@ -210,6 +215,7 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
             box(ps, vc, light, xa, 0.46f, -1.2f, xb, 0.74f, -1.14f, CABLE);
             box(ps, vc, light, xa, 0.46f, 1.14f, xb, 0.74f, 1.2f, CABLE);
         }
+        hullExtras(ps, vc, light, main, dark);
         // Cajas de almacenaje y bidones en la cubierta trasera
         box(ps, vc, light, 0.3f, 1.0f, -1.3f, 0.58f, 1.14f, -0.9f, dark);
         box(ps, vc, light, 0.3f, 1.14f, -1.28f, 0.58f, 1.16f, -0.92f, STEEL);
@@ -217,6 +223,70 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
         box(ps, vc, light, -0.58f, 1.0f, -1.08f, -0.46f, 1.2f, -0.88f, RED);
         box(ps, vc, light, -0.57f, 1.2f, -1.26f, -0.47f, 1.23f, -1.14f, BLACK);
         box(ps, vc, light, -0.57f, 1.2f, -1.04f, -0.47f, 1.23f, -0.92f, BLACK);
+    }
+
+    /** Accesorios propios de cada skin en el casco. */
+    private void hullExtras(PoseStack ps, VertexConsumer vc, int light, Mat main, Mat dark) {
+        switch (this.curSkin) {
+            case 3 -> {      // amarillo: barra de empuje y topes de obra
+                box(ps, vc, light, -0.58f, 0.3f, 1.5f, 0.58f, 0.4f, 1.62f, BLACK);
+                for (int i = -2; i <= 2; i++) {
+                    box(ps, vc, light, i * 0.22f - 0.04f, 0.28f, 1.62f, i * 0.22f + 0.04f, 0.42f, 1.66f, YELLOW);
+                }
+            }
+            case 4 -> {      // verde: sacos de arena sobre el frente
+                for (int i = 0; i < 4; i++) {
+                    box(ps, vc, light, -0.5f + i * 0.26f, 1.0f, 1.05f, -0.28f + i * 0.26f, 1.1f, 1.3f, dark);
+                }
+                for (int i = 0; i < 3; i++) {
+                    box(ps, vc, light, -0.37f + i * 0.26f, 1.1f, 1.08f, -0.15f + i * 0.26f, 1.18f, 1.27f, dark);
+                }
+            }
+            case 5 -> {      // rojo: púas frontales
+                for (int i = -3; i <= 3; i++) {
+                    box(ps, vc, light, i * 0.16f - 0.03f, 0.45f, 1.5f, i * 0.16f + 0.03f, 0.56f, 1.72f, STEEL);
+                    box(ps, vc, light, i * 0.16f - 0.015f, 0.47f, 1.72f, i * 0.16f + 0.015f, 0.54f, 1.8f, STEEL);
+                }
+            }
+            case 1 -> {      // negro: visera de faldones laterales oscuros
+                for (int side = -1; side <= 1; side += 2) {
+                    float xa = side > 0 ? 1.0f : -1.04f;
+                    float xb = side > 0 ? 1.04f : -1.0f;
+                    box(ps, vc, light, xa, 0.4f, -1.3f, xb, 0.74f, 1.3f, BLACK);
+                }
+            }
+            default -> { }
+        }
+    }
+
+    /** Accesorios propios de cada skin en la torreta (ya dentro de su sistema de coordenadas). */
+    private void turretExtras(PoseStack ps, VertexConsumer vc, int light, Mat main, Mat dark) {
+        switch (this.curSkin) {
+            case 1 -> {      // negro: visores rojos
+                box(ps, vc, light, -0.4f, 0.28f, 0.55f, -0.12f, 0.33f, 0.58f, RED);
+                box(ps, vc, light, 0.12f, 0.28f, 0.55f, 0.4f, 0.33f, 0.58f, RED);
+            }
+            case 2 -> {      // azul: barra de luces
+                box(ps, vc, light, -0.3f, 0.55f, -0.12f, 0.3f, 0.6f, 0.0f, BLACK);
+                box(ps, vc, light, -0.28f, 0.6f, -0.1f, -0.02f, 0.66f, -0.02f, RED);
+                box(ps, vc, light, 0.02f, 0.6f, -0.1f, 0.28f, 0.66f, -0.02f, BLUE);
+            }
+            case 3 -> {      // amarillo: baliza naranja
+                box(ps, vc, light, -0.08f, 0.55f, -0.5f, 0.08f, 0.6f, -0.34f, BLACK);
+                box(ps, vc, light, -0.06f, 0.6f, -0.48f, 0.06f, 0.72f, -0.36f, ORANGE);
+            }
+            case 4 -> {      // verde: red de camuflaje sobre el techo
+                box(ps, vc, light, -0.45f, 0.55f, -0.58f, 0.2f, 0.6f, -0.3f, dark);
+                box(ps, vc, light, -0.3f, 0.6f, -0.5f, 0.05f, 0.64f, -0.36f, dark);
+            }
+            case 5 -> {      // rojo: cuernos laterales
+                box(ps, vc, light, 0.55f, 0.35f, 0.3f, 0.62f, 0.5f, 0.4f, STEEL);
+                box(ps, vc, light, 0.62f, 0.45f, 0.32f, 0.7f, 0.62f, 0.38f, STEEL);
+                box(ps, vc, light, -0.62f, 0.35f, 0.3f, -0.55f, 0.5f, 0.4f, STEEL);
+                box(ps, vc, light, -0.7f, 0.45f, 0.32f, -0.62f, 0.62f, 0.38f, STEEL);
+            }
+            default -> { }
+        }
     }
 
     private void drawTurret(PoseStack ps, VertexConsumer vc, int light, float relYaw, float pitch,
@@ -261,6 +331,8 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
         box(ps, vc, light, 0.44f, 0.55f, -0.62f, 0.52f, 0.62f, -0.54f, STEEL);
         box(ps, vc, light, 0.46f, 0.62f, -0.6f, 0.5f, 1.05f, -0.56f, BLACK);
         box(ps, vc, light, 0.465f, 1.05f, -0.595f, 0.495f, 1.1f, -0.565f, RED);
+
+        turretExtras(ps, vc, light, main, dark);
 
         // Cañón (o cañones): giran hacia arriba/abajo alrededor del mantelete
         ps.translate(0.0, 0.29, 0.72);
