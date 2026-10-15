@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "NBN",
+    "TKT",
+    "PPP"
+  ],
+  "key": {
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "B": {
+      "item": "minecraft:iron_block"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    },
+    "K": {
+      "item": "armasreales:tanque"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    }
+  },
+  "result": {
+    "id": "armasreales:tanque_ciudadela",
+    "count": 1
+  }
+}

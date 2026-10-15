@@ -135,6 +135,6 @@
   "message.armasreales.monolito_cargas": "MONOLITH: %s/%s charges",
   "item.armasreales.tanque_fortaleza": "Fortress Tank",
   "entity.armasreales.tanque_fortaleza": "Fortress Tank",
-  "item.armasreales.tanque_sigilo": "Stealth Tank",
-  "entity.armasreales.tanque_sigilo": "Stealth Tank"
+  "item.armasreales.tanque_ciudadela": "Citadel Tank",
+  "entity.armasreales.tanque_ciudadela": "Citadel Tank"
 }

@@ -135,6 +135,6 @@
   "message.armasreales.monolito_cargas": "MONOLITO: %s/%s cargas",
   "item.armasreales.tanque_fortaleza": "Tanque Fortaleza",
   "entity.armasreales.tanque_fortaleza": "Tanque Fortaleza",
-  "item.armasreales.tanque_sigilo": "Tanque Sigilo",
-  "entity.armasreales.tanque_sigilo": "Tanque Sigilo"
+  "item.armasreales.tanque_ciudadela": "Tanque Ciudadela",
+  "entity.armasreales.tanque_ciudadela": "Tanque Ciudadela"
 }

@@ -75,16 +75,17 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque_fortaleza"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<StealthTankEntity>> STEALTH_TANK =
-            ENTITIES.register("tanque_sigilo", () ->
-                    EntityType.Builder.<StealthTankEntity>of(StealthTankEntity::new, MobCategory.MISC)
-                            // misma huella que los otros tanques (4x4), pero bajo: 1,5 de alto
-                            .sized(2.0f * TankEntity.SCALE, 0.75f * TankEntity.SCALE)
-                            .passengerAttachments(0.5f * TankEntity.SCALE)
+    public static final DeferredHolder<EntityType<?>, EntityType<CitadelTankEntity>> CITADEL_TANK =
+            ENTITIES.register("tanque_ciudadela", () ->
+                    EntityType.Builder.<CitadelTankEntity>of(CitadelTankEntity::new, MobCategory.MISC)
+                            // mismo ancho de base (4); el casco, de 8,8 de largo, sobresale por delante y por detrás
+                            .sized(2.0f * TankEntity.SCALE, 2.4f * TankEntity.SCALE)
+                            // cadera del conductor dentro de la cabina de mando (suelo a 0,94 del modelo)
+                            .passengerAttachments(1.24f * TankEntity.SCALE)
                             .fireImmune()
-                            .clientTrackingRange(12)
+                            .clientTrackingRange(16)
                             .updateInterval(1)
-                            .build("tanque_sigilo"));
+                            .build("tanque_ciudadela"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<PumpkinProjectile>> PUMPKIN_PROJECTILE =
             ENTITIES.register("proyectil_calabaza", () ->
