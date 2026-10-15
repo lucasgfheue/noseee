@@ -54,5 +54,7 @@
   "entity.armasreales.zombi_caminante": "Zombi caminante",
   "item.armasreales.zombi_caminante_spawn_egg": "Generar Zombi caminante",
   "entity.armasreales.sobreviviente": "Sobreviviente",
-  "item.armasreales.sobreviviente_spawn_egg": "Generar Sobreviviente"
+  "item.armasreales.sobreviviente_spawn_egg": "Generar Sobreviviente",
+  "item.armasreales.rifle_criogenico": "Rifle criogénico",
+  "item.armasreales.celda_criogenica": "Celda criogénica"
 }

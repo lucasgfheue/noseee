@@ -155,4 +155,10 @@ public class ModItems {
             "sobreviviente_spawn_egg",
             props -> new SpawnEggItem(ModEntities.SOBREVIVIENTE.get(), 0xE2761A, 0xC9A27A, props),
             new Item.Properties());
+
+    public static final DeferredItem<Item> CELDA_CRIOGENICA = ITEMS.registerItem(
+            "celda_criogenica", Item::new, new Item.Properties());
+
+    public static final DeferredItem<CryoRifleItem> RIFLE_CRIOGENICO = ITEMS.registerItem(
+            "rifle_criogenico", CryoRifleItem::new, new Item.Properties().stacksTo(1).durability(500));
 }
