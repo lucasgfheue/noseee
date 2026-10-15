@@ -30,7 +30,7 @@ import net.minecraft.world.phys.Vec3;
  * Precisión 86/100.
  *  - Clic izquierdo: disparo electromagnético concentrado (gasta 1 carga).
  *  - Agachado + clic izquierdo, habilidad ONDA LINEAL (gasta 1 carga): concentra la energía en un impacto
- *    que lanza una onda de choque recta; daña, empuja hacia delante y desestabiliza todo lo que cruza el pasillo.
+ *    que lanza una onda de choque recta de 100 bloques que atraviesa a todas las entidades; daña, empuja hacia delante y desestabiliza todo lo que cruza el pasillo.
  *  - Cuando se queda sin cargas recarga sola con núcleos MASS-1 del inventario.
  */
 public class MonolithCannonItem extends Item implements Gun {
@@ -43,7 +43,7 @@ public class MonolithCannonItem extends Item implements Gun {
     private static final double HIP_SPREAD = 0.024;    // precisión 86
     private static final double AIM_SPREAD = 0.004;
     private static final float SHOT_DAMAGE = 16.0f;
-    private static final double WAVE_LENGTH = 40.0;
+    private static final double WAVE_LENGTH = 100.0;
     private static final double WAVE_WIDTH = 2.4;      // radio del pasillo
     private static final float WAVE_DAMAGE = 14.0f;
 
@@ -283,7 +283,7 @@ public class MonolithCannonItem extends Item implements Gun {
     private void wave(ServerLevel level, ServerPlayer player, ItemStack gun) {
         Vec3 eye = player.getEyePosition();
         Vec3 look = player.getLookAngle();
-        Bullets.Hit probe = Bullets.trace(level, player, eye, look, WAVE_LENGTH);
+        Bullets.Hit probe = Bullets.trace(level, player, eye, look, WAVE_LENGTH, e -> false);   // solo la frena un bloque
         double len = Math.max(3.0, probe.distance());
         Vec3 start = eye.add(look.scale(0.8)).add(0.0, -0.2, 0.0);
         AABB box = new AABB(start, start.add(look.scale(len))).inflate(WAVE_WIDTH);
@@ -293,7 +293,7 @@ public class MonolithCannonItem extends Item implements Gun {
             if (along < 0.0 || along > len) continue;
             double off = c.subtract(look.scale(along)).length();
             if (off > WAVE_WIDTH + e.getBbWidth() * 0.5) continue;
-            double f = Math.max(0.35, 1.0 - along / (len * 1.15));          // más fuerte cerca del cañón
+            double f = Math.max(0.5, 1.0 - along / 200.0);                    // atraviesa a todos; algo más débil a lo lejos
             LivingEntity target = (LivingEntity) e;
             target.invulnerableTime = 0;
             target.hurt(level.damageSources().playerAttack(player), (float) (WAVE_DAMAGE * f));
@@ -309,7 +309,7 @@ public class MonolithCannonItem extends Item implements Gun {
         Vec3 v = look.cross(u).normalize();
         net.minecraft.core.particles.DustParticleOptions blue =
                 new net.minecraft.core.particles.DustParticleOptions(new org.joml.Vector3f(0.3f, 0.65f, 1.0f), 1.2f);
-        for (double d = 1.5; d < len; d += 2.5) {
+        for (double d = 1.5; d < len; d += 3.0) {
             Vec3 c = start.add(look.scale(d));
             double r = 0.8 + 1.6 * Math.min(1.0, d / 14.0);
             int n = 14;
