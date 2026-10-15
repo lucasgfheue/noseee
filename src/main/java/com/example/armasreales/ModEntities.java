@@ -75,6 +75,17 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque_fortaleza"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<StealthTankEntity>> STEALTH_TANK =
+            ENTITIES.register("tanque_sigilo", () ->
+                    EntityType.Builder.<StealthTankEntity>of(StealthTankEntity::new, MobCategory.MISC)
+                            // misma huella que los otros tanques (4x4), pero bajo: 1,5 de alto
+                            .sized(2.0f * TankEntity.SCALE, 0.75f * TankEntity.SCALE)
+                            .passengerAttachments(0.5f * TankEntity.SCALE)
+                            .fireImmune()
+                            .clientTrackingRange(12)
+                            .updateInterval(1)
+                            .build("tanque_sigilo"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<PumpkinProjectile>> PUMPKIN_PROJECTILE =
             ENTITIES.register("proyectil_calabaza", () ->
                     EntityType.Builder.<PumpkinProjectile>of(PumpkinProjectile::new, MobCategory.MISC)

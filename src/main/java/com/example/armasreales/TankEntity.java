@@ -240,7 +240,7 @@ public class TankEntity extends Mob {
         double rx = -f.z;
         double rz = f.x;
         int baseY = Mth.floor(this.getY() + 0.1);
-        int height = (int) Math.ceil(2.0 * SCALE);
+        int height = this.crushHeight();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         for (double a = -3.5; a <= 3.5; a += 0.5) {
             for (double b = -2.5; b <= 2.5; b += 0.5) {
@@ -306,6 +306,24 @@ public class TankEntity extends Mob {
         this.cannonCooldown = COOLDOWN_TICKS;
     }
 
+    /** Eje y largo del cañón; los tanques con otra silueta los sobreescriben. */
+    protected double pivotY() {
+        return PIVOT_Y;
+    }
+
+    protected double pivotForward() {
+        return PIVOT_FORWARD;
+    }
+
+    protected double barrelLength() {
+        return BARREL_LENGTH;
+    }
+
+    /** Altura (en bloques) de lo que aplasta el casco al avanzar. */
+    protected int crushHeight() {
+        return (int) Math.ceil(2.0 * SCALE);
+    }
+
     /** Objeto que se recoge con Shift + click derecho. */
     protected net.minecraft.world.item.Item getPickupItem() {
         return ModItems.TANQUE.get();
@@ -331,8 +349,8 @@ public class TankEntity extends Mob {
         Vec3 dir = Vec3.directionFromRotation(pitch, yaw);
         Vec3 flat = Vec3.directionFromRotation(0.0f, yaw);
         Vec3 side = new Vec3(-flat.z, 0.0, flat.x);
-        Vec3 pivot = this.position().add(0.0, PIVOT_Y, 0.0).add(flat.scale(PIVOT_FORWARD)).add(side.scale(lateral));
-        Vec3 muzzle = pivot.add(dir.scale(BARREL_LENGTH));
+        Vec3 pivot = this.position().add(0.0, this.pivotY(), 0.0).add(flat.scale(this.pivotForward())).add(side.scale(lateral));
+        Vec3 muzzle = pivot.add(dir.scale(this.barrelLength()));
 
         TntProjectile shell = new TntProjectile(level, player);
         shell.setPos(muzzle.x, muzzle.y - shell.getBbHeight() / 2.0, muzzle.z);

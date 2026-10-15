@@ -38,6 +38,7 @@ public class ClientSetup {
         event.registerEntityRenderer(ModEntities.TANK.get(), ctx -> new TankRenderer(ctx, false));
         event.registerEntityRenderer(ModEntities.TWIN_TANK.get(), ctx -> new TankRenderer(ctx, true));
         event.registerEntityRenderer(ModEntities.FORTRESS_TANK.get(), FortressTankRenderer::new);
+        event.registerEntityRenderer(ModEntities.STEALTH_TANK.get(), StealthTankRenderer::new);
 
         // Dardo del taser (con brillo) y bola de ácido
         event.registerEntityRenderer(ModEntities.TASER_PROJECTILE.get(),
