@@ -72,6 +72,12 @@ public class ModItems {
     public static final DeferredItem<TitanRevolverItem> REVOLVER_TITAN = ITEMS.registerItem(
             "revolver_titan", TitanRevolverItem::new, new Item.Properties().stacksTo(1).durability(400));
 
+    public static final DeferredItem<Item> CARGA_LAB10 = ITEMS.registerItem(
+            "carga_lab10", Item::new, new Item.Properties());
+
+    public static final DeferredItem<RingRifleItem> FUSIL_ANILLO = ITEMS.registerItem(
+            "fusil_anillo", RingRifleItem::new, new Item.Properties().stacksTo(1).durability(450));
+
     public static final DeferredItem<Item> MUNICION_FUSIL = ITEMS.registerItem(
             "municion_fusil", Item::new, new Item.Properties());
 

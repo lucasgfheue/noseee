@@ -76,5 +76,9 @@
   "item.armasreales.revolver_titan": "Titan Revolver",
   "message.armasreales.titan_energia": "Energy: %s/%s",
   "message.armasreales.titan_vacio": "No stored energy",
-  "message.armasreales.titan_pulso": "Pulse released! (%s energy)"
+  "message.armasreales.titan_pulso": "Pulse released! (%s energy)",
+  "item.armasreales.fusil_anillo": "Ring Rifle",
+  "item.armasreales.carga_lab10": "LAB-10 Charge",
+  "message.armasreales.desvio_activo": "Deflect active!",
+  "message.armasreales.desvio_recarga": "Deflect recharging..."
 }

@@ -76,5 +76,9 @@
   "item.armasreales.revolver_titan": "Revólver Titán",
   "message.armasreales.titan_energia": "Energía: %s/%s",
   "message.armasreales.titan_vacio": "Sin energía almacenada",
-  "message.armasreales.titan_pulso": "¡Pulso liberado! (%s de energía)"
+  "message.armasreales.titan_pulso": "¡Pulso liberado! (%s de energía)",
+  "item.armasreales.fusil_anillo": "Fusil Anillo",
+  "item.armasreales.carga_lab10": "Carga LAB-10",
+  "message.armasreales.desvio_activo": "¡Desvío activado!",
+  "message.armasreales.desvio_recarga": "Desvío recargándose..."
 }
