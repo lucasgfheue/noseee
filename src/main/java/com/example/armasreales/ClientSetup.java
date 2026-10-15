@@ -60,6 +60,8 @@ public class ClientSetup {
                 context -> new ThrownItemRenderer<>(context, 2.2F, true));
         event.registerEntityRenderer(ModEntities.KNIFE_PROJECTILE.get(),
                 context -> new ThrownItemRenderer<>(context, 1.4F, false));
+        event.registerEntityRenderer(ModEntities.EXPLOSIVE_SHOT.get(),
+                context -> new ThrownItemRenderer<>(context, 1.4F, false));
         event.registerEntityRenderer(ModEntities.BOMB_PROJECTILE.get(),
                 context -> new ThrownItemRenderer<>(context, 1.6F, false));
     }
@@ -85,7 +87,8 @@ public class ClientSetup {
                 ModItems.LANZADOR_TNT.get(), ModItems.PISTOLA_BENGALAS.get(), ModItems.RIFLE_PLASMA.get(),
                 ModItems.TASER.get(), ModItems.PISTOLA_ACIDA.get(), ModItems.RIFLE_VIOLETA.get(),
                 ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get(),
-                ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get(), ModItems.REVOLVER_LATON.get());
+                ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get(), ModItems.REVOLVER_LATON.get(),
+                ModItems.SUBFUSIL_TORMENTA.get(), ModItems.FUSIL_AMBAR.get(), ModItems.REVOLVER_COLMILLO.get(), ModItems.REVOLVER_ECLIPSE.get(), ModItems.LANZAGRANADAS_CHISPA.get(), ModItems.BAZUCA_NOVA.get(), ModItems.LANZADOR_RACIMO.get(), ModItems.CANON_ADHESIVO.get());
     }
 
     /** Propiedad "aiming": el modelo del arma cambia mientras apuntas (rotación para brazo levantado). */
@@ -97,7 +100,8 @@ public class ClientSetup {
                     ModItems.PISTOLA_BENGALAS.get(), ModItems.RIFLE_PLASMA.get(),
                     ModItems.TASER.get(), ModItems.PISTOLA_ACIDA.get(), ModItems.RIFLE_VIOLETA.get(),
                     ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get(),
-                ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get(), ModItems.REVOLVER_LATON.get()};
+                ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get(), ModItems.REVOLVER_LATON.get(),
+                ModItems.SUBFUSIL_TORMENTA.get(), ModItems.FUSIL_AMBAR.get(), ModItems.REVOLVER_COLMILLO.get(), ModItems.REVOLVER_ECLIPSE.get(), ModItems.LANZAGRANADAS_CHISPA.get(), ModItems.BAZUCA_NOVA.get(), ModItems.LANZADOR_RACIMO.get(), ModItems.CANON_ADHESIVO.get()};
             for (Item gun : guns) {
                 ItemProperties.register(gun, aiming, (stack, level, entity, seed) ->
                         entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);

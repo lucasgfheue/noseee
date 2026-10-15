@@ -88,6 +88,16 @@ public class ArmasRealesMod {
             event.accept(ModItems.AK47);
             event.accept(ModItems.RIFLE_CRIOGENICO);
             event.accept(ModItems.REVOLVER_LATON);
+            event.accept(ModItems.SUBFUSIL_TORMENTA);
+            event.accept(ModItems.FUSIL_AMBAR);
+            event.accept(ModItems.REVOLVER_COLMILLO);
+            event.accept(ModItems.REVOLVER_ECLIPSE);
+            event.accept(ModItems.LANZAGRANADAS_CHISPA);
+            event.accept(ModItems.BAZUCA_NOVA);
+            event.accept(ModItems.LANZADOR_RACIMO);
+            event.accept(ModItems.CANON_ADHESIVO);
+            event.accept(ModItems.HACHA_VOLCANICA);
+            event.accept(ModItems.KATANA_SOMBRIA);
             event.accept(ModItems.MUNICION_FUSIL);
             event.accept(ModItems.ESCOPETA);
             event.accept(ModItems.CARTUCHO_ESCOPETA);
@@ -98,6 +108,7 @@ public class ArmasRealesMod {
             event.accept(ModItems.MUNICION_FRANCOTIRADOR);
             event.accept(ModItems.CELDA_CRIOGENICA);
             event.accept(ModItems.MUNICION_MAGNUM);
+            event.accept(ModItems.CARGA_EXPLOSIVA);
             event.accept(ModItems.CUCHILLO);
             event.accept(ModItems.CANON_CALABAZAS);
             event.accept(ModItems.BOMBA);

@@ -58,5 +58,17 @@
   "item.armasreales.rifle_criogenico": "Cryo Rifle",
   "item.armasreales.celda_criogenica": "Cryo Cell",
   "item.armasreales.revolver_laton": "Brass Revolver",
-  "item.armasreales.municion_magnum": "Magnum Ammo"
+  "item.armasreales.municion_magnum": "Magnum Ammo",
+  "item.armasreales.subfusil_tormenta": "Storm SMG",
+  "item.armasreales.fusil_ambar": "Amber Rifle",
+  "item.armasreales.revolver_colmillo": "Fang Revolver",
+  "item.armasreales.revolver_eclipse": "Eclipse Revolver",
+  "item.armasreales.lanzagranadas_chispa": "Spark Grenade Launcher",
+  "item.armasreales.bazuca_nova": "Nova Bazooka",
+  "item.armasreales.lanzador_racimo": "Cluster Launcher",
+  "item.armasreales.canon_adhesivo": "Sticky Cannon",
+  "item.armasreales.hacha_volcanica": "Volcanic Axe",
+  "item.armasreales.katana_sombria": "Shadow Katana",
+  "item.armasreales.carga_explosiva": "Explosive Charge",
+  "entity.armasreales.proyectil_explosivo": "Explosive Projectile"
 }

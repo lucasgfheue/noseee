@@ -197,4 +197,12 @@ public class ModEntities {
                             .eyeHeight(1.62f)
                             .clientTrackingRange(10)
                             .build("sobreviviente"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ExplosiveShot>> EXPLOSIVE_SHOT =
+            ENTITIES.register("proyectil_explosivo", () ->
+                    EntityType.Builder.<ExplosiveShot>of(ExplosiveShot::new, MobCategory.MISC)
+                            .sized(0.4f, 0.4f)
+                            .clientTrackingRange(8)
+                            .updateInterval(1)
+                            .build("proyectil_explosivo"));
 }

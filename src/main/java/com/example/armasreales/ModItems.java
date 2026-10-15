@@ -167,4 +167,39 @@ public class ModItems {
 
     public static final DeferredItem<MagnumItem> REVOLVER_LATON = ITEMS.registerItem(
             "revolver_laton", MagnumItem::new, new Item.Properties().stacksTo(1).durability(300));
+
+    public static final DeferredItem<Item> CARGA_EXPLOSIVA = ITEMS.registerItem(
+            "carga_explosiva", Item::new, new Item.Properties());
+
+    public static final DeferredItem<AutoGunItem> SUBFUSIL_TORMENTA = ITEMS.registerItem(
+            "subfusil_tormenta", props -> new AutoGunItem(props, () -> MUNICION_PISTOLA.get(), 4.0f, 2, 0.06, 0.02, 0.035, 0.85f, AutoGunItem.Fx.NONE, 0.9f), new Item.Properties().stacksTo(1).durability(500));
+
+    public static final DeferredItem<AutoGunItem> FUSIL_AMBAR = ITEMS.registerItem(
+            "fusil_ambar", props -> new AutoGunItem(props, () -> MUNICION_FUSIL.get(), 7.0f, 3, 0.04, 0.01, 0.02, 0.7f, AutoGunItem.Fx.IGNITE, 0.5f), new Item.Properties().stacksTo(1).durability(450));
+
+    public static final DeferredItem<RevolverItem> REVOLVER_COLMILLO = ITEMS.registerItem(
+            "revolver_colmillo", props -> new RevolverItem(props, () -> MUNICION_PISTOLA.get(), 9.0f, 12, 80.0, 0.04, RevolverItem.Fx.SLOW, 0.8f), new Item.Properties().stacksTo(1).durability(350));
+
+    public static final DeferredItem<RevolverItem> REVOLVER_ECLIPSE = ITEMS.registerItem(
+            "revolver_eclipse", props -> new RevolverItem(props, () -> MUNICION_MAGNUM.get(), 12.0f, 20, 100.0, 0.05, RevolverItem.Fx.WITHER, 0.45f), new Item.Properties().stacksTo(1).durability(300));
+
+    public static final DeferredItem<ExplosiveLauncherItem> LANZAGRANADAS_CHISPA = ITEMS.registerItem(
+            "lanzagranadas_chispa", props -> new ExplosiveLauncherItem(props, () -> CARGA_EXPLOSIVA.get(), ExplosiveShot.GRENADE, 2.6f, 45, 1.4f, 25, 0.9f), new Item.Properties().stacksTo(1).durability(300));
+
+    public static final DeferredItem<ExplosiveLauncherItem> BAZUCA_NOVA = ITEMS.registerItem(
+            "bazuca_nova", props -> new ExplosiveLauncherItem(props, () -> CARGA_EXPLOSIVA.get(), ExplosiveShot.ROCKET, 3.2f, 0, 2.2f, 40, 0.6f), new Item.Properties().stacksTo(1).durability(250));
+
+    public static final DeferredItem<ExplosiveLauncherItem> LANZADOR_RACIMO = ITEMS.registerItem(
+            "lanzador_racimo", props -> new ExplosiveLauncherItem(props, () -> CARGA_EXPLOSIVA.get(), ExplosiveShot.CLUSTER, 1.8f, 0, 1.6f, 35, 0.8f), new Item.Properties().stacksTo(1).durability(250));
+
+    public static final DeferredItem<ExplosiveLauncherItem> CANON_ADHESIVO = ITEMS.registerItem(
+            "canon_adhesivo", props -> new ExplosiveLauncherItem(props, () -> CARGA_EXPLOSIVA.get(), ExplosiveShot.STICKY, 3.0f, 40, 1.5f, 30, 1.0f), new Item.Properties().stacksTo(1).durability(250));
+
+    public static final DeferredItem<MeleeFxItem> HACHA_VOLCANICA = ITEMS.registerItem(
+            "hacha_volcanica", props -> new MeleeFxItem(props, MeleeFxItem.Fx.VOLCANIC),
+            new Item.Properties().stacksTo(1).durability(500).attributes(MeleeFxItem.attributes(8.0, -3.2)));
+
+    public static final DeferredItem<MeleeFxItem> KATANA_SOMBRIA = ITEMS.registerItem(
+            "katana_sombria", props -> new MeleeFxItem(props, MeleeFxItem.Fx.SHADOW),
+            new Item.Properties().stacksTo(1).durability(450).attributes(MeleeFxItem.attributes(6.0, -1.2)));
 }

@@ -58,5 +58,17 @@
   "item.armasreales.rifle_criogenico": "Rifle criogénico",
   "item.armasreales.celda_criogenica": "Celda criogénica",
   "item.armasreales.revolver_laton": "Revólver de latón",
-  "item.armasreales.municion_magnum": "Munición magnum"
+  "item.armasreales.municion_magnum": "Munición magnum",
+  "item.armasreales.subfusil_tormenta": "Subfusil Tormenta",
+  "item.armasreales.fusil_ambar": "Fusil Ámbar",
+  "item.armasreales.revolver_colmillo": "Revólver Colmillo",
+  "item.armasreales.revolver_eclipse": "Revólver Eclipse",
+  "item.armasreales.lanzagranadas_chispa": "Lanzagranadas Chispa",
+  "item.armasreales.bazuca_nova": "Bazuca Nova",
+  "item.armasreales.lanzador_racimo": "Lanzador de Racimo",
+  "item.armasreales.canon_adhesivo": "Cañón Adhesivo",
+  "item.armasreales.hacha_volcanica": "Hacha Volcánica",
+  "item.armasreales.katana_sombria": "Katana Sombría",
+  "item.armasreales.carga_explosiva": "Carga explosiva",
+  "entity.armasreales.proyectil_explosivo": "Proyectil explosivo"
 }
