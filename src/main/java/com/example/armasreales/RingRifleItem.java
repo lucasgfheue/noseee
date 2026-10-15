@@ -16,19 +16,17 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 /**
  * Fusil Anillo (ficticio): fusil automático de cargas LAB-10 (distorsión). Precisión 86, cadencia 58.
- * Habilidad "Desvío" (agachado + clic izquierdo): durante medio segundo crea una distorsión frente al
- * jugador que desvía los proyectiles ENERGÉTICOS (disparos eléctricos y del taser). No detiene
+ * Habilidad "Desvío" (agachado + clic izquierdo): crea durante 5 segundos un escudo celeste
+ * translúcido frente al jugador (ver ShieldEntity) que desvía los proyectiles ENERGÉTICOS (disparos eléctricos y del taser). No detiene
  * explosiones ni ataques cuerpo a cuerpo.
  */
 public class RingRifleItem extends Item implements Gun {
@@ -41,9 +39,7 @@ public class RingRifleItem extends Item implements Gun {
     private static final double AIM_SPREAD = 0.005;
     private static final double MAX_RECOIL = 0.014;
 
-    private static final int DEFLECT_DURATION = 10;      // ticks que dura la distorsión
-    private static final int DEFLECT_COOLDOWN = 120;     // 6 s
-    private static final double DEFLECT_RADIUS = 3.2;
+    private static final int DEFLECT_COOLDOWN = 200;     // 10 s (el escudo dura 5 s)
 
     public RingRifleItem(Properties properties) {
         super(properties);
@@ -94,60 +90,13 @@ public class RingRifleItem extends Item implements Gun {
             player.displayClientMessage(Component.translatable("message.armasreales.desvio_recarga"), true);
             return;
         }
-        setLong(gun, "ActiveUntil", now + DEFLECT_DURATION);
+        ShieldEntity.spawn(level, player);
         setLong(gun, "ReadyAt", now + DEFLECT_COOLDOWN);
         level.playSound(null, player.blockPosition(), SoundEvents.BEACON_ACTIVATE,
                 SoundSource.PLAYERS, 0.8f, 2.0f);
         level.playSound(null, player.blockPosition(), SoundEvents.ENDERMAN_TELEPORT,
                 SoundSource.PLAYERS, 0.6f, 1.6f);
         player.displayClientMessage(Component.translatable("message.armasreales.desvio_activo"), true);
-    }
-
-    /** Mientras la distorsión está activa, desvía los proyectiles energéticos que se acerquen. */
-    @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity holder, int slot, boolean selected) {
-        super.inventoryTick(stack, level, holder, slot, selected);
-        if (!(level instanceof ServerLevel server) || !(holder instanceof ServerPlayer player) || !selected) {
-            return;
-        }
-        long now = server.getGameTime();
-        if (now > getLong(stack, "ActiveUntil")) {
-            return;
-        }
-        Vec3 look = player.getLookAngle();
-        Vec3 center = player.getEyePosition().add(look.scale(1.8));
-
-        // Anillos de distorsión frente al jugador
-        double phase = (now % DEFLECT_DURATION) / (double) DEFLECT_DURATION;
-        drawRing(server, center, look, 0.8 + phase * 1.6);
-        drawRing(server, center.add(look.scale(0.4)), look, 0.5 + phase * 1.1);
-
-        AABB zone = new AABB(center, center).inflate(DEFLECT_RADIUS);
-        for (Projectile proj : server.getEntitiesOfClass(Projectile.class, zone, RingRifleItem::isEnergy)) {
-            if (proj.getOwner() == player) {
-                continue;
-            }
-            Vec3 v = proj.getDeltaMovement();
-            double speed = Math.max(v.length(), 1.2);
-            // Rebota hacia donde mira el jugador (con algo de dispersión) y ahora es "suyo"
-            Vec3 out = look.add((server.random.nextDouble() - 0.5) * 0.5,
-                    (server.random.nextDouble() - 0.5) * 0.3,
-                    (server.random.nextDouble() - 0.5) * 0.5).normalize();
-            proj.setOwner(player);
-            proj.setDeltaMovement(out.scale(speed));
-            proj.hasImpulse = true;
-            server.sendParticles(ParticleTypes.ELECTRIC_SPARK, proj.getX(), proj.getY(), proj.getZ(),
-                    14, 0.2, 0.2, 0.2, 0.15);
-            server.sendParticles(ParticleTypes.END_ROD, proj.getX(), proj.getY(), proj.getZ(),
-                    4, 0.1, 0.1, 0.1, 0.05);
-            server.playSound(null, proj.blockPosition(), SoundEvents.AMETHYST_BLOCK_RESONATE,
-                    SoundSource.PLAYERS, 1.2f, 1.9f);
-        }
-    }
-
-    /** Proyectiles "energéticos": los disparos eléctricos del mod y los del taser. NO los explosivos. */
-    private static boolean isEnergy(Projectile p) {
-        return p instanceof ElectricShot || p instanceof TaserProjectile;
     }
 
     // ------------------------------------------------------------------ Disparo

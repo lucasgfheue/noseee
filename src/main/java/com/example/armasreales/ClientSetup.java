@@ -29,6 +29,7 @@ public class ClientSetup {
 
         // Rayos del láser y del plasma
         event.registerEntityRenderer(ModEntities.BEAM.get(), BeamRenderer::new);
+        event.registerEntityRenderer(ModEntities.SHIELD.get(), ShieldRenderer::new);
 
         // Tanque (el proyectil del cañón es el mismo bloque de TNT del lanzador)
         event.registerEntityRenderer(ModEntities.TANK.get(), ctx -> new TankRenderer(ctx, false));

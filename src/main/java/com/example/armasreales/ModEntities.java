@@ -213,4 +213,14 @@ public class ModEntities {
                             .clientTrackingRange(8)
                             .updateInterval(1)
                             .build("disparo_electrico"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ShieldEntity>> SHIELD =
+            ENTITIES.register("escudo_anillo", () ->
+                    EntityType.Builder.<ShieldEntity>of(ShieldEntity::new, MobCategory.MISC)
+                            .sized(0.1f, 0.1f)
+                            .clientTrackingRange(10)
+                            .updateInterval(1)
+                            .noSave()
+                            .noSummon()
+                            .build("escudo_anillo"));
 }
