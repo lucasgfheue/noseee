@@ -110,6 +110,8 @@ public class ExplosiveShot extends ThrowableItemProjectile {
         }
         if (this.kind == STICKY) {
             this.stick(result.getEntity(), result.getLocation());
+        } else if (this.kind == CLUSTER) {
+            this.splitIntoSparks(result.getEntity());
         } else {
             this.detonate();
         }
@@ -159,15 +161,36 @@ public class ExplosiveShot extends ThrowableItemProjectile {
         }
         this.level().explode(this.getOwner() != null ? this.getOwner() : this, getX(), getY(0.5), getZ(),
                 this.power, Level.ExplosionInteraction.NONE);
-        if (this.kind == CLUSTER && this.getOwner() instanceof LivingEntity owner) {
+        this.discard();
+    }
+
+    /** El racimo golpea a una entidad: se parte en 5 chispas (no explosivas) que siguen de largo y hieren lo que hay detrás. */
+    private void splitIntoSparks(Entity hit) {
+        if (this.level().isClientSide || this.isRemoved()) {
+            return;
+        }
+        Entity owner = this.getOwner();
+        hit.invulnerableTime = 0;
+        hit.hurt(this.level().damageSources().thrown(this, owner != null ? owner : this), 5.0f);
+        Vec3 dir = this.getDeltaMovement();
+        dir = dir.lengthSqr() < 1.0E-6 ? new Vec3(0, 0, 1) : dir.normalize();
+        if (owner instanceof LivingEntity living) {
             for (int i = 0; i < 5; i++) {
-                ExplosiveShot bomblet = new ExplosiveShot(this.level(), owner, BOMBLET, 1.4f, 12 + this.random.nextInt(10));
-                bomblet.setPos(getX(), getY(0.5), getZ());
-                bomblet.setDeltaMovement((this.random.nextDouble() - 0.5) * 0.9, 0.35 + this.random.nextDouble() * 0.3,
-                        (this.random.nextDouble() - 0.5) * 0.9);
-                this.level().addFreshEntity(bomblet);
+                ElectricShot spark = new ElectricShot(this.level(), living, ElectricShot.SPARK, 4.0f);
+                spark.ignore(hit);
+                spark.setPos(getX(), getY(0.5), getZ());
+                Vec3 d = dir.add((this.random.nextDouble() - 0.5) * 0.45,
+                        (this.random.nextDouble() - 0.5) * 0.3,
+                        (this.random.nextDouble() - 0.5) * 0.45).normalize();
+                spark.setDeltaMovement(d.scale(2.0));
+                this.level().addFreshEntity(spark);
             }
         }
+        if (this.level() instanceof ServerLevel sl) {
+            sl.sendParticles(ParticleTypes.ELECTRIC_SPARK, getX(), getY(0.5), getZ(), 25, 0.3, 0.3, 0.3, 0.2);
+        }
+        this.level().playSound(null, this.blockPosition(), net.minecraft.sounds.SoundEvents.FIREWORK_ROCKET_TWINKLE,
+                net.minecraft.sounds.SoundSource.PLAYERS, 1.2f, 1.2f);
         this.discard();
     }
 }

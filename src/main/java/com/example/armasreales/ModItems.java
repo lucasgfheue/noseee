@@ -168,6 +168,10 @@ public class ModItems {
     public static final DeferredItem<MagnumItem> REVOLVER_LATON = ITEMS.registerItem(
             "revolver_laton", MagnumItem::new, new Item.Properties().stacksTo(1).durability(300));
 
+    public static final DeferredItem<Item> BOLA_ELECTRICA = ITEMS.registerItem(
+            "bola_electrica", Item::new, new Item.Properties());
+    public static final DeferredItem<Item> CHISPA = ITEMS.registerItem(
+            "chispa", Item::new, new Item.Properties());
     public static final DeferredItem<Item> CARGA_EXPLOSIVA = ITEMS.registerItem(
             "carga_explosiva", Item::new, new Item.Properties());
 
@@ -178,10 +182,10 @@ public class ModItems {
             "fusil_ambar", props -> new AutoGunItem(props, () -> MUNICION_FUSIL.get(), 7.0f, 3, 0.04, 0.01, 0.02, 0.7f, AutoGunItem.Fx.IGNITE, 0.5f), new Item.Properties().stacksTo(1).durability(450));
 
     public static final DeferredItem<RevolverItem> REVOLVER_COLMILLO = ITEMS.registerItem(
-            "revolver_colmillo", props -> new RevolverItem(props, () -> MUNICION_PISTOLA.get(), 9.0f, 12, 80.0, 0.04, RevolverItem.Fx.SLOW, 0.8f), new Item.Properties().stacksTo(1).durability(350));
+            "revolver_colmillo", props -> new RevolverItem(props, () -> MUNICION_PISTOLA.get(), 9.0f, 12, 80.0, 0.04, RevolverItem.Fx.SLOW, 0.8f, RevolverItem.Mode.ELECTRIC_BALL), new Item.Properties().stacksTo(1).durability(350));
 
     public static final DeferredItem<RevolverItem> REVOLVER_ECLIPSE = ITEMS.registerItem(
-            "revolver_eclipse", props -> new RevolverItem(props, () -> MUNICION_MAGNUM.get(), 12.0f, 20, 100.0, 0.05, RevolverItem.Fx.WITHER, 0.45f), new Item.Properties().stacksTo(1).durability(300));
+            "revolver_eclipse", props -> new RevolverItem(props, () -> MUNICION_MAGNUM.get(), 12.0f, 20, 100.0, 0.05, RevolverItem.Fx.WITHER, 0.45f, RevolverItem.Mode.PIERCE), new Item.Properties().stacksTo(1).durability(300));
 
     public static final DeferredItem<ExplosiveLauncherItem> LANZAGRANADAS_CHISPA = ITEMS.registerItem(
             "lanzagranadas_chispa", props -> new ExplosiveLauncherItem(props, () -> CARGA_EXPLOSIVA.get(), ExplosiveShot.GRENADE, 2.6f, 45, 1.4f, 25, 0.9f), new Item.Properties().stacksTo(1).durability(300));

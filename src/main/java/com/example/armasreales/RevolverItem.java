@@ -26,6 +26,9 @@ import net.minecraft.world.phys.Vec3;
 /** Revólver genérico: un disparo potente por pulsación. Clic derecho apunta, clic izquierdo dispara. */
 public class RevolverItem extends Item implements Gun {
     public enum Fx { NONE, WITHER, SLOW, IGNITE }
+    public enum Mode { HITSCAN, ELECTRIC_BALL, PIERCE }
+
+    private final Mode mode;
 
     private final java.util.function.Supplier<Item> ammoItem;
     private final float damage;
@@ -37,7 +40,13 @@ public class RevolverItem extends Item implements Gun {
 
     public RevolverItem(Properties properties, java.util.function.Supplier<Item> ammo, float damage, int cooldown,
                         double range, double hipSpread, Fx fx, float pitch) {
+        this(properties, ammo, damage, cooldown, range, hipSpread, fx, pitch, Mode.HITSCAN);
+    }
+
+    public RevolverItem(Properties properties, java.util.function.Supplier<Item> ammo, float damage, int cooldown,
+                        double range, double hipSpread, Fx fx, float pitch, Mode mode) {
         super(properties);
+        this.mode = mode;
         this.ammoItem = ammo;
         this.damage = damage;
         this.cooldown = cooldown;
@@ -104,6 +113,19 @@ public class RevolverItem extends Item implements Gun {
         }
         Vec3 end = eye.add(look.scale(this.range));
 
+        if (this.mode == Mode.ELECTRIC_BALL) {
+            ElectricShot ball = new ElectricShot(level, player, ElectricShot.BALL, this.damage);
+            ball.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 2.4f, aiming ? 0.0f : 3.0f);
+            level.addFreshEntity(ball);
+            level.playSound(null, player.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER,
+                    SoundSource.PLAYERS, 0.15f, 2.0f);
+            level.playSound(null, player.blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST,
+                    SoundSource.PLAYERS, 1.2f, this.pitch);
+            Vec3 m = eye.add(look.scale(0.8));
+            level.sendParticles(ParticleTypes.ELECTRIC_SPARK, m.x, m.y - 0.1, m.z, 8, 0.05, 0.05, 0.05, 0.05);
+            return;
+        }
+
         BlockHitResult blockHit = level.clip(new ClipContext(
                 eye, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
         if (blockHit.getType() != HitResult.Type.MISS) {
@@ -111,6 +133,27 @@ public class RevolverItem extends Item implements Gun {
         }
 
         AABB searchBox = new AABB(eye, end).inflate(1.0);
+        if (this.mode == Mode.PIERCE) {
+            for (Entity target : level.getEntities(player, searchBox,
+                    e -> e instanceof LivingEntity && e.isAlive() && !e.isSpectator())) {
+                if (target.getBoundingBox().inflate(0.3).clip(eye, end).isEmpty()) continue;
+                target.invulnerableTime = 0;
+                target.hurt(level.damageSources().playerAttack(player), this.damage);
+                LivingEntity living = (LivingEntity) target;
+                living.knockback(0.4, -look.x, -look.z);
+                if (this.fx == Fx.WITHER) {
+                    living.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.WITHER, 60, 0));
+                }
+                level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, living.getX(), living.getY(0.5), living.getZ(), 6, 0.2, 0.3, 0.2, 0.02);
+            }
+            BeamEntity.flash(level, player, BeamEntity.STYLE_VIOLET, (float) eye.distanceTo(end), 8);
+            level.playSound(null, player.blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST,
+                    SoundSource.PLAYERS, 1.6f, this.pitch);
+            level.playSound(null, player.blockPosition(), SoundEvents.BEACON_ACTIVATE,
+                    SoundSource.PLAYERS, 0.6f, 1.8f);
+            level.sendParticles(ParticleTypes.PORTAL, end.x, end.y, end.z, 10, 0.2, 0.2, 0.2, 0.3);
+            return;
+        }
         EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(
                 level, player, eye, end, searchBox,
                 e -> !e.isSpectator() && e.isPickable());

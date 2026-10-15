@@ -70,5 +70,7 @@
   "item.armasreales.hacha_volcanica": "Hacha Volcánica",
   "item.armasreales.katana_sombria": "Katana Sombría",
   "item.armasreales.carga_explosiva": "Carga explosiva",
-  "entity.armasreales.proyectil_explosivo": "Proyectil explosivo"
+  "entity.armasreales.proyectil_explosivo": "Proyectil explosivo",
+  "item.armasreales.bola_electrica": "Bola eléctrica",
+  "item.armasreales.chispa": "Chispa"
 }

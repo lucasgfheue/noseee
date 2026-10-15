@@ -205,4 +205,12 @@ public class ModEntities {
                             .clientTrackingRange(8)
                             .updateInterval(1)
                             .build("proyectil_explosivo"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ElectricShot>> ELECTRIC_SHOT =
+            ENTITIES.register("disparo_electrico", () ->
+                    EntityType.Builder.<ElectricShot>of(ElectricShot::new, MobCategory.MISC)
+                            .sized(0.3f, 0.3f)
+                            .clientTrackingRange(8)
+                            .updateInterval(1)
+                            .build("disparo_electrico"));
 }
