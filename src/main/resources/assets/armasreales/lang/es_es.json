@@ -142,5 +142,7 @@
   "item.armasreales.tanque_coloso": "Tanque Coloso",
   "entity.armasreales.tanque_coloso": "Tanque Coloso",
   "item.armasreales.tanque_titan": "Titán Blindado",
-  "entity.armasreales.tanque_titan": "Titán Blindado"
+  "entity.armasreales.tanque_titan": "Titán Blindado",
+  "item.armasreales.tanque_leviatan": "Leviatán Mk II",
+  "entity.armasreales.tanque_leviatan": "Leviatán Mk II"
 }

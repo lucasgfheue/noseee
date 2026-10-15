@@ -37,6 +37,7 @@ public class ArmasRealesMod {
         event.put(ModEntities.UMBRA_TANK.get(), UmbraTankEntity.createAttributes().build());
         event.put(ModEntities.COLOSO_TANK.get(), ColosoTankEntity.createAttributes().build());
         event.put(ModEntities.TITAN_TANK.get(), TitanTankEntity.createAttributes().build());
+        event.put(ModEntities.LEVIATHAN_TANK.get(), LeviathanTankEntity.createAttributes().build());
         event.put(ModEntities.ZOMBI.get(), Zombie.createAttributes().build());
         event.put(ModEntities.HOMBRE_LOBO.get(), WerewolfEntity.createAttributes().build());
         event.put(ModEntities.CAMPISTA.get(), CampistaEntity.createAttributes().build());
@@ -95,6 +96,7 @@ public class ArmasRealesMod {
             event.accept(ModItems.TANQUE_UMBRA);
             event.accept(ModItems.TANQUE_COLOSO);
             event.accept(ModItems.TANQUE_TITAN);
+            event.accept(ModItems.TANQUE_LEVIATAN);
             event.accept(ModItems.AK47);
             event.accept(ModItems.RIFLE_CRIOGENICO);
             event.accept(ModItems.REVOLVER_LATON);

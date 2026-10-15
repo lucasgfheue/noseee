@@ -111,6 +111,18 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque_titan"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<LeviathanTankEntity>> LEVIATHAN_TANK =
+            ENTITIES.register("tanque_leviatan", () ->
+                    EntityType.Builder.<LeviathanTankEntity>of(LeviathanTankEntity::new, MobCategory.MISC)
+                            // casco larguísimo (14 de largo) y sección trasera elevada hasta 3,0 del modelo
+                            .sized(3.3f * TankEntity.SCALE, 2.6f * TankEntity.SCALE)
+                            // cadera del conductor en la cabina de la torreta (suelo a 1,75 del modelo)
+                            .passengerAttachments(2.05f * TankEntity.SCALE)
+                            .fireImmune()
+                            .clientTrackingRange(16)
+                            .updateInterval(1)
+                            .build("tanque_leviatan"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<UmbraTankEntity>> UMBRA_TANK =
             ENTITIES.register("tanque_umbra", () ->
                     EntityType.Builder.<UmbraTankEntity>of(UmbraTankEntity::new, MobCategory.MISC)

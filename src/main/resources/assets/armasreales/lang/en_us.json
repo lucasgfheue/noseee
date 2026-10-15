@@ -142,5 +142,7 @@
   "item.armasreales.tanque_coloso": "Colossus Tank",
   "entity.armasreales.tanque_coloso": "Colossus Tank",
   "item.armasreales.tanque_titan": "Armored Titan",
-  "entity.armasreales.tanque_titan": "Armored Titan"
+  "entity.armasreales.tanque_titan": "Armored Titan",
+  "item.armasreales.tanque_leviatan": "Leviathan Mk II",
+  "entity.armasreales.tanque_leviatan": "Leviathan Mk II"
 }
