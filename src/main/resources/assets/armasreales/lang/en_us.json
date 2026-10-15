@@ -81,5 +81,8 @@
   "item.armasreales.carga_lab10": "LAB-10 Charge",
   "message.armasreales.desvio_activo": "Shield active! (-%s charges)",
   "message.armasreales.desvio_recarga": "Deflect recharging...",
-  "message.armasreales.escudo_sin_carga": "You need %s LAB-10 Charges for the shield"
+  "message.armasreales.escudo_sin_carga": "You need %s LAB-10 Charges for the shield",
+  "item.armasreales.arco_de_hierro": "Iron Bow",
+  "item.armasreales.ferro9": "FERRO-9 Capsule",
+  "message.armasreales.arco_cargado": "Rings charged!"
 }
