@@ -126,5 +126,11 @@
   "message.armasreales.enjambre_lista": "ENJAMBRE listo: %s cápsulas",
   "message.armasreales.enjambre_recargando": "ENJAMBRE recargando...",
   "message.armasreales.enjambre_sin_capsulas": "Sin cápsulas SWARM-6",
-  "message.armasreales.enjambre_cargas": "ENJAMBRE: %s/%s cápsulas"
+  "message.armasreales.enjambre_cargas": "ENJAMBRE: %s/%s cápsulas",
+  "item.armasreales.monolito": "MONOLITO",
+  "item.armasreales.mass_1": "MASS-1",
+  "message.armasreales.monolito_lista": "MONOLITO listo: %s cargas",
+  "message.armasreales.monolito_recargando": "MONOLITO recargando...",
+  "message.armasreales.monolito_sin_nucleos": "Sin núcleos MASS-1",
+  "message.armasreales.monolito_cargas": "MONOLITO: %s/%s cargas"
 }

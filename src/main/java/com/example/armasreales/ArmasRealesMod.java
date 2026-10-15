@@ -107,6 +107,8 @@ public class ArmasRealesMod {
             event.accept(ModItems.SOL_3);
             event.accept(ModItems.ENJAMBRE);
             event.accept(ModItems.SWARM_6);
+            event.accept(ModItems.MONOLITO);
+            event.accept(ModItems.MASS_1);
             event.accept(ModItems.BIOCORE);
             event.accept(ModItems.ECL4);
             event.accept(ModItems.OMG3);

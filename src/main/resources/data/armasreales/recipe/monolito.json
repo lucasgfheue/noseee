@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "BLB",
+    "ICR",
+    "B  "
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:iron_block"
+    },
+    "L": {
+      "item": "minecraft:lapis_block"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    },
+    "C": {
+      "item": "armasreales:celda_energia"
+    }
+  },
+  "result": {
+    "id": "armasreales:monolito",
+    "count": 1
+  }
+}

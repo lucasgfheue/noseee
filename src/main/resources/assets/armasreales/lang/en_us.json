@@ -126,5 +126,11 @@
   "message.armasreales.enjambre_lista": "SWARM ready: %s capsules",
   "message.armasreales.enjambre_recargando": "SWARM reloading...",
   "message.armasreales.enjambre_sin_capsulas": "No SWARM-6 capsules",
-  "message.armasreales.enjambre_cargas": "SWARM: %s/%s capsules"
+  "message.armasreales.enjambre_cargas": "SWARM: %s/%s capsules",
+  "item.armasreales.monolito": "MONOLITH",
+  "item.armasreales.mass_1": "MASS-1",
+  "message.armasreales.monolito_lista": "MONOLITH ready: %s charges",
+  "message.armasreales.monolito_recargando": "MONOLITH reloading...",
+  "message.armasreales.monolito_sin_nucleos": "No MASS-1 cores",
+  "message.armasreales.monolito_cargas": "MONOLITH: %s/%s charges"
 }

@@ -134,6 +134,12 @@ public class ModItems {
     public static final DeferredItem<SwarmLauncherItem> ENJAMBRE = ITEMS.registerItem(
             "enjambre", SwarmLauncherItem::new, new Item.Properties().stacksTo(1).durability(300).rarity(net.minecraft.world.item.Rarity.RARE));
 
+    public static final DeferredItem<Item> MASS_1 = ITEMS.registerItem(
+            "mass_1", Item::new, new Item.Properties());
+
+    public static final DeferredItem<MonolithCannonItem> MONOLITO = ITEMS.registerItem(
+            "monolito", MonolithCannonItem::new, new Item.Properties().stacksTo(1).durability(300).rarity(net.minecraft.world.item.Rarity.EPIC));
+
     public static final DeferredItem<Item> MUNICION_FUSIL = ITEMS.registerItem(
             "municion_fusil", Item::new, new Item.Properties());
 
