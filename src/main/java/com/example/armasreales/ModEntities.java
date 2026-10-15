@@ -233,4 +233,14 @@ public class ModEntities {
                             .noSave()
                             .noSummon()
                             .build("zona_horizonte"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<SolarSphereEntity>> SOLAR_SPHERE =
+            ENTITIES.register("esfera_solar", () ->
+                    EntityType.Builder.<SolarSphereEntity>of(SolarSphereEntity::new, MobCategory.MISC)
+                            .sized(0.1f, 0.1f)
+                            .clientTrackingRange(12)
+                            .updateInterval(1)
+                            .noSave()
+                            .noSummon()
+                            .build("esfera_solar"));
 }

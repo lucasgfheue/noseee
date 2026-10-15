@@ -112,5 +112,12 @@
   "message.armasreales.sentinela_sin_municion": "Sin cartuchos SENTINEL-B",
   "message.armasreales.sentinela_estado": "Cargador %s/%s · Foco %s%%",
   "item.armasreales.prisma": "PRISMA",
-  "item.armasreales.refract_5": "REFRACT-5"
+  "item.armasreales.refract_5": "REFRACT-5",
+  "item.armasreales.solaris": "SOLARIS",
+  "item.armasreales.sol_3": "SOL-3",
+  "entity.armasreales.esfera_solar": "Esfera solar",
+  "message.armasreales.solaris_lista": "SOLARIS lista: %s cargas",
+  "message.armasreales.solaris_recargando": "SOLARIS recargando...",
+  "message.armasreales.solaris_sin_capsulas": "Sin cápsulas SOL-3",
+  "message.armasreales.solaris_cargas": "SOLARIS: %s/%s cargas"
 }

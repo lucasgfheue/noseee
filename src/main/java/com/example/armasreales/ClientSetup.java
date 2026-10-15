@@ -31,6 +31,7 @@ public class ClientSetup {
         event.registerEntityRenderer(ModEntities.BEAM.get(), BeamRenderer::new);
         event.registerEntityRenderer(ModEntities.SHIELD.get(), ShieldRenderer::new);
         event.registerEntityRenderer(ModEntities.GRAVITY_ZONE.get(), GravityZoneRenderer::new);
+        event.registerEntityRenderer(ModEntities.SOLAR_SPHERE.get(), SolarSphereRenderer::new);
 
         // Tanque (el proyectil del cañón es el mismo bloque de TNT del lanzador)
         event.registerEntityRenderer(ModEntities.TANK.get(), ctx -> new TankRenderer(ctx, false));
@@ -91,7 +92,7 @@ public class ClientSetup {
                 ModItems.TASER.get(), ModItems.PISTOLA_ACIDA.get(), ModItems.RIFLE_VIOLETA.get(),
                 ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get(),
                 ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get(), ModItems.REVOLVER_LATON.get(),
-                ModItems.SUBFUSIL_TORMENTA.get(), ModItems.FUSIL_AMBAR.get(), ModItems.REVOLVER_COLMILLO.get(), ModItems.REVOLVER_ECLIPSE.get(), ModItems.LANZAGRANADAS_CHISPA.get(), ModItems.BAZUCA_NOVA.get(), ModItems.LANZADOR_RACIMO.get(), ModItems.CANON_ADHESIVO.get(), ModItems.REVOLVER_TITAN.get(), ModItems.FUSIL_ANILLO.get(), ModItems.ARCO_DE_HIERRO.get(), ModItems.X32_OMEGA.get(), ModItems.X29_ECLIPSE.get(), ModItems.LAZARO.get(), ModItems.BOREAS.get(), ModItems.SENTINELA.get(), ModItems.PRISMA.get());
+                ModItems.SUBFUSIL_TORMENTA.get(), ModItems.FUSIL_AMBAR.get(), ModItems.REVOLVER_COLMILLO.get(), ModItems.REVOLVER_ECLIPSE.get(), ModItems.LANZAGRANADAS_CHISPA.get(), ModItems.BAZUCA_NOVA.get(), ModItems.LANZADOR_RACIMO.get(), ModItems.CANON_ADHESIVO.get(), ModItems.REVOLVER_TITAN.get(), ModItems.FUSIL_ANILLO.get(), ModItems.ARCO_DE_HIERRO.get(), ModItems.X32_OMEGA.get(), ModItems.X29_ECLIPSE.get(), ModItems.LAZARO.get(), ModItems.BOREAS.get(), ModItems.SENTINELA.get(), ModItems.PRISMA.get(), ModItems.SOLARIS.get());
     }
 
     /** Propiedad "aiming": el modelo del arma cambia mientras apuntas (rotación para brazo levantado). */
@@ -104,7 +105,7 @@ public class ClientSetup {
                     ModItems.TASER.get(), ModItems.PISTOLA_ACIDA.get(), ModItems.RIFLE_VIOLETA.get(),
                     ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get(),
                 ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get(), ModItems.REVOLVER_LATON.get(),
-                ModItems.SUBFUSIL_TORMENTA.get(), ModItems.FUSIL_AMBAR.get(), ModItems.REVOLVER_COLMILLO.get(), ModItems.REVOLVER_ECLIPSE.get(), ModItems.LANZAGRANADAS_CHISPA.get(), ModItems.BAZUCA_NOVA.get(), ModItems.LANZADOR_RACIMO.get(), ModItems.CANON_ADHESIVO.get(), ModItems.REVOLVER_TITAN.get(), ModItems.FUSIL_ANILLO.get(), ModItems.ARCO_DE_HIERRO.get(), ModItems.X32_OMEGA.get(), ModItems.X29_ECLIPSE.get(), ModItems.LAZARO.get(), ModItems.BOREAS.get(), ModItems.SENTINELA.get(), ModItems.PRISMA.get()};
+                ModItems.SUBFUSIL_TORMENTA.get(), ModItems.FUSIL_AMBAR.get(), ModItems.REVOLVER_COLMILLO.get(), ModItems.REVOLVER_ECLIPSE.get(), ModItems.LANZAGRANADAS_CHISPA.get(), ModItems.BAZUCA_NOVA.get(), ModItems.LANZADOR_RACIMO.get(), ModItems.CANON_ADHESIVO.get(), ModItems.REVOLVER_TITAN.get(), ModItems.FUSIL_ANILLO.get(), ModItems.ARCO_DE_HIERRO.get(), ModItems.X32_OMEGA.get(), ModItems.X29_ECLIPSE.get(), ModItems.LAZARO.get(), ModItems.BOREAS.get(), ModItems.SENTINELA.get(), ModItems.PRISMA.get(), ModItems.SOLARIS.get()};
             ItemProperties.register(ModItems.X32_OMEGA.get(),
                     ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "omega_ready"),
                     (stack, level, entity, seed) -> OmegaCannonItem.getLoaded(stack) > 0 ? 1.0F : 0.0F);
