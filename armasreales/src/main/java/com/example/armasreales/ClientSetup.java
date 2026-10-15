@@ -1,0 +1,112 @@
+package com.example.armasreales;
+
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+
+@EventBusSubscriber(modid = ArmasRealesMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+public class ClientSetup {
+    @SubscribeEvent
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        // TNT: bloque de TNT (tamaño x2)
+        event.registerEntityRenderer(ModEntities.TNT_PROJECTILE.get(),
+                context -> new ThrownItemRenderer<>(context, 2.0F, false));
+
+        // Bengala: bola de fuego gigante con halo brillante
+        event.registerEntityRenderer(ModEntities.FLARE_PROJECTILE.get(), FlareRenderer::new);
+
+        // Rayos del láser y del plasma
+        event.registerEntityRenderer(ModEntities.BEAM.get(), BeamRenderer::new);
+
+        // Tanque (el proyectil del cañón es el mismo bloque de TNT del lanzador)
+        event.registerEntityRenderer(ModEntities.TANK.get(), ctx -> new TankRenderer(ctx, false));
+        event.registerEntityRenderer(ModEntities.TWIN_TANK.get(), ctx -> new TankRenderer(ctx, true));
+
+        // Dardo del taser (con brillo) y bola de ácido
+        event.registerEntityRenderer(ModEntities.TASER_PROJECTILE.get(),
+                context -> new ThrownItemRenderer<>(context, 1.6F, true));
+        event.registerEntityRenderer(ModEntities.ACID_PROJECTILE.get(),
+                context -> new ThrownItemRenderer<>(context, 2.2F, true));
+
+        // Hombre lobo (humano de día, bestia de noche)
+        event.registerEntityRenderer(ModEntities.HOMBRE_LOBO.get(), WerewolfRenderer::new);
+        event.registerEntityRenderer(ModEntities.CAMPISTA.get(), CampistaRenderer::new);
+        event.registerEntityRenderer(ModEntities.ANCIANO.get(), AncianoRenderer::new);
+        event.registerEntityRenderer(ModEntities.SOLDADO.get(), SoldadoRenderer::new);
+        event.registerEntityRenderer(ModEntities.SOBREVIVIENTE.get(), SobrevivienteRenderer::new);
+        event.registerEntityRenderer(ModEntities.TURRET.get(), TurretRenderer::new);
+        event.registerEntityRenderer(ModEntities.ZOMBI_PRISIONERO.get(), PrisonZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.ZOMBI_POLICIA.get(), PrisonZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.ZOMBI_SWAT.get(), PrisonZombieRenderer::new);
+        event.registerEntityRenderer(ModEntities.ZOMBI_CAMINANTE.get(), PrisonZombieRenderer::new);
+
+        // Zombi con variantes
+        event.registerEntityRenderer(ModEntities.ZOMBI.get(), ArmedZombieRenderer::new);
+
+        // Calabaza luminosa (brilla a máxima luz), cuchillo y bomba
+        event.registerEntityRenderer(ModEntities.PUMPKIN_PROJECTILE.get(),
+                context -> new ThrownItemRenderer<>(context, 2.2F, true));
+        event.registerEntityRenderer(ModEntities.KNIFE_PROJECTILE.get(),
+                context -> new ThrownItemRenderer<>(context, 1.4F, false));
+        event.registerEntityRenderer(ModEntities.EXPLOSIVE_SHOT.get(),
+                context -> new ThrownItemRenderer<>(context, 1.4F, false));
+        event.registerEntityRenderer(ModEntities.ELECTRIC_SHOT.get(), ElectricShotRenderer::new);
+        event.registerEntityRenderer(ModEntities.BOMB_PROJECTILE.get(),
+                context -> new ThrownItemRenderer<>(context, 1.6F, false));
+    }
+
+    @SubscribeEvent
+    public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(WerewolfModel.LAYER, WerewolfModel::createBodyLayer);
+        event.registerLayerDefinition(CampistaBackpackLayer.LAYER, CampistaBackpackLayer::createLayer);
+    }
+
+    /** Los brazos se levantan al frente, como al sostener una ballesta: se ve que sostiene el arma. */
+    @SubscribeEvent
+    public static void registerExtensions(RegisterClientExtensionsEvent event) {
+        IClientItemExtensions holdGun = new IClientItemExtensions() {
+            @Override
+            public HumanoidModel.ArmPose getArmPose(LivingEntity entity, InteractionHand hand, ItemStack stack) {
+                // Sólo levanta el arma mientras apuntas; si no, pose normal (brazo abajo)
+                boolean aiming = entity.isUsingItem() && entity.getUseItem() == stack;
+                return aiming ? HumanoidModel.ArmPose.CROSSBOW_HOLD : null;
+            }
+        };
+        event.registerItem(holdGun, ModItems.PISTOLA.get(), ModItems.RIFLE_LASER.get(),
+                ModItems.LANZADOR_TNT.get(), ModItems.PISTOLA_BENGALAS.get(), ModItems.RIFLE_PLASMA.get(),
+                ModItems.TASER.get(), ModItems.PISTOLA_ACIDA.get(), ModItems.RIFLE_VIOLETA.get(),
+                ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get(),
+                ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get(), ModItems.REVOLVER_LATON.get(),
+                ModItems.SUBFUSIL_TORMENTA.get(), ModItems.FUSIL_AMBAR.get(), ModItems.REVOLVER_COLMILLO.get(), ModItems.REVOLVER_ECLIPSE.get(), ModItems.LANZAGRANADAS_CHISPA.get(), ModItems.BAZUCA_NOVA.get(), ModItems.LANZADOR_RACIMO.get(), ModItems.CANON_ADHESIVO.get());
+    }
+
+    /** Propiedad "aiming": el modelo del arma cambia mientras apuntas (rotación para brazo levantado). */
+    @SubscribeEvent
+    public static void clientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            ResourceLocation aiming = ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "aiming");
+            Item[] guns = {ModItems.PISTOLA.get(), ModItems.RIFLE_LASER.get(), ModItems.LANZADOR_TNT.get(),
+                    ModItems.PISTOLA_BENGALAS.get(), ModItems.RIFLE_PLASMA.get(),
+                    ModItems.TASER.get(), ModItems.PISTOLA_ACIDA.get(), ModItems.RIFLE_VIOLETA.get(),
+                    ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get(),
+                ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get(), ModItems.REVOLVER_LATON.get(),
+                ModItems.SUBFUSIL_TORMENTA.get(), ModItems.FUSIL_AMBAR.get(), ModItems.REVOLVER_COLMILLO.get(), ModItems.REVOLVER_ECLIPSE.get(), ModItems.LANZAGRANADAS_CHISPA.get(), ModItems.BAZUCA_NOVA.get(), ModItems.LANZADOR_RACIMO.get(), ModItems.CANON_ADHESIVO.get()};
+            for (Item gun : guns) {
+                ItemProperties.register(gun, aiming, (stack, level, entity, seed) ->
+                        entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+            }
+        });
+    }
+}
