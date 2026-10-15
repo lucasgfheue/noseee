@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "BIB",
+    "GCI",
+    "I  "
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:iron_block"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "C": {
+      "item": "armasreales:celda_energia"
+    }
+  },
+  "result": {
+    "id": "armasreales:sentinela",
+    "count": 1
+  }
+}

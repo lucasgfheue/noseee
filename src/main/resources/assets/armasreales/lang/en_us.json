@@ -104,5 +104,11 @@
   "message.armasreales.lazaro_vacio": "No charges or BIO-CORE (it regenerates on its own)",
   "message.armasreales.lazaro_absorbe": "BIO-CORE absorbed (+%s charges)",
   "item.armasreales.boreas": "BOREAS",
-  "item.armasreales.frost_cell": "FROST-Cell"
+  "item.armasreales.frost_cell": "FROST-Cell",
+  "item.armasreales.sentinela": "SENTINEL",
+  "item.armasreales.sentinel_b": "SENTINEL-B",
+  "message.armasreales.sentinela_lista": "SENTINEL ready: %s rounds",
+  "message.armasreales.sentinela_recargando": "SENTINEL reloading...",
+  "message.armasreales.sentinela_sin_municion": "No SENTINEL-B cartridges",
+  "message.armasreales.sentinela_estado": "Magazine %s/%s · Focus %s%%"
 }

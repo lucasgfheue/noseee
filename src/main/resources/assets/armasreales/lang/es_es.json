@@ -104,5 +104,11 @@
   "message.armasreales.lazaro_vacio": "Sin cargas ni BIO-CORE (se regenera sola)",
   "message.armasreales.lazaro_absorbe": "BIO-CORE absorbido (+%s cargas)",
   "item.armasreales.boreas": "BÓREAS",
-  "item.armasreales.frost_cell": "FROST-Cell"
+  "item.armasreales.frost_cell": "FROST-Cell",
+  "item.armasreales.sentinela": "SENTINELA",
+  "item.armasreales.sentinel_b": "SENTINEL-B",
+  "message.armasreales.sentinela_lista": "SENTINELA lista: %s disparos",
+  "message.armasreales.sentinela_recargando": "SENTINELA recargando...",
+  "message.armasreales.sentinela_sin_municion": "Sin cartuchos SENTINEL-B",
+  "message.armasreales.sentinela_estado": "Cargador %s/%s · Foco %s%%"
 }
