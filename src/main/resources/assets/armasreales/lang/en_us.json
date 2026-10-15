@@ -102,5 +102,7 @@
   "item.armasreales.biocore": "BIO-CORE",
   "message.armasreales.lazaro_regenera": "Lazarus regenerates: %s/%s",
   "message.armasreales.lazaro_vacio": "No charges or BIO-CORE (it regenerates on its own)",
-  "message.armasreales.lazaro_absorbe": "BIO-CORE absorbed (+%s charges)"
+  "message.armasreales.lazaro_absorbe": "BIO-CORE absorbed (+%s charges)",
+  "item.armasreales.boreas": "BOREAS",
+  "item.armasreales.frost_cell": "FROST-Cell"
 }

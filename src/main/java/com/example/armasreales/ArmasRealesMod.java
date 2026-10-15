@@ -97,6 +97,8 @@ public class ArmasRealesMod {
             event.accept(ModItems.X32_OMEGA);
             event.accept(ModItems.X29_ECLIPSE);
             event.accept(ModItems.LAZARO);
+            event.accept(ModItems.BOREAS);
+            event.accept(ModItems.FROST_CELL);
             event.accept(ModItems.BIOCORE);
             event.accept(ModItems.ECL4);
             event.accept(ModItems.OMG3);

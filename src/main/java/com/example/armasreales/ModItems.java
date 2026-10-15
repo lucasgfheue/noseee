@@ -103,6 +103,12 @@ public class ModItems {
             "lazaro", LazaroRifleItem::new, new Item.Properties().stacksTo(1).durability(450).rarity(net.minecraft.world.item.Rarity.RARE)
                     .component(net.minecraft.core.component.DataComponents.CUSTOM_DATA, LazaroRifleItem.initialData()));
 
+    public static final DeferredItem<Item> FROST_CELL = ITEMS.registerItem(
+            "frost_cell", Item::new, new Item.Properties());
+
+    public static final DeferredItem<BorealPistolItem> BOREAS = ITEMS.registerItem(
+            "boreas", BorealPistolItem::new, new Item.Properties().stacksTo(1).durability(400));
+
     public static final DeferredItem<Item> MUNICION_FUSIL = ITEMS.registerItem(
             "municion_fusil", Item::new, new Item.Properties());
 

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "IBI",
+    "ICR",
+    "  S"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "minecraft:blue_ice"
+    },
+    "C": {
+      "item": "armasreales:celda_energia"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "id": "armasreales:boreas",
+    "count": 1
+  }
+}
