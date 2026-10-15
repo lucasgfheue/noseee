@@ -85,7 +85,7 @@ public class ClientSetup {
                 ModItems.LANZADOR_TNT.get(), ModItems.PISTOLA_BENGALAS.get(), ModItems.RIFLE_PLASMA.get(),
                 ModItems.TASER.get(), ModItems.PISTOLA_ACIDA.get(), ModItems.RIFLE_VIOLETA.get(),
                 ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get(),
-                ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get());
+                ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get(), ModItems.REVOLVER_LATON.get());
     }
 
     /** Propiedad "aiming": el modelo del arma cambia mientras apuntas (rotación para brazo levantado). */
@@ -97,7 +97,7 @@ public class ClientSetup {
                     ModItems.PISTOLA_BENGALAS.get(), ModItems.RIFLE_PLASMA.get(),
                     ModItems.TASER.get(), ModItems.PISTOLA_ACIDA.get(), ModItems.RIFLE_VIOLETA.get(),
                     ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get(),
-                ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get()};
+                ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get(), ModItems.REVOLVER_LATON.get()};
             for (Item gun : guns) {
                 ItemProperties.register(gun, aiming, (stack, level, entity, seed) ->
                         entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);

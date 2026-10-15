@@ -161,4 +161,10 @@ public class ModItems {
 
     public static final DeferredItem<CryoRifleItem> RIFLE_CRIOGENICO = ITEMS.registerItem(
             "rifle_criogenico", CryoRifleItem::new, new Item.Properties().stacksTo(1).durability(500));
+
+    public static final DeferredItem<Item> MUNICION_MAGNUM = ITEMS.registerItem(
+            "municion_magnum", Item::new, new Item.Properties());
+
+    public static final DeferredItem<MagnumItem> REVOLVER_LATON = ITEMS.registerItem(
+            "revolver_laton", MagnumItem::new, new Item.Properties().stacksTo(1).durability(300));
 }

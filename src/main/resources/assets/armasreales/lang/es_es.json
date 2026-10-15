@@ -56,5 +56,7 @@
   "entity.armasreales.sobreviviente": "Sobreviviente",
   "item.armasreales.sobreviviente_spawn_egg": "Generar Sobreviviente",
   "item.armasreales.rifle_criogenico": "Rifle criogénico",
-  "item.armasreales.celda_criogenica": "Celda criogénica"
+  "item.armasreales.celda_criogenica": "Celda criogénica",
+  "item.armasreales.revolver_laton": "Revólver de latón",
+  "item.armasreales.municion_magnum": "Munición magnum"
 }
