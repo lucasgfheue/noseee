@@ -76,6 +76,11 @@ public class TitanRevolverItem extends Item implements Gun {
         return getCharge(stack) > 0 ? 0x4DD8FF : super.getBarColor(stack);
     }
 
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return slotChanged || oldStack.getItem() != newStack.getItem();
+    }
+
     // ------------------------------------------------------------------ Uso
 
     @Override

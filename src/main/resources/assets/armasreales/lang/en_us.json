@@ -84,5 +84,11 @@
   "message.armasreales.escudo_sin_carga": "You need %s LAB-10 Charges for the shield",
   "item.armasreales.arco_de_hierro": "Iron Bow",
   "item.armasreales.ferro9": "FERRO-9 Capsule",
-  "message.armasreales.arco_cargado": "Rings charged!"
+  "message.armasreales.arco_cargado": "Rings charged!",
+  "item.armasreales.x32_omega": "X-32 \"OMEGA\"",
+  "item.armasreales.omg3": "OMG-3 Core",
+  "message.armasreales.omega_lista": "X-32 ready: %s charges",
+  "message.armasreales.omega_recargando": "Reloading cores...",
+  "message.armasreales.omega_sin_nucleos": "No OMG-3 cores",
+  "message.armasreales.omega_cargas": "Charges: %s/%s"
 }

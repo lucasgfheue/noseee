@@ -46,6 +46,11 @@ public class RingRifleItem extends Item implements Gun {
         super(properties);
     }
 
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return slotChanged || oldStack.getItem() != newStack.getItem();
+    }
+
     // ------------------------------------------------------------------ Uso
 
     @Override

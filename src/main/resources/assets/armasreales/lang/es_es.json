@@ -84,5 +84,11 @@
   "message.armasreales.escudo_sin_carga": "Necesitas %s Cargas LAB-10 para el escudo",
   "item.armasreales.arco_de_hierro": "Arco de Hierro",
   "item.armasreales.ferro9": "Cápsula FERRO-9",
-  "message.armasreales.arco_cargado": "¡Anillos cargados!"
+  "message.armasreales.arco_cargado": "¡Anillos cargados!",
+  "item.armasreales.x32_omega": "X-32 «OMEGA»",
+  "item.armasreales.omg3": "Núcleo OMG-3",
+  "message.armasreales.omega_lista": "X-32 lista: %s cargas",
+  "message.armasreales.omega_recargando": "Recargando núcleos...",
+  "message.armasreales.omega_sin_nucleos": "Sin núcleos OMG-3",
+  "message.armasreales.omega_cargas": "Cargas: %s/%s"
 }

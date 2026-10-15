@@ -84,6 +84,12 @@ public class ModItems {
     public static final DeferredItem<IronBowItem> ARCO_DE_HIERRO = ITEMS.registerItem(
             "arco_de_hierro", IronBowItem::new, new Item.Properties().stacksTo(1).durability(400));
 
+    public static final DeferredItem<Item> OMG3 = ITEMS.registerItem(
+            "omg3", Item::new, new Item.Properties());
+
+    public static final DeferredItem<OmegaCannonItem> X32_OMEGA = ITEMS.registerItem(
+            "x32_omega", OmegaCannonItem::new, new Item.Properties().stacksTo(1).durability(300).rarity(net.minecraft.world.item.Rarity.EPIC));
+
     public static final DeferredItem<Item> MUNICION_FUSIL = ITEMS.registerItem(
             "municion_fusil", Item::new, new Item.Properties());
 

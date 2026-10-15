@@ -94,6 +94,8 @@ public class ArmasRealesMod {
             event.accept(ModItems.REVOLVER_TITAN);
             event.accept(ModItems.FUSIL_ANILLO);
             event.accept(ModItems.ARCO_DE_HIERRO);
+            event.accept(ModItems.X32_OMEGA);
+            event.accept(ModItems.OMG3);
             event.accept(ModItems.FERRO9);
             event.accept(ModItems.CARGA_LAB10);
             event.accept(ModItems.REVOLVER_ECLIPSE);
