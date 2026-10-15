@@ -96,6 +96,13 @@ public class ModItems {
     public static final DeferredItem<EclipseLauncherItem> X29_ECLIPSE = ITEMS.registerItem(
             "x29_eclipse", EclipseLauncherItem::new, new Item.Properties().stacksTo(1).durability(300).rarity(net.minecraft.world.item.Rarity.EPIC));
 
+    public static final DeferredItem<Item> BIOCORE = ITEMS.registerItem(
+            "biocore", Item::new, new Item.Properties());
+
+    public static final DeferredItem<LazaroRifleItem> LAZARO = ITEMS.registerItem(
+            "lazaro", LazaroRifleItem::new, new Item.Properties().stacksTo(1).durability(450).rarity(net.minecraft.world.item.Rarity.RARE)
+                    .component(net.minecraft.core.component.DataComponents.CUSTOM_DATA, LazaroRifleItem.initialData()));
+
     public static final DeferredItem<Item> MUNICION_FUSIL = ITEMS.registerItem(
             "municion_fusil", Item::new, new Item.Properties());
 

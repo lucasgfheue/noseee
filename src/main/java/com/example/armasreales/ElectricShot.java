@@ -26,7 +26,7 @@ import java.util.Set;
  * SPARK: chispa que ATRAVIESA entidades (daña a todas las que encuentra) y se apaga contra un bloque.
  */
 public class ElectricShot extends ThrowableItemProjectile {
-    public static final int BALL = 0, SPARK = 1, TRACER = 2, ORB = 3;
+    public static final int BALL = 0, SPARK = 1, TRACER = 2, ORB = 3, BIO = 4;
 
     private static final net.minecraft.network.syncher.EntityDataAccessor<Integer> KIND =
             net.minecraft.network.syncher.SynchedEntityData.defineId(ElectricShot.class,
@@ -99,9 +99,13 @@ public class ElectricShot extends ThrowableItemProjectile {
         if (this.isRemoved() || !(this.level() instanceof ServerLevel level)) {
             return;
         }
-        if (this.tickCount > (this.kind == BALL ? 60 : this.kind == TRACER ? 40 : this.kind == ORB ? 60 : 25)) {
+        if (this.tickCount > (this.kind == BALL ? 60 : this.kind == TRACER ? 40 : this.kind == ORB ? 60 : this.kind == BIO ? 40 : 25)) {
             this.discard();
             return;
+        }
+        if (this.kind == BIO) {
+            level.sendParticles(ParticleTypes.DRAGON_BREATH, getX(), getY(0.5), getZ(), 1, 0.04, 0.04, 0.04, 0.0);
+            level.sendParticles(ParticleTypes.WITCH, getX(), getY(0.5), getZ(), 1, 0.06, 0.06, 0.06, 0.0);
         }
         if (this.kind == ORB) {
             level.sendParticles(ParticleTypes.REVERSE_PORTAL, getX(), getY(0.5), getZ(), 3, 0.25, 0.25, 0.25, 0.02);
@@ -128,6 +132,18 @@ public class ElectricShot extends ThrowableItemProjectile {
         this.alreadyHit.add(target.getId());
         zap(target, this.damage);
 
+        if (this.kind == BIO) {
+            if (target instanceof LivingEntity living) {
+                living.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                        net.minecraft.world.effect.MobEffects.POISON, 70, 0));
+            }
+            level.sendParticles(ParticleTypes.DRAGON_BREATH, result.getLocation().x, result.getLocation().y,
+                    result.getLocation().z, 10, 0.15, 0.15, 0.15, 0.05);
+            level.sendParticles(ParticleTypes.WITCH, result.getLocation().x, result.getLocation().y,
+                    result.getLocation().z, 8, 0.2, 0.2, 0.2, 0.1);
+            this.discard();
+            return;
+        }
         if (this.kind == ORB) {
             this.implode(level, result.getLocation());
             this.discard();
@@ -199,7 +215,7 @@ public class ElectricShot extends ThrowableItemProjectile {
                 level.sendParticles(ParticleTypes.FLAME, p.x, p.y, p.z, 3, 0.1, 0.1, 0.1, 0.03);
                 level.sendParticles(ParticleTypes.SMOKE, p.x, p.y, p.z, 3, 0.1, 0.1, 0.1, 0.02);
             } else {
-                level.sendParticles(this.kind == TRACER ? ParticleTypes.CRIT : ParticleTypes.ELECTRIC_SPARK,
+                level.sendParticles(this.kind == BIO ? ParticleTypes.WITCH : this.kind == TRACER ? ParticleTypes.CRIT : ParticleTypes.ELECTRIC_SPARK,
                         p.x, p.y, p.z, 5, 0.15, 0.15, 0.15, 0.08);
             }
             this.discard();

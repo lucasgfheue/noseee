@@ -97,5 +97,10 @@
   "message.armasreales.eclipse_lista": "X-29 ready: %s spheres",
   "message.armasreales.eclipse_recargando": "Reloading spheres...",
   "message.armasreales.eclipse_sin_esferas": "No ECL-4 spheres",
-  "message.armasreales.eclipse_cargas": "Spheres: %s/%s"
+  "message.armasreales.eclipse_cargas": "Spheres: %s/%s",
+  "item.armasreales.lazaro": "LAZARUS",
+  "item.armasreales.biocore": "BIO-CORE",
+  "message.armasreales.lazaro_regenera": "Lazarus regenerates: %s/%s",
+  "message.armasreales.lazaro_vacio": "No charges or BIO-CORE (it regenerates on its own)",
+  "message.armasreales.lazaro_absorbe": "BIO-CORE absorbed (+%s charges)"
 }

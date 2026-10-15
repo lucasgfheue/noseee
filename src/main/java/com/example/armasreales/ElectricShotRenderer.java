@@ -45,7 +45,11 @@ public class ElectricShotRenderer extends EntityRenderer<ElectricShot> {
         int kind = shot.getKind();
         double half = kind == ElectricShot.SPARK ? 0.25 : 0.9;
         float[] core, mid, halo;
-        if (kind == ElectricShot.TRACER) {          // naranja brillante
+        if (kind == ElectricShot.BIO) {              // magenta orgánico
+            core = new float[]{1.0f, 0.85f, 1.0f, 0.95f};
+            mid = new float[]{0.95f, 0.25f, 0.85f, 0.6f};
+            halo = new float[]{0.65f, 0.05f, 0.65f, 0.25f};
+        } else if (kind == ElectricShot.TRACER) {          // naranja brillante
             core = new float[]{1.0f, 0.95f, 0.75f, 0.95f};
             mid = new float[]{1.0f, 0.55f, 0.08f, 0.55f};
             halo = new float[]{1.0f, 0.35f, 0.0f, 0.22f};

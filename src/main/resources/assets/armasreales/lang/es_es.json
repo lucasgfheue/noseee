@@ -97,5 +97,10 @@
   "message.armasreales.eclipse_lista": "X-29 lista: %s esferas",
   "message.armasreales.eclipse_recargando": "Recargando esferas...",
   "message.armasreales.eclipse_sin_esferas": "Sin esferas ECL-4",
-  "message.armasreales.eclipse_cargas": "Esferas: %s/%s"
+  "message.armasreales.eclipse_cargas": "Esferas: %s/%s",
+  "item.armasreales.lazaro": "LÁZARO",
+  "item.armasreales.biocore": "BIO-CORE",
+  "message.armasreales.lazaro_regenera": "Lázaro se regenera: %s/%s",
+  "message.armasreales.lazaro_vacio": "Sin cargas ni BIO-CORE (se regenera sola)",
+  "message.armasreales.lazaro_absorbe": "BIO-CORE absorbido (+%s cargas)"
 }
