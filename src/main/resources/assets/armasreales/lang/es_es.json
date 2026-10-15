@@ -52,5 +52,7 @@
   "item.armasreales.zombi_policia_spawn_egg": "Generar Zombi policía",
   "item.armasreales.zombi_swat_spawn_egg": "Generar Zombi SWAT",
   "entity.armasreales.zombi_caminante": "Zombi caminante",
-  "item.armasreales.zombi_caminante_spawn_egg": "Generar Zombi caminante"
+  "item.armasreales.zombi_caminante_spawn_egg": "Generar Zombi caminante",
+  "entity.armasreales.sobreviviente": "Sobreviviente",
+  "item.armasreales.sobreviviente_spawn_egg": "Generar Sobreviviente"
 }

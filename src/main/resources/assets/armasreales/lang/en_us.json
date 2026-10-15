@@ -52,5 +52,7 @@
   "item.armasreales.zombi_policia_spawn_egg": "Police Zombie Spawn Egg",
   "item.armasreales.zombi_swat_spawn_egg": "SWAT Zombie Spawn Egg",
   "entity.armasreales.zombi_caminante": "Walker Zombie",
-  "item.armasreales.zombi_caminante_spawn_egg": "Walker Zombie Spawn Egg"
+  "item.armasreales.zombi_caminante_spawn_egg": "Walker Zombie Spawn Egg",
+  "entity.armasreales.sobreviviente": "Survivor",
+  "item.armasreales.sobreviviente_spawn_egg": "Survivor Spawn Egg"
 }

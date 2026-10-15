@@ -37,6 +37,7 @@ public class ArmasRealesMod {
         event.put(ModEntities.CAMPISTA.get(), CampistaEntity.createAttributes().build());
         event.put(ModEntities.ANCIANO.get(), AncianoEntity.createAttributes().build());
         event.put(ModEntities.SOLDADO.get(), SoldadoEntity.createAttributes().build());
+        event.put(ModEntities.SOBREVIVIENTE.get(), SobrevivienteEntity.createAttributes().build());
         event.put(ModEntities.TURRET.get(), TurretEntity.createAttributes().build());
         event.put(ModEntities.ZOMBI_PRISIONERO.get(), PrisonZombie.createAttributes(PrisonZombie.PRISONER).build());
         event.put(ModEntities.ZOMBI_POLICIA.get(), PrisonZombie.createAttributes(PrisonZombie.POLICE).build());
@@ -69,6 +70,7 @@ public class ArmasRealesMod {
             event.accept(ModItems.ZOMBI_POLICIA_SPAWN_EGG);
             event.accept(ModItems.ZOMBI_SWAT_SPAWN_EGG);
             event.accept(ModItems.ZOMBI_CAMINANTE_SPAWN_EGG);
+            event.accept(ModItems.SOBREVIVIENTE_SPAWN_EGG);
         }
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
             event.accept(ModItems.PISTOLA);
@@ -104,6 +106,7 @@ public class ArmasRealesMod {
             event.accept(ModItems.ZOMBI_POLICIA_SPAWN_EGG);
             event.accept(ModItems.ZOMBI_SWAT_SPAWN_EGG);
             event.accept(ModItems.ZOMBI_CAMINANTE_SPAWN_EGG);
+            event.accept(ModItems.SOBREVIVIENTE_SPAWN_EGG);
         }
     }
 }

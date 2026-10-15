@@ -45,6 +45,7 @@ public class ClientSetup {
         event.registerEntityRenderer(ModEntities.CAMPISTA.get(), CampistaRenderer::new);
         event.registerEntityRenderer(ModEntities.ANCIANO.get(), AncianoRenderer::new);
         event.registerEntityRenderer(ModEntities.SOLDADO.get(), SoldadoRenderer::new);
+        event.registerEntityRenderer(ModEntities.SOBREVIVIENTE.get(), SobrevivienteRenderer::new);
         event.registerEntityRenderer(ModEntities.TURRET.get(), TurretRenderer::new);
         event.registerEntityRenderer(ModEntities.ZOMBI_PRISIONERO.get(), PrisonZombieRenderer::new);
         event.registerEntityRenderer(ModEntities.ZOMBI_POLICIA.get(), PrisonZombieRenderer::new);

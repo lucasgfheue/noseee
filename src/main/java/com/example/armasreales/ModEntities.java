@@ -189,4 +189,12 @@ public class ModEntities {
                             .ridingOffset(-0.7f)
                             .clientTrackingRange(8)
                             .build("zombi_caminante"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<SobrevivienteEntity>> SOBREVIVIENTE =
+            ENTITIES.register("sobreviviente", () ->
+                    EntityType.Builder.<SobrevivienteEntity>of(SobrevivienteEntity::new, MobCategory.MISC)
+                            .sized(0.6f, 1.8f)
+                            .eyeHeight(1.62f)
+                            .clientTrackingRange(10)
+                            .build("sobreviviente"));
 }

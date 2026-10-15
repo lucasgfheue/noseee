@@ -150,4 +150,9 @@ public class ModItems {
             "zombi_caminante_spawn_egg",
             props -> new SpawnEggItem(ModEntities.ZOMBI_CAMINANTE.get(), 0x5C7F4B, 0x6B7C8A, props),
             new Item.Properties());
+
+    public static final DeferredItem<SpawnEggItem> SOBREVIVIENTE_SPAWN_EGG = ITEMS.registerItem(
+            "sobreviviente_spawn_egg",
+            props -> new SpawnEggItem(ModEntities.SOBREVIVIENTE.get(), 0xE2761A, 0xC9A27A, props),
+            new Item.Properties());
 }
