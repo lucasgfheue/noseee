@@ -141,6 +141,6 @@
   "entity.armasreales.tanque_umbra": "Umbra Tank",
   "item.armasreales.tanque_coloso": "Colossus Tank",
   "entity.armasreales.tanque_coloso": "Colossus Tank",
-  "item.armasreales.tanque_behemoth": "Behemoth Tank",
-  "entity.armasreales.tanque_behemoth": "Behemoth Tank"
+  "item.armasreales.tanque_titan": "Armored Titan",
+  "entity.armasreales.tanque_titan": "Armored Titan"
 }

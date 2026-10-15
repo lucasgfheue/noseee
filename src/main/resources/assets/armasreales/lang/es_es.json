@@ -141,6 +141,6 @@
   "entity.armasreales.tanque_umbra": "Tanque Umbra",
   "item.armasreales.tanque_coloso": "Tanque Coloso",
   "entity.armasreales.tanque_coloso": "Tanque Coloso",
-  "item.armasreales.tanque_behemoth": "Tanque Behemoth",
-  "entity.armasreales.tanque_behemoth": "Tanque Behemoth"
+  "item.armasreales.tanque_titan": "Titán Blindado",
+  "entity.armasreales.tanque_titan": "Titán Blindado"
 }

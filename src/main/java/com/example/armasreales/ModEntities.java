@@ -87,18 +87,6 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque_ciudadela"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<BehemothTankEntity>> BEHEMOTH_TANK =
-            ENTITIES.register("tanque_behemoth", () ->
-                    EntityType.Builder.<BehemothTankEntity>of(BehemothTankEntity::new, MobCategory.MISC)
-                            // casco excepcionalmente ancho (6) y bajo
-                            .sized(3.0f * TankEntity.SCALE, 2.2f * TankEntity.SCALE)
-                            // cadera del conductor dentro de la escotilla de la torreta baja (suelo a 1,15 del modelo)
-                            .passengerAttachments(1.45f * TankEntity.SCALE)
-                            .fireImmune()
-                            .clientTrackingRange(16)
-                            .updateInterval(1)
-                            .build("tanque_behemoth"));
-
     public static final DeferredHolder<EntityType<?>, EntityType<ColosoTankEntity>> COLOSO_TANK =
             ENTITIES.register("tanque_coloso", () ->
                     EntityType.Builder.<ColosoTankEntity>of(ColosoTankEntity::new, MobCategory.MISC)
@@ -110,6 +98,18 @@ public class ModEntities {
                             .clientTrackingRange(16)
                             .updateInterval(1)
                             .build("tanque_coloso"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<TitanTankEntity>> TITAN_TANK =
+            ENTITIES.register("tanque_titan", () ->
+                    EntityType.Builder.<TitanTankEntity>of(TitanTankEntity::new, MobCategory.MISC)
+                            // casco colosal: 6,9 de ancho y torreta elevada hasta 2,5 del modelo
+                            .sized(3.5f * TankEntity.SCALE, 2.8f * TankEntity.SCALE)
+                            // cadera del conductor en la cabina de la torreta (suelo a 2,0 del modelo)
+                            .passengerAttachments(2.3f * TankEntity.SCALE)
+                            .fireImmune()
+                            .clientTrackingRange(16)
+                            .updateInterval(1)
+                            .build("tanque_titan"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<UmbraTankEntity>> UMBRA_TANK =
             ENTITIES.register("tanque_umbra", () ->

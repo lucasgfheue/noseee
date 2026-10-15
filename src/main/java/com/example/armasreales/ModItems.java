@@ -74,14 +74,14 @@ public class ModItems {
             props -> new TankItem(props, () -> ModEntities.CITADEL_TANK.get()),
             new Item.Properties().stacksTo(1));
 
-    public static final DeferredItem<TankItem> TANQUE_BEHEMOTH = ITEMS.registerItem(
-            "tanque_behemoth",
-            props -> new TankItem(props, () -> ModEntities.BEHEMOTH_TANK.get()),
-            new Item.Properties().stacksTo(1));
-
     public static final DeferredItem<TankItem> TANQUE_COLOSO = ITEMS.registerItem(
             "tanque_coloso",
             props -> new TankItem(props, () -> ModEntities.COLOSO_TANK.get()),
+            new Item.Properties().stacksTo(1));
+
+    public static final DeferredItem<TankItem> TANQUE_TITAN = ITEMS.registerItem(
+            "tanque_titan",
+            props -> new TankItem(props, () -> ModEntities.TITAN_TANK.get()),
             new Item.Properties().stacksTo(1));
 
     public static final DeferredItem<TankItem> TANQUE_UMBRA = ITEMS.registerItem(
