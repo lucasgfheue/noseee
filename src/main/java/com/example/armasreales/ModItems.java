@@ -116,6 +116,18 @@ public class ModItems {
             "sentinela", SentinelGunItem::new, new Item.Properties().stacksTo(1).durability(700).rarity(net.minecraft.world.item.Rarity.RARE)
                     .component(net.minecraft.core.component.DataComponents.CUSTOM_DATA, SentinelGunItem.initialData()));
 
+    public static final DeferredItem<Item> REFRACT_5 = ITEMS.registerItem(
+            "refract_5", Item::new, new Item.Properties());
+
+    public static final DeferredItem<PrismRifleItem> PRISMA = ITEMS.registerItem(
+            "prisma", PrismRifleItem::new, new Item.Properties().stacksTo(1).durability(350).rarity(net.minecraft.world.item.Rarity.EPIC));
+
+    public static final DeferredItem<Item> REFRACT_5 = ITEMS.registerItem(
+            "refract_5", Item::new, new Item.Properties());
+
+    public static final DeferredItem<PrismRifleItem> PRISMA = ITEMS.registerItem(
+            "prisma", PrismRifleItem::new, new Item.Properties().stacksTo(1).durability(450).rarity(net.minecraft.world.item.Rarity.RARE));
+
     public static final DeferredItem<Item> MUNICION_FUSIL = ITEMS.registerItem(
             "municion_fusil", Item::new, new Item.Properties());
 

@@ -110,5 +110,7 @@
   "message.armasreales.sentinela_lista": "SENTINELA lista: %s disparos",
   "message.armasreales.sentinela_recargando": "SENTINELA recargando...",
   "message.armasreales.sentinela_sin_municion": "Sin cartuchos SENTINEL-B",
-  "message.armasreales.sentinela_estado": "Cargador %s/%s · Foco %s%%"
+  "message.armasreales.sentinela_estado": "Cargador %s/%s · Foco %s%%",
+  "item.armasreales.prisma": "PRISMA",
+  "item.armasreales.refract_5": "REFRACT-5"
 }
