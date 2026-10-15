@@ -90,5 +90,12 @@
   "message.armasreales.omega_lista": "X-32 ready: %s charges",
   "message.armasreales.omega_recargando": "Reloading cores...",
   "message.armasreales.omega_sin_nucleos": "No OMG-3 cores",
-  "message.armasreales.omega_cargas": "Charges: %s/%s"
+  "message.armasreales.omega_cargas": "Charges: %s/%s",
+  "message.armasreales.arco_interrumpido": "Charge interrupted! Energy lost",
+  "item.armasreales.x29_eclipse": "X-29 \"ECLIPSE\"",
+  "item.armasreales.ecl4": "ECL-4 Sphere",
+  "message.armasreales.eclipse_lista": "X-29 ready: %s spheres",
+  "message.armasreales.eclipse_recargando": "Reloading spheres...",
+  "message.armasreales.eclipse_sin_esferas": "No ECL-4 spheres",
+  "message.armasreales.eclipse_cargas": "Spheres: %s/%s"
 }

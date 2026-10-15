@@ -90,6 +90,12 @@ public class ModItems {
     public static final DeferredItem<OmegaCannonItem> X32_OMEGA = ITEMS.registerItem(
             "x32_omega", OmegaCannonItem::new, new Item.Properties().stacksTo(1).durability(300).rarity(net.minecraft.world.item.Rarity.EPIC));
 
+    public static final DeferredItem<Item> ECL4 = ITEMS.registerItem(
+            "ecl4", Item::new, new Item.Properties());
+
+    public static final DeferredItem<EclipseLauncherItem> X29_ECLIPSE = ITEMS.registerItem(
+            "x29_eclipse", EclipseLauncherItem::new, new Item.Properties().stacksTo(1).durability(300).rarity(net.minecraft.world.item.Rarity.EPIC));
+
     public static final DeferredItem<Item> MUNICION_FUSIL = ITEMS.registerItem(
             "municion_fusil", Item::new, new Item.Properties());
 

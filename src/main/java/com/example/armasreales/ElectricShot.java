@@ -2,6 +2,7 @@ package com.example.armasreales;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -25,7 +26,7 @@ import java.util.Set;
  * SPARK: chispa que ATRAVIESA entidades (daña a todas las que encuentra) y se apaga contra un bloque.
  */
 public class ElectricShot extends ThrowableItemProjectile {
-    public static final int BALL = 0, SPARK = 1, TRACER = 2;
+    public static final int BALL = 0, SPARK = 1, TRACER = 2, ORB = 3;
 
     private static final net.minecraft.network.syncher.EntityDataAccessor<Integer> KIND =
             net.minecraft.network.syncher.SynchedEntityData.defineId(ElectricShot.class,
@@ -98,9 +99,13 @@ public class ElectricShot extends ThrowableItemProjectile {
         if (this.isRemoved() || !(this.level() instanceof ServerLevel level)) {
             return;
         }
-        if (this.tickCount > (this.kind == BALL ? 60 : this.kind == TRACER ? 40 : 25)) {
+        if (this.tickCount > (this.kind == BALL ? 60 : this.kind == TRACER ? 40 : this.kind == ORB ? 60 : 25)) {
             this.discard();
             return;
+        }
+        if (this.kind == ORB) {
+            level.sendParticles(ParticleTypes.REVERSE_PORTAL, getX(), getY(0.5), getZ(), 3, 0.25, 0.25, 0.25, 0.02);
+            level.sendParticles(ParticleTypes.END_ROD, getX(), getY(0.5), getZ(), 1, 0.05, 0.05, 0.05, 0.0);
         }
         if (this.kind == SPARK) {
             level.sendParticles(ParticleTypes.FLAME, getX(), getY(0.5), getZ(), 2, 0.04, 0.04, 0.04, 0.01);
@@ -123,6 +128,11 @@ public class ElectricShot extends ThrowableItemProjectile {
         this.alreadyHit.add(target.getId());
         zap(target, this.damage);
 
+        if (this.kind == ORB) {
+            this.implode(level, result.getLocation());
+            this.discard();
+            return;
+        }
         if (this.kind == SPARK) {
             level.sendParticles(ParticleTypes.FLAME, result.getLocation().x, result.getLocation().y,
                     result.getLocation().z, 5, 0.12, 0.12, 0.12, 0.04);
@@ -156,9 +166,33 @@ public class ElectricShot extends ThrowableItemProjectile {
         this.discard();
     }
 
+    /** Esfera gravitatoria: al estallar atrae a las entidades cercanas hacia el punto de impacto. */
+    private void implode(ServerLevel level, Vec3 at) {
+        double radius = 5.0;
+        for (Entity e : level.getEntities(this, new AABB(at, at).inflate(radius),
+                x -> x instanceof LivingEntity && x.isAlive() && !x.isSpectator() && x != this.getOwner())) {
+            Vec3 to = at.subtract(e.getBoundingBox().getCenter());
+            double d = to.length();
+            if (d > radius || d < 1.0E-3) continue;
+            double pull = 0.9 * (1.0 - d / radius);
+            e.setDeltaMovement(e.getDeltaMovement().add(to.normalize().scale(pull)));
+            e.hurtMarked = true;
+        }
+        level.sendParticles(ParticleTypes.REVERSE_PORTAL, at.x, at.y, at.z, 40, 0.8, 0.8, 0.8, 0.15);
+        level.sendParticles(ParticleTypes.END_ROD, at.x, at.y, at.z, 12, 0.3, 0.3, 0.3, 0.1);
+        level.sendParticles(ParticleTypes.FLASH, at.x, at.y, at.z, 1, 0, 0, 0, 0);
+        level.playSound(null, BlockPos.containing(at), SoundEvents.ENDERMAN_TELEPORT,
+                SoundSource.PLAYERS, 1.0f, 0.6f);
+        level.playSound(null, BlockPos.containing(at), SoundEvents.BEACON_DEACTIVATE,
+                SoundSource.PLAYERS, 0.8f, 1.3f);
+    }
+
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
+        if (this.kind == ORB && this.level() instanceof ServerLevel orbLevel) {
+            this.implode(orbLevel, result.getLocation());
+        }
         if (this.level() instanceof ServerLevel level) {
             Vec3 p = result.getLocation();
             if (this.kind == SPARK) {

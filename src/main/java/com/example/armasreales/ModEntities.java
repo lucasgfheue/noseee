@@ -223,4 +223,14 @@ public class ModEntities {
                             .noSave()
                             .noSummon()
                             .build("escudo_anillo"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<GravityZoneEntity>> GRAVITY_ZONE =
+            ENTITIES.register("zona_horizonte", () ->
+                    EntityType.Builder.<GravityZoneEntity>of(GravityZoneEntity::new, MobCategory.MISC)
+                            .sized(0.1f, 0.1f)
+                            .clientTrackingRange(12)
+                            .updateInterval(1)
+                            .noSave()
+                            .noSummon()
+                            .build("zona_horizonte"));
 }

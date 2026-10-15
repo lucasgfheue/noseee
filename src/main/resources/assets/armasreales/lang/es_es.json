@@ -90,5 +90,12 @@
   "message.armasreales.omega_lista": "X-32 lista: %s cargas",
   "message.armasreales.omega_recargando": "Recargando núcleos...",
   "message.armasreales.omega_sin_nucleos": "Sin núcleos OMG-3",
-  "message.armasreales.omega_cargas": "Cargas: %s/%s"
+  "message.armasreales.omega_cargas": "Cargas: %s/%s",
+  "message.armasreales.arco_interrumpido": "¡Carga interrumpida! Energía perdida",
+  "item.armasreales.x29_eclipse": "X-29 «ECLIPSE»",
+  "item.armasreales.ecl4": "Esfera ECL-4",
+  "message.armasreales.eclipse_lista": "X-29 lista: %s esferas",
+  "message.armasreales.eclipse_recargando": "Recargando esferas...",
+  "message.armasreales.eclipse_sin_esferas": "Sin esferas ECL-4",
+  "message.armasreales.eclipse_cargas": "Esferas: %s/%s"
 }
