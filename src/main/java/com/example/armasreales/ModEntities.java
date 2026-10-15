@@ -243,4 +243,14 @@ public class ModEntities {
                             .noSave()
                             .noSummon()
                             .build("esfera_solar"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<SwarmDroneEntity>> SWARM_DRONE =
+            ENTITIES.register("dron_enjambre", () ->
+                    EntityType.Builder.<SwarmDroneEntity>of(SwarmDroneEntity::new, MobCategory.MISC)
+                            .sized(0.25f, 0.25f)
+                            .clientTrackingRange(10)
+                            .updateInterval(1)
+                            .noSave()
+                            .noSummon()
+                            .build("dron_enjambre"));
 }

@@ -119,5 +119,12 @@
   "message.armasreales.solaris_lista": "SOLARIS lista: %s cargas",
   "message.armasreales.solaris_recargando": "SOLARIS recargando...",
   "message.armasreales.solaris_sin_capsulas": "Sin cápsulas SOL-3",
-  "message.armasreales.solaris_cargas": "SOLARIS: %s/%s cargas"
+  "message.armasreales.solaris_cargas": "SOLARIS: %s/%s cargas",
+  "item.armasreales.enjambre": "ENJAMBRE",
+  "item.armasreales.swarm_6": "SWARM-6",
+  "entity.armasreales.dron_enjambre": "Dron del Enjambre",
+  "message.armasreales.enjambre_lista": "ENJAMBRE listo: %s cápsulas",
+  "message.armasreales.enjambre_recargando": "ENJAMBRE recargando...",
+  "message.armasreales.enjambre_sin_capsulas": "Sin cápsulas SWARM-6",
+  "message.armasreales.enjambre_cargas": "ENJAMBRE: %s/%s cápsulas"
 }

@@ -119,5 +119,12 @@
   "message.armasreales.solaris_lista": "SOLARIS ready: %s charges",
   "message.armasreales.solaris_recargando": "SOLARIS reloading...",
   "message.armasreales.solaris_sin_capsulas": "No SOL-3 capsules",
-  "message.armasreales.solaris_cargas": "SOLARIS: %s/%s charges"
+  "message.armasreales.solaris_cargas": "SOLARIS: %s/%s charges",
+  "item.armasreales.enjambre": "SWARM",
+  "item.armasreales.swarm_6": "SWARM-6",
+  "entity.armasreales.dron_enjambre": "Swarm Drone",
+  "message.armasreales.enjambre_lista": "SWARM ready: %s capsules",
+  "message.armasreales.enjambre_recargando": "SWARM reloading...",
+  "message.armasreales.enjambre_sin_capsulas": "No SWARM-6 capsules",
+  "message.armasreales.enjambre_cargas": "SWARM: %s/%s capsules"
 }
