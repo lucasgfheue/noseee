@@ -243,8 +243,9 @@ public class TankEntity extends Mob {
         int height = this.crushHeight();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         double halfLen = this.crushHalfLength();
+        double halfWidth = this.crushHalfWidth();
         for (double a = -halfLen; a <= halfLen; a += 0.5) {
-            for (double b = -2.5; b <= 2.5; b += 0.5) {
+            for (double b = -halfWidth; b <= halfWidth; b += 0.5) {
                 int x = Mth.floor(this.getX() + f.x * a + rx * b);
                 int z = Mth.floor(this.getZ() + f.z * a + rz * b);
                 for (int dy = 0; dy < height; dy++) {
@@ -323,6 +324,11 @@ public class TankEntity extends Mob {
     /** Medio largo (en bloques) de lo que aplasta el casco al avanzar. */
     protected double crushHalfLength() {
         return 3.5;
+    }
+
+    /** Medio ancho (en bloques) de lo que aplasta el casco al avanzar. */
+    protected double crushHalfWidth() {
+        return 2.5;
     }
 
     /** Altura (en bloques) de lo que aplasta el casco al avanzar. */

@@ -87,6 +87,18 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque_ciudadela"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<BehemothTankEntity>> BEHEMOTH_TANK =
+            ENTITIES.register("tanque_behemoth", () ->
+                    EntityType.Builder.<BehemothTankEntity>of(BehemothTankEntity::new, MobCategory.MISC)
+                            // casco excepcionalmente ancho (6) y bajo
+                            .sized(3.0f * TankEntity.SCALE, 2.2f * TankEntity.SCALE)
+                            // cadera del conductor dentro de la escotilla de la torreta baja (suelo a 1,15 del modelo)
+                            .passengerAttachments(1.45f * TankEntity.SCALE)
+                            .fireImmune()
+                            .clientTrackingRange(16)
+                            .updateInterval(1)
+                            .build("tanque_behemoth"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<ColosoTankEntity>> COLOSO_TANK =
             ENTITIES.register("tanque_coloso", () ->
                     EntityType.Builder.<ColosoTankEntity>of(ColosoTankEntity::new, MobCategory.MISC)

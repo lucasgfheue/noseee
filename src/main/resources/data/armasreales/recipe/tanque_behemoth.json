@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "NDN",
+    "TKT",
+    "III"
+  ],
+  "key": {
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "D": {
+      "item": "minecraft:diamond_block"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    },
+    "K": {
+      "item": "armasreales:tanque"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "result": {
+    "id": "armasreales:tanque_behemoth",
+    "count": 1
+  }
+}
