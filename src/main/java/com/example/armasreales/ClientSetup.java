@@ -37,6 +37,7 @@ public class ClientSetup {
         // Tanque (el proyectil del cañón es el mismo bloque de TNT del lanzador)
         event.registerEntityRenderer(ModEntities.TANK.get(), ctx -> new TankRenderer(ctx, false));
         event.registerEntityRenderer(ModEntities.TWIN_TANK.get(), ctx -> new TankRenderer(ctx, true));
+        event.registerEntityRenderer(ModEntities.FORTRESS_TANK.get(), FortressTankRenderer::new);
 
         // Dardo del taser (con brillo) y bola de ácido
         event.registerEntityRenderer(ModEntities.TASER_PROJECTILE.get(),

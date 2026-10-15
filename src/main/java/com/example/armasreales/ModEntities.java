@@ -65,6 +65,16 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque_doble"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<FortressTankEntity>> FORTRESS_TANK =
+            ENTITIES.register("tanque_fortaleza", () ->
+                    EntityType.Builder.<FortressTankEntity>of(FortressTankEntity::new, MobCategory.MISC)
+                            .sized(2.0f * TankEntity.SCALE, 2.0f * TankEntity.SCALE)
+                            .passengerAttachments(1.4f * TankEntity.SCALE)
+                            .fireImmune()
+                            .clientTrackingRange(12)
+                            .updateInterval(1)
+                            .build("tanque_fortaleza"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<PumpkinProjectile>> PUMPKIN_PROJECTILE =
             ENTITIES.register("proyectil_calabaza", () ->
                     EntityType.Builder.<PumpkinProjectile>of(PumpkinProjectile::new, MobCategory.MISC)

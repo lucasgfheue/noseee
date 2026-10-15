@@ -132,5 +132,7 @@
   "message.armasreales.monolito_lista": "MONOLITO listo: %s cargas",
   "message.armasreales.monolito_recargando": "MONOLITO recargando...",
   "message.armasreales.monolito_sin_nucleos": "Sin núcleos MASS-1",
-  "message.armasreales.monolito_cargas": "MONOLITO: %s/%s cargas"
+  "message.armasreales.monolito_cargas": "MONOLITO: %s/%s cargas",
+  "item.armasreales.tanque_fortaleza": "Tanque Fortaleza",
+  "entity.armasreales.tanque_fortaleza": "Tanque Fortaleza"
 }
