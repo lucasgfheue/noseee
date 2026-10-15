@@ -136,5 +136,7 @@
   "item.armasreales.tanque_fortaleza": "Fortress Tank",
   "entity.armasreales.tanque_fortaleza": "Fortress Tank",
   "item.armasreales.tanque_ciudadela": "Citadel Tank",
-  "entity.armasreales.tanque_ciudadela": "Citadel Tank"
+  "entity.armasreales.tanque_ciudadela": "Citadel Tank",
+  "item.armasreales.tanque_umbra": "Umbra Tank",
+  "entity.armasreales.tanque_umbra": "Umbra Tank"
 }

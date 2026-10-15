@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "NAN",
+    "TKT",
+    "RRR"
+  ],
+  "key": {
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "A": {
+      "item": "minecraft:amethyst_block"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    },
+    "K": {
+      "item": "armasreales:tanque"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "result": {
+    "id": "armasreales:tanque_umbra",
+    "count": 1
+  }
+}

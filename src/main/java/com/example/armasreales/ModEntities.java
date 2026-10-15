@@ -87,6 +87,16 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque_ciudadela"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<UmbraTankEntity>> UMBRA_TANK =
+            ENTITIES.register("tanque_umbra", () ->
+                    EntityType.Builder.<UmbraTankEntity>of(UmbraTankEntity::new, MobCategory.MISC)
+                            .sized(2.0f * TankEntity.SCALE, 2.0f * TankEntity.SCALE)
+                            .passengerAttachments(1.4f * TankEntity.SCALE)
+                            .fireImmune()
+                            .clientTrackingRange(12)
+                            .updateInterval(1)
+                            .build("tanque_umbra"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<PumpkinProjectile>> PUMPKIN_PROJECTILE =
             ENTITIES.register("proyectil_calabaza", () ->
                     EntityType.Builder.<PumpkinProjectile>of(PumpkinProjectile::new, MobCategory.MISC)
