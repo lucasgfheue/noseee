@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "armasreales:prision",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 48,
+    "separation": 14,
+    "salt": 55120931
+  }
+}

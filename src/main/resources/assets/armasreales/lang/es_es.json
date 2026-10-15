@@ -44,5 +44,13 @@
   "block.armasreales.radio": "Radio",
   "item.armasreales.torreta": "Torreta ametralladora",
   "item.armasreales.torreta_pesada": "Torreta pesada",
-  "entity.armasreales.torreta": "Torreta"
+  "entity.armasreales.torreta": "Torreta",
+  "entity.armasreales.zombi_prisionero": "Zombi prisionero",
+  "entity.armasreales.zombi_policia": "Zombi policía",
+  "entity.armasreales.zombi_swat": "Zombi SWAT",
+  "item.armasreales.zombi_prisionero_spawn_egg": "Generar Zombi prisionero",
+  "item.armasreales.zombi_policia_spawn_egg": "Generar Zombi policía",
+  "item.armasreales.zombi_swat_spawn_egg": "Generar Zombi SWAT",
+  "entity.armasreales.zombi_caminante": "Zombi caminante",
+  "item.armasreales.zombi_caminante_spawn_egg": "Generar Zombi caminante"
 }

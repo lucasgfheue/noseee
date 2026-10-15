@@ -130,4 +130,24 @@ public class ModItems {
 
     public static final DeferredItem<TurretItem> TORRETA_PESADA = ITEMS.registerItem(
             "torreta_pesada", props -> new TurretItem(props, TurretEntity.HEAVY), new Item.Properties().stacksTo(1));
+
+    public static final DeferredItem<SpawnEggItem> ZOMBI_PRISIONERO_SPAWN_EGG = ITEMS.registerItem(
+            "zombi_prisionero_spawn_egg",
+            props -> new SpawnEggItem(ModEntities.ZOMBI_PRISIONERO.get(), 0x5C7F4B, 0xE8731A, props),
+            new Item.Properties());
+
+    public static final DeferredItem<SpawnEggItem> ZOMBI_POLICIA_SPAWN_EGG = ITEMS.registerItem(
+            "zombi_policia_spawn_egg",
+            props -> new SpawnEggItem(ModEntities.ZOMBI_POLICIA.get(), 0x5C7F4B, 0x1E2A55, props),
+            new Item.Properties());
+
+    public static final DeferredItem<SpawnEggItem> ZOMBI_SWAT_SPAWN_EGG = ITEMS.registerItem(
+            "zombi_swat_spawn_egg",
+            props -> new SpawnEggItem(ModEntities.ZOMBI_SWAT.get(), 0x2A2A2E, 0x8A8A92, props),
+            new Item.Properties());
+
+    public static final DeferredItem<SpawnEggItem> ZOMBI_CAMINANTE_SPAWN_EGG = ITEMS.registerItem(
+            "zombi_caminante_spawn_egg",
+            props -> new SpawnEggItem(ModEntities.ZOMBI_CAMINANTE.get(), 0x5C7F4B, 0x6B7C8A, props),
+            new Item.Properties());
 }

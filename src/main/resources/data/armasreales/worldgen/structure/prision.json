@@ -1,0 +1,7 @@
+{
+  "type": "armasreales:prision",
+  "biomes": "#armasreales:has_prision",
+  "step": "surface_structures",
+  "terrain_adaptation": "none",
+  "spawn_overrides": {}
+}

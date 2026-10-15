@@ -149,4 +149,44 @@ public class ModEntities {
                             .passengerAttachments(new net.minecraft.world.phys.Vec3(0.0, 0.45, -0.55))
                             .clientTrackingRange(10)
                             .build("torreta"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<PrisonZombie>> ZOMBI_PRISIONERO =
+            ENTITIES.register("zombi_prisionero", () ->
+                    EntityType.Builder.<PrisonZombie>of((t, l) -> new PrisonZombie(t, l, PrisonZombie.PRISONER), MobCategory.MONSTER)
+                            .sized(0.6f, 1.95f)
+                            .eyeHeight(1.74f)
+                            .passengerAttachments(2.0125f)
+                            .ridingOffset(-0.7f)
+                            .clientTrackingRange(8)
+                            .build("zombi_prisionero"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<PrisonZombie>> ZOMBI_POLICIA =
+            ENTITIES.register("zombi_policia", () ->
+                    EntityType.Builder.<PrisonZombie>of((t, l) -> new PrisonZombie(t, l, PrisonZombie.POLICE), MobCategory.MONSTER)
+                            .sized(0.6f, 1.95f)
+                            .eyeHeight(1.74f)
+                            .passengerAttachments(2.0125f)
+                            .ridingOffset(-0.7f)
+                            .clientTrackingRange(8)
+                            .build("zombi_policia"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<PrisonZombie>> ZOMBI_SWAT =
+            ENTITIES.register("zombi_swat", () ->
+                    EntityType.Builder.<PrisonZombie>of((t, l) -> new PrisonZombie(t, l, PrisonZombie.SWAT), MobCategory.MONSTER)
+                            .sized(0.6f, 1.95f)
+                            .eyeHeight(1.74f)
+                            .passengerAttachments(2.0125f)
+                            .ridingOffset(-0.7f)
+                            .clientTrackingRange(8)
+                            .build("zombi_swat"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<PrisonZombie>> ZOMBI_CAMINANTE =
+            ENTITIES.register("zombi_caminante", () ->
+                    EntityType.Builder.<PrisonZombie>of((t, l) -> new PrisonZombie(t, l, PrisonZombie.WALKER), MobCategory.MONSTER)
+                            .sized(0.6f, 1.95f)
+                            .eyeHeight(1.74f)
+                            .passengerAttachments(2.0125f)
+                            .ridingOffset(-0.7f)
+                            .clientTrackingRange(8)
+                            .build("zombi_caminante"));
 }

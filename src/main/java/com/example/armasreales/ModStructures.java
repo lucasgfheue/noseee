@@ -31,6 +31,12 @@ public final class ModStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> BASE_PIECE =
             PIECES.register("base_militar", () -> (StructurePieceType) (ctx, tag) -> new MilitaryBasePiece(ctx, tag));
 
+    public static final DeferredHolder<StructureType<?>, StructureType<PrisonStructure>> PRISON =
+            TYPES.register("prision", () -> () -> PrisonStructure.CODEC);
+
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> PRISON_PIECE =
+            PIECES.register("prision", () -> (StructurePieceType) (ctx, tag) -> new PrisonPiece(ctx, tag));
+
     private ModStructures() {
     }
 }

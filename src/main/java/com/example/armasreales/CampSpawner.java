@@ -23,6 +23,18 @@ public final class CampSpawner {
     private CampSpawner() {
     }
 
+    /** Coloca la prisión (129x105) con su esquina mínima en (x0, z0). */
+    public static void buildPrison(ServerLevel level, int x0, int z0, int groundTop) {
+        BlockPos origin = new BlockPos(x0, groundTop - CampPiece.FLOOR_LAYER, z0);
+        net.minecraft.world.level.levelgen.structure.BoundingBox area =
+                new net.minecraft.world.level.levelgen.structure.BoundingBox(x0, origin.getY(), z0, x0 + 128, origin.getY() + 30, z0 + 104);
+        PrisonPiece.prepare(level, area, groundTop, area);
+        StructureTemplate template = level.getStructureManager().getOrCreate(
+                ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "prision/prision"));
+        template.placeInWorld(level, origin, origin, new StructurePlaceSettings().setIgnoreEntities(false),
+                level.getRandom(), 2);
+    }
+
     /** Coloca la base militar (121x121) con su esquina mínima en (x0, z0). */
     public static void buildBase(ServerLevel level, int x0, int z0, int groundTop) {
         BlockPos origin = new BlockPos(x0, groundTop - CampPiece.FLOOR_LAYER, z0);
@@ -97,6 +109,16 @@ public final class CampSpawner {
                     int top = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, c.getX(), c.getZ());
                     build(level, c.getX() - SIZE / 2, c.getZ() - SIZE / 2, top);
                     ctx.getSource().sendSuccess(() -> Component.literal("Campamento colocado"), true);
+                    return 1;
+                }));
+        event.getDispatcher().register(Commands.literal("prision").requires(src -> src.hasPermission(2))
+                .executes(ctx -> {
+                    ServerPlayer player = ctx.getSource().getPlayerOrException();
+                    ServerLevel level = player.serverLevel();
+                    BlockPos c = player.blockPosition().relative(player.getDirection(), 70);
+                    int top = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, c.getX(), c.getZ()) - 1;
+                    buildPrison(level, c.getX() - 64, c.getZ() - 52, top);
+                    ctx.getSource().sendSuccess(() -> Component.literal("Prisión colocada"), true);
                     return 1;
                 }));
         event.getDispatcher().register(Commands.literal("basemilitar").requires(src -> src.hasPermission(2))

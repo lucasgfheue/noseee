@@ -89,7 +89,7 @@ public class ArmedZombie extends Zombie {
     }
 
     /** Una sola tirada decide el arma principal: AK 7 %, escopeta 15 %, pistola 20 %, nada 58 %. */
-    private void armUp(RandomSource random) {
+    protected void armUp(RandomSource random) {
         float roll = random.nextFloat();
         Item gun = null;
         if (roll < CHANCE_AK) {
