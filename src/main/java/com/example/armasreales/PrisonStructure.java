@@ -26,18 +26,9 @@ public class PrisonStructure extends Structure {
     public PrisonStructure(Structure.StructureSettings settings) {
         super(settings);
     }
-
-        private static final int MIN_DIST = 1500;
-    private static final int MAX_DIST = 3000;
-
     @Override
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
         ChunkPos cp = context.chunkPos();
-        // sólo aparece a una distancia del spawn (0,0) entre MIN_DIST y MAX_DIST bloques
-        double distSq = (double) cp.getMiddleBlockX() * cp.getMiddleBlockX() + (double) cp.getMiddleBlockZ() * cp.getMiddleBlockZ();
-        if (distSq < (double) MIN_DIST * MIN_DIST || distSq > (double) MAX_DIST * MAX_DIST) {
-            return Optional.empty();
-        }
         int x0 = cp.getMinBlockX() + 8 - SIZE_X / 2;
         int z0 = cp.getMinBlockZ() + 8 - SIZE_Z / 2;
         ChunkGenerator gen = context.chunkGenerator();
