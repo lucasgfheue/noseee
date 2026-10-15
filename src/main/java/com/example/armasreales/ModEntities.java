@@ -87,6 +87,18 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque_ciudadela"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<ColosoTankEntity>> COLOSO_TANK =
+            ENTITIES.register("tanque_coloso", () ->
+                    EntityType.Builder.<ColosoTankEntity>of(ColosoTankEntity::new, MobCategory.MISC)
+                            // más ancho que los demás: el casco llega a 4,8 de ancho; el casco alto y la torreta, a 5,4
+                            .sized(2.4f * TankEntity.SCALE, 2.7f * TankEntity.SCALE)
+                            // cadera del conductor dentro de la escotilla de la torreta (suelo a 1,7 del modelo)
+                            .passengerAttachments(2.0f * TankEntity.SCALE)
+                            .fireImmune()
+                            .clientTrackingRange(16)
+                            .updateInterval(1)
+                            .build("tanque_coloso"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<UmbraTankEntity>> UMBRA_TANK =
             ENTITIES.register("tanque_umbra", () ->
                     EntityType.Builder.<UmbraTankEntity>of(UmbraTankEntity::new, MobCategory.MISC)
