@@ -1,19 +1,24 @@
 package com.example.armasreales;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -24,31 +29,34 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.UUID;
 
 /**
- * Sobreviviente prisionero: pelea contra los mobs hostiles. Con el jugador es neutral mientras lo ve;
- * si lo golpean, o si el jugador sale de su vista, lo cazan hasta matarlo.
+ * Sobreviviente prisionero: pelea contra los mobs hostiles y es neutral con el jugador. De noche se le acerca,
+ * le roba cosas del inventario (con un aviso) y huye; las suelta al morir. Si el jugador duerme, va a su cama
+ * y lo mata. Si el jugador lo golpea, él y los demás sobrevivientes cercanos se enfurecen.
  */
 public class SobrevivienteEntity extends PathfinderMob {
     public static final int SKINS = 5;
     private static final int HOME_RADIUS = 24;
-    private static final int LOSE_SIGHT_TICKS = 60;
 
     private static final EntityDataAccessor<Integer> DATA_SKIN =
             SynchedEntityData.defineId(SobrevivienteEntity.class, EntityDataSerializers.INT);
 
     private boolean angry;
     private UUID angerTarget;
-    private UUID seenPlayer;
-    private int unseenTicks;
     private boolean homeSet;
     private BlockPos home;
+    private final List<ItemStack> stash = new ArrayList<>();
 
     public SobrevivienteEntity(EntityType<? extends SobrevivienteEntity> type, Level level) {
         super(type, level);
@@ -67,6 +75,11 @@ public class SobrevivienteEntity extends PathfinderMob {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new SleeperKillGoal());
+        // con el botín robado huye del jugador
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<Player>(this, Player.class, 24.0f, 1.2, 1.5,
+                p -> !this.stash.isEmpty() && !this.angry));
+        this.goalSelector.addGoal(2, new ThiefGoal());
         this.goalSelector.addGoal(2, new SobrevivienteShootGoal(this));
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.15, false));
         this.goalSelector.addGoal(4, new MoveTowardsRestrictionGoal(this, 0.9));
@@ -94,6 +107,10 @@ public class SobrevivienteEntity extends PathfinderMob {
         this.entityData.set(DATA_SKIN, skin);
     }
 
+    public boolean isAngry() {
+        return this.angry;
+    }
+
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -102,6 +119,11 @@ public class SobrevivienteEntity extends PathfinderMob {
         if (this.angerTarget != null) {
             tag.putUUID("AngerTarget", this.angerTarget);
         }
+        ListTag list = new ListTag();
+        for (ItemStack s : this.stash) {
+            list.add(s.save(this.registryAccess()));
+        }
+        tag.put("Stash", list);
         if (this.home != null) {
             tag.putInt("HomeX", this.home.getX());
             tag.putInt("HomeY", this.home.getY());
@@ -118,6 +140,11 @@ public class SobrevivienteEntity extends PathfinderMob {
         this.angry = tag.getBoolean("Angry");
         if (tag.hasUUID("AngerTarget")) {
             this.angerTarget = tag.getUUID("AngerTarget");
+        }
+        ListTag list = tag.getList("Stash", 10);
+        this.stash.clear();
+        for (int i = 0; i < list.size(); i++) {
+            ItemStack.parse(this.registryAccess(), list.get(i)).ifPresent(this.stash::add);
         }
         if (tag.contains("HomeX")) {
             this.home = new BlockPos(tag.getInt("HomeX"), tag.getInt("HomeY"), tag.getInt("HomeZ"));
@@ -140,13 +167,21 @@ public class SobrevivienteEntity extends PathfinderMob {
         if (result && !this.level().isClientSide && source.getEntity() instanceof Player player
                 && !player.isCreative() && !player.isSpectator()) {
             this.enrage(player);
-            // los demás sobrevivientes cercanos también se ponen en su contra
             AABB box = this.getBoundingBox().inflate(24.0);
             for (SobrevivienteEntity other : this.level().getEntitiesOfClass(SobrevivienteEntity.class, box)) {
                 other.enrage(player);
             }
         }
         return result;
+    }
+
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean recentlyHit) {
+        super.dropCustomDeathLoot(level, source, recentlyHit);
+        for (ItemStack s : this.stash) {
+            this.spawnAtLocation(s);
+        }
+        this.stash.clear();
     }
 
     @Override
@@ -160,31 +195,163 @@ public class SobrevivienteEntity extends PathfinderMob {
             this.home = this.blockPosition();
             this.restrictTo(this.home, HOME_RADIUS);
         }
-        // Vigilancia del jugador: mientras lo ven se quedan tranquilos; si lo pierden de vista, lo cazan
-        if (!this.angry && this.tickCount % 5 == 0) {
-            Player near = this.level().getNearestPlayer(this, 24.0);
-            if (near != null && !near.isCreative() && !near.isSpectator() && this.hasLineOfSight(near)) {
-                this.seenPlayer = near.getUUID();
-                this.unseenTicks = 0;
-            } else if (this.seenPlayer != null) {
-                Player seen = this.level().getPlayerByUUID(this.seenPlayer);
-                if (seen == null || !seen.isAlive() || this.distanceToSqr(seen) > 48.0 * 48.0) {
-                    this.seenPlayer = null;
-                    this.unseenTicks = 0;
-                } else if (!this.hasLineOfSight(seen)) {
-                    this.unseenTicks += 5;
-                    if (this.unseenTicks >= LOSE_SIGHT_TICKS) {
-                        this.enrage(seen);
-                    }
-                } else {
-                    this.unseenTicks = 0;
-                }
-            }
-        }
         this.setAggressive(this.getTarget() != null && this.getTarget().isAlive());
     }
 
-    /** Objetivo prioritario: el jugador contra el que están furiosos. */
+    // ------------------------------------------------------------------ Robo nocturno
+
+    private boolean isNightNow() {
+        long t = this.level().getDayTime() % 24000L;
+        return t >= 13000L && t <= 23000L;
+    }
+
+    private Player nearestVictim(double range) {
+        Player best = null;
+        double bd = range * range;
+        for (Player p : this.level().players()) {
+            if (p.isAlive() && !p.isCreative() && !p.isSpectator()) {
+                double d = this.distanceToSqr(p);
+                if (d < bd) {
+                    bd = d;
+                    best = p;
+                }
+            }
+        }
+        return best;
+    }
+
+    /** De noche, sin objetivo y sin botín: se acerca al jugador y le roba. */
+    private class ThiefGoal extends Goal {
+        private Player victim;
+
+        ThiefGoal() {
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            SobrevivienteEntity m = SobrevivienteEntity.this;
+            if (!m.stash.isEmpty() || m.angry || m.getTarget() != null || !m.isNightNow() || m.tickCount % 10 != 0) {
+                return false;
+            }
+            Player p = m.nearestVictim(28.0);
+            if (p == null || p.isSleeping()) {
+                return false;
+            }
+            this.victim = p;
+            return true;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            SobrevivienteEntity m = SobrevivienteEntity.this;
+            return m.stash.isEmpty() && !m.angry && m.getTarget() == null && m.isNightNow() && this.victim != null
+                    && this.victim.isAlive() && !this.victim.isCreative() && !this.victim.isSleeping()
+                    && m.distanceToSqr(this.victim) < 40.0 * 40.0;
+        }
+
+        @Override
+        public void start() {
+            SobrevivienteEntity.this.clearRestriction();
+        }
+
+        @Override
+        public void tick() {
+            SobrevivienteEntity m = SobrevivienteEntity.this;
+            m.getLookControl().setLookAt(this.victim, 30.0f, 30.0f);
+            if (m.distanceToSqr(this.victim) > 2.2 * 2.2) {
+                m.getNavigation().moveTo(this.victim, 1.05);
+            } else {
+                m.steal(this.victim);
+            }
+        }
+
+        @Override
+        public void stop() {
+            this.victim = null;
+        }
+    }
+
+    /** Roba hasta 12 pilas del inventario y avisa al jugador. */
+    private void steal(Player player) {
+        List<Integer> slots = new ArrayList<>();
+        for (int i = 0; i < 36; i++) {
+            if (!player.getInventory().getItem(i).isEmpty()) {
+                slots.add(i);
+            }
+        }
+        java.util.Collections.shuffle(slots, new java.util.Random(this.random.nextLong()));
+        int take = Math.min(slots.size(), 12);
+        for (int k = 0; k < take; k++) {
+            ItemStack taken = player.getInventory().removeItemNoUpdate(slots.get(k));
+            if (!taken.isEmpty()) {
+                this.stash.add(taken);
+            }
+        }
+        if (this.stash.isEmpty()) {
+            return;                                   // no llevaba nada: no hay robo
+        }
+        this.clearRestriction();
+        player.displayClientMessage(Component.literal("\u00a1ALERTA! Un sobreviviente te ha robado cosas de tu inventario y est\u00e1 huyendo. M\u00e1talo para recuperarlas.")
+                .withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
+        player.displayClientMessage(Component.literal("\u00a1Te han robado!")
+                .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD), true);
+        this.level().playSound(null, player.blockPosition(), SoundEvents.ITEM_PICKUP,
+                net.minecraft.sounds.SoundSource.NEUTRAL, 1.0f, 0.6f);
+    }
+
+    /** Si hay un jugador durmiendo, va hasta su cama y lo mata. */
+    private class SleeperKillGoal extends Goal {
+        private Player sleeper;
+
+        SleeperKillGoal() {
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+        }
+
+        @Override
+        public boolean canUse() {
+            SobrevivienteEntity m = SobrevivienteEntity.this;
+            if (m.tickCount % 10 != 0) {
+                return false;
+            }
+            for (Player p : m.level().players()) {
+                if (p.isAlive() && p.isSleeping() && !p.isCreative() && m.distanceToSqr(p) < 48.0 * 48.0) {
+                    this.sleeper = p;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.sleeper != null && this.sleeper.isAlive() && this.sleeper.isSleeping();
+        }
+
+        @Override
+        public void start() {
+            SobrevivienteEntity.this.clearRestriction();
+        }
+
+        @Override
+        public void tick() {
+            SobrevivienteEntity m = SobrevivienteEntity.this;
+            m.getLookControl().setLookAt(this.sleeper, 30.0f, 30.0f);
+            if (m.distanceToSqr(this.sleeper) > 2.2 * 2.2) {
+                m.getNavigation().moveTo(this.sleeper, 1.2);
+            } else {
+                this.sleeper.hurt(m.damageSources().mobAttack(m), 1000.0f);
+                m.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+            }
+        }
+
+        @Override
+        public void stop() {
+            this.sleeper = null;
+        }
+    }
+
+    /** Objetivo prioritario: sólo el jugador que los golpeó. */
     private class AngerGoal extends Goal {
         private Player target;
 
@@ -193,12 +360,13 @@ public class SobrevivienteEntity extends PathfinderMob {
         }
 
         private Player find() {
-            if (!SobrevivienteEntity.this.angry || SobrevivienteEntity.this.angerTarget == null) {
+            SobrevivienteEntity self = SobrevivienteEntity.this;
+            if (!self.angry || self.angerTarget == null) {
                 return null;
             }
-            Player p = SobrevivienteEntity.this.level().getPlayerByUUID(SobrevivienteEntity.this.angerTarget);
+            Player p = self.level().getPlayerByUUID(self.angerTarget);
             if (p == null || !p.isAlive() || p.isCreative() || p.isSpectator()
-                    || SobrevivienteEntity.this.distanceToSqr(p) > 48.0 * 48.0) {
+                    || self.distanceToSqr(p) > 48.0 * 48.0) {
                 return null;
             }
             return p;

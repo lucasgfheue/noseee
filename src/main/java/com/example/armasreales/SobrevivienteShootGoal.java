@@ -28,6 +28,9 @@ public class SobrevivienteShootGoal extends Goal {
     @Override
     public boolean canUse() {
         LivingEntity t = mob.getTarget();
+        if (t instanceof net.minecraft.world.entity.player.Player && !mob.isAngry()) {
+            return false;               // de noche, al jugador lo asaltan cuerpo a cuerpo para robarle
+        }
         return t != null && t.isAlive() && hasGun() && mob.distanceToSqr(t) < RANGE * RANGE
                 && mob.getSensing().hasLineOfSight(t);
     }
