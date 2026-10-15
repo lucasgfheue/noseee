@@ -30,7 +30,7 @@ import net.minecraft.world.phys.Vec3;
  * Control 94/100: los dispositivos giran con rapidez hacia su objetivo.
  *  - Clic izquierdo: libera 1 dispositivo (1 carga) que marca y persigue al objetivo más cercano a tu mira.
  *  - Agachado + clic izquierdo, habilidad ENJAMBRE: marca hasta 3 objetivos y libera 2 dispositivos por carga
- *    (usa hasta 3 cargas). Al llegar, dañan un poco y ralentizan al objetivo; nunca lo inmovilizan.
+ *    (usa hasta 3 cargas). Al llegar, dañan (6 cada uno) y ralentizan al objetivo; nunca lo inmovilizan.
  *  - Cuando se queda sin cargas recarga sola con cápsulas SWARM-6 del inventario.
  */
 public class SwarmLauncherItem extends Item implements Gun {

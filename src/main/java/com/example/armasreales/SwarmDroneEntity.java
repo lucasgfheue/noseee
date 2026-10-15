@@ -25,14 +25,14 @@ import java.util.UUID;
 
 /**
  * Dispositivo autónomo del ENJAMBRE: un pequeño dron virtual que persigue a su objetivo marcado (o al enemigo
- * más cercano si no tiene) girando con rapidez (control 94). Al alcanzarlo hace un daño leve y lo ralentiza;
+ * más cercano si no tiene) girando con rapidez (control 94). Al alcanzarlo hace 6 de daño y lo ralentiza;
  * impactos repetidos aumentan la ralentización hasta Lentitud III, sin inmovilizar. No rompe bloques.
  */
 public class SwarmDroneEntity extends Entity {
     public static final int LIFETIME = 140;
     private static final double SPEED = 0.85;
     private static final double TURN = 0.38;               // control 94: giro rápido
-    private static final float DAMAGE = 3.0f;
+    private static final float DAMAGE = 6.0f;
     private static final int SLOW_TICKS = 90;
     private static final double SEARCH = 20.0;
     private static final DustParticleOptions TRAIL = new DustParticleOptions(new Vector3f(0.25f, 1.0f, 0.4f), 0.6f);
