@@ -115,7 +115,7 @@ public class RevolverItem extends Item implements Gun {
 
         if (this.mode == Mode.ELECTRIC_BALL) {
             ElectricShot ball = new ElectricShot(level, player, ElectricShot.BALL, this.damage);
-            ball.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 2.4f, aiming ? 0.0f : 3.0f);
+            ball.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 3.0f, aiming ? 0.0f : 3.0f);
             level.addFreshEntity(ball);
             level.playSound(null, player.blockPosition(), SoundEvents.LIGHTNING_BOLT_THUNDER,
                     SoundSource.PLAYERS, 0.15f, 2.0f);

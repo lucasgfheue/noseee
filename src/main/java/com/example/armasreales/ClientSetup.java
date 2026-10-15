@@ -62,8 +62,7 @@ public class ClientSetup {
                 context -> new ThrownItemRenderer<>(context, 1.4F, false));
         event.registerEntityRenderer(ModEntities.EXPLOSIVE_SHOT.get(),
                 context -> new ThrownItemRenderer<>(context, 1.4F, false));
-        event.registerEntityRenderer(ModEntities.ELECTRIC_SHOT.get(),
-                context -> new ThrownItemRenderer<>(context, 1.3F, true));
+        event.registerEntityRenderer(ModEntities.ELECTRIC_SHOT.get(), ElectricShotRenderer::new);
         event.registerEntityRenderer(ModEntities.BOMB_PROJECTILE.get(),
                 context -> new ThrownItemRenderer<>(context, 1.6F, false));
     }

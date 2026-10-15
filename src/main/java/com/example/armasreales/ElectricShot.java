@@ -25,7 +25,12 @@ import java.util.Set;
  * SPARK: chispa que ATRAVIESA entidades (daña a todas las que encuentra) y se apaga contra un bloque.
  */
 public class ElectricShot extends ThrowableItemProjectile {
-    public static final int BALL = 0, SPARK = 1;
+    public static final int BALL = 0, SPARK = 1, TRACER = 2;
+
+    private static final net.minecraft.network.syncher.EntityDataAccessor<Integer> KIND =
+            net.minecraft.network.syncher.SynchedEntityData.defineId(ElectricShot.class,
+                    net.minecraft.network.syncher.EntityDataSerializers.INT);
+    private boolean ignite;
 
     private int kind = BALL;
     private float damage = 6.0f;
@@ -40,7 +45,21 @@ public class ElectricShot extends ThrowableItemProjectile {
         this.kind = kind;
         this.damage = damage;
         this.setNoGravity(true);
-        this.setItem(new net.minecraft.world.item.ItemStack(kind == BALL ? ModItems.BOLA_ELECTRICA.get() : ModItems.CHISPA.get()));
+        this.entityData.set(KIND, kind);
+    }
+
+    public int getKind() {
+        return this.entityData.get(KIND);
+    }
+
+    public void setIgnite(boolean ignite) {
+        this.ignite = ignite;
+    }
+
+    @Override
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(KIND, BALL);
     }
 
     /** Evita volver a golpear a una entidad ya atravesada (o a la que originó la división). */
@@ -69,6 +88,7 @@ public class ElectricShot extends ThrowableItemProjectile {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.kind = tag.getInt("Kind");
+        this.entityData.set(KIND, this.kind);
         this.damage = tag.getFloat("Damage");
     }
 
@@ -78,16 +98,13 @@ public class ElectricShot extends ThrowableItemProjectile {
         if (this.isRemoved() || !(this.level() instanceof ServerLevel level)) {
             return;
         }
-        if (this.tickCount > (this.kind == BALL ? 80 : 25)) {
+        if (this.tickCount > (this.kind == BALL ? 60 : this.kind == TRACER ? 40 : 25)) {
             this.discard();
             return;
         }
-        if (this.kind == BALL) {
-            level.sendParticles(ParticleTypes.ELECTRIC_SPARK, getX(), getY(0.5), getZ(), 3, 0.08, 0.08, 0.08, 0.02);
-            level.sendParticles(ParticleTypes.GLOW, getX(), getY(0.5), getZ(), 1, 0.02, 0.02, 0.02, 0.0);
-        } else {
-            level.sendParticles(ParticleTypes.ELECTRIC_SPARK, getX(), getY(0.5), getZ(), 1, 0.03, 0.03, 0.03, 0.0);
-            level.sendParticles(ParticleTypes.CRIT, getX(), getY(0.5), getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+        if (this.kind == SPARK) {
+            level.sendParticles(ParticleTypes.FLAME, getX(), getY(0.5), getZ(), 2, 0.04, 0.04, 0.04, 0.01);
+            level.sendParticles(ParticleTypes.SMOKE, getX(), getY(0.5), getZ(), 2, 0.05, 0.05, 0.05, 0.01);
         }
     }
 
@@ -107,9 +124,18 @@ public class ElectricShot extends ThrowableItemProjectile {
         zap(target, this.damage);
 
         if (this.kind == SPARK) {
-            level.sendParticles(ParticleTypes.ELECTRIC_SPARK, result.getLocation().x, result.getLocation().y,
-                    result.getLocation().z, 6, 0.15, 0.15, 0.15, 0.1);
+            level.sendParticles(ParticleTypes.FLAME, result.getLocation().x, result.getLocation().y,
+                    result.getLocation().z, 5, 0.12, 0.12, 0.12, 0.04);
+            level.sendParticles(ParticleTypes.LARGE_SMOKE, result.getLocation().x, result.getLocation().y,
+                    result.getLocation().z, 3, 0.12, 0.12, 0.12, 0.02);
             return;                                           // la chispa sigue de largo
+        }
+        if (this.kind == TRACER) {
+            if (this.ignite) {
+                target.setRemainingFireTicks(80);
+            }
+            this.discard();
+            return;
         }
 
         // BALL: la descarga salta a las entidades cercanas
@@ -135,7 +161,13 @@ public class ElectricShot extends ThrowableItemProjectile {
         super.onHitBlock(result);
         if (this.level() instanceof ServerLevel level) {
             Vec3 p = result.getLocation();
-            level.sendParticles(ParticleTypes.ELECTRIC_SPARK, p.x, p.y, p.z, this.kind == BALL ? 12 : 4, 0.2, 0.2, 0.2, 0.1);
+            if (this.kind == SPARK) {
+                level.sendParticles(ParticleTypes.FLAME, p.x, p.y, p.z, 3, 0.1, 0.1, 0.1, 0.03);
+                level.sendParticles(ParticleTypes.SMOKE, p.x, p.y, p.z, 3, 0.1, 0.1, 0.1, 0.02);
+            } else {
+                level.sendParticles(this.kind == TRACER ? ParticleTypes.CRIT : ParticleTypes.ELECTRIC_SPARK,
+                        p.x, p.y, p.z, 5, 0.15, 0.15, 0.15, 0.08);
+            }
             this.discard();
         }
     }

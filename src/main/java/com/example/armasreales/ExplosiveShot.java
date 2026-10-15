@@ -92,8 +92,8 @@ public class ExplosiveShot extends ThrowableItemProjectile {
                 level.sendParticles(ParticleTypes.FLAME, getX(), getY(0.5), getZ(), 2, 0.03, 0.03, 0.03, 0.01);
                 level.sendParticles(ParticleTypes.SMOKE, getX(), getY(0.5), getZ(), 3, 0.05, 0.05, 0.05, 0.0);
             }
-            case STICKY -> level.sendParticles(this.stuck ? ParticleTypes.ELECTRIC_SPARK : ParticleTypes.ITEM_SLIME,
-                    getX(), getY(0.5), getZ(), 2, 0.1, 0.1, 0.1, 0.0);
+            case STICKY -> level.sendParticles(ParticleTypes.LARGE_SMOKE,
+                    getX(), getY(0.5), getZ(), 1, 0.08, 0.08, 0.08, 0.0);
             default -> level.sendParticles(ParticleTypes.SMALL_FLAME, getX(), getY(0.5) + 0.2, getZ(), 1, 0.03, 0.03, 0.03, 0.0);
         }
         boolean fused = this.kind == GRENADE || this.kind == BOMBLET || (this.kind == STICKY && this.stuck);
@@ -129,9 +129,9 @@ public class ExplosiveShot extends ThrowableItemProjectile {
             default -> {                                       // granada / minibomba: rebota
                 Vec3 v = this.getDeltaMovement();
                 switch (result.getDirection().getAxis()) {
-                    case X -> v = new Vec3(-v.x * 0.55, v.y * 0.7, v.z * 0.7);
-                    case Y -> v = new Vec3(v.x * 0.7, -v.y * 0.5, v.z * 0.7);
-                    case Z -> v = new Vec3(v.x * 0.7, v.y * 0.7, -v.z * 0.55);
+                    case X -> v = new Vec3(-v.x * 0.2, v.y * 0.4, v.z * 0.4);
+                    case Y -> v = new Vec3(v.x * 0.4, -v.y * 0.12, v.z * 0.4);
+                    case Z -> v = new Vec3(v.x * 0.4, v.y * 0.4, -v.z * 0.2);
                 }
                 Vec3 n = Vec3.atLowerCornerOf(result.getDirection().getNormal());
                 this.setPos(result.getLocation().add(n.scale(0.12)));

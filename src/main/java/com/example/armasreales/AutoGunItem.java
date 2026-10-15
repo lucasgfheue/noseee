@@ -115,6 +115,18 @@ public class AutoGunItem extends Item implements Gun {
     private void shoot(ServerLevel level, Player player, double spread) {
         Vec3 eye = player.getEyePosition();
         Vec3 look = Bullets.spread(level, player.getLookAngle(), spread);
+        if (this.fx == Fx.IGNITE) {                  // fusil ámbar: proyectil de línea naranja brillante
+            ElectricShot bolt = new ElectricShot(level, player, ElectricShot.TRACER, this.damage);
+            bolt.setIgnite(true);
+            bolt.setPos(eye.x + look.x * 0.9, eye.y - 0.12 + look.y * 0.9, eye.z + look.z * 0.9);
+            bolt.setDeltaMovement(look.scale(6.0));
+            level.addFreshEntity(bolt);
+            level.playSound(null, player.blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST,
+                    SoundSource.PLAYERS, 1.6f, this.pitch);
+            level.playSound(null, player.blockPosition(), SoundEvents.GENERIC_EXPLODE.value(),
+                    SoundSource.PLAYERS, 0.25f, 2.0f);
+            return;
+        }
         Bullets.Hit hit = Bullets.trace(level, player, eye, look, RANGE);
 
         Entity target = hit.entity();
