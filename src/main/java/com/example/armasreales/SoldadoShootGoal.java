@@ -29,17 +29,17 @@ public class SoldadoShootGoal extends Goal {
 
     private double range() {
         return switch (mob.getRole()) {
-            case SoldadoEntity.ROLE_SHOTGUN -> 22.0;
-            case SoldadoEntity.ROLE_SNIPER -> 70.0;
-            default -> 40.0;
+            case SoldadoEntity.ROLE_SHOTGUN -> 32.0;
+            case SoldadoEntity.ROLE_SNIPER -> 110.0;
+            default -> 64.0;
         };
     }
 
     private double holdDistance() {
         return switch (mob.getRole()) {
-            case SoldadoEntity.ROLE_SHOTGUN -> 6.0;
+            case SoldadoEntity.ROLE_SHOTGUN -> 8.0;
             case SoldadoEntity.ROLE_SNIPER -> 999.0;     // no se mueve
-            default -> 14.0;
+            default -> 22.0;
         };
     }
 
@@ -75,6 +75,15 @@ public class SoldadoShootGoal extends Goal {
         double dist = mob.distanceTo(target);
         boolean los = mob.getSensing().hasLineOfSight(target);
         boolean sniper = mob.getRole() == SoldadoEntity.ROLE_SNIPER;
+
+        // Montado en una torreta: la maneja con el arma de ella
+        if (mob.getVehicle() instanceof TurretEntity turret) {
+            mob.getNavigation().stop();
+            if (los && dist < 90.0) {
+                turret.fireByMob(mob, target);
+            }
+            return;
+        }
 
         // Movimiento: sólo avanza si el objetivo está dentro de su zona; si él se desvió, vuelve a su puesto
         if (!mob.isWithinRestriction()) {
@@ -134,9 +143,9 @@ public class SoldadoShootGoal extends Goal {
             Map<Entity, Float> damage = new LinkedHashMap<>();
             for (int i = 0; i < 9; i++) {
                 Vec3 d = Bullets.spread(level, dir, 0.07);
-                Bullets.Hit hit = Bullets.trace(level, mob, eye, d, 30.0);
+                Bullets.Hit hit = Bullets.trace(level, mob, eye, d, 40.0);
                 if (hit.entity() != null && !isAlly(hit.entity())) {
-                    float falloff = (float) Math.max(0.0, 1.0 - hit.distance() / 22.0);
+                    float falloff = (float) Math.max(0.0, 1.0 - hit.distance() / 30.0);
                     damage.merge(hit.entity(), 0.5f + 3.2f * falloff, Float::sum);
                 }
             }
@@ -149,7 +158,7 @@ public class SoldadoShootGoal extends Goal {
             effects(level, eye, dir, 6);
         } else if (role == SoldadoEntity.ROLE_SNIPER) {
             Vec3 d = Bullets.spread(level, dir, 0.004);
-            Bullets.Hit hit = Bullets.trace(level, mob, eye, d, 90.0);
+            Bullets.Hit hit = Bullets.trace(level, mob, eye, d, 130.0);
             if (hit.entity() != null && !isAlly(hit.entity())) {
                 hit.entity().invulnerableTime = 0;
                 hit.entity().hurt(source, 14.0f);
@@ -163,7 +172,7 @@ public class SoldadoShootGoal extends Goal {
             effects(level, eye, d, 5);
         } else {
             Vec3 d = Bullets.spread(level, dir, 0.045 + dist * 0.0012);
-            Bullets.Hit hit = Bullets.trace(level, mob, eye, d, 55.0);
+            Bullets.Hit hit = Bullets.trace(level, mob, eye, d, 90.0);
             if (hit.entity() != null && !isAlly(hit.entity())) {
                 hit.entity().invulnerableTime = 0;
                 hit.entity().hurt(source, 3.5f);

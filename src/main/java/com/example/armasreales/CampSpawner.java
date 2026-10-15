@@ -23,11 +23,11 @@ public final class CampSpawner {
     private CampSpawner() {
     }
 
-    /** Coloca la base militar (61x61) con su esquina mínima en (x0, z0). */
+    /** Coloca la base militar (121x121) con su esquina mínima en (x0, z0). */
     public static void buildBase(ServerLevel level, int x0, int z0, int groundTop) {
         BlockPos origin = new BlockPos(x0, groundTop - CampPiece.FLOOR_LAYER, z0);
         net.minecraft.world.level.levelgen.structure.BoundingBox area =
-                new net.minecraft.world.level.levelgen.structure.BoundingBox(x0, origin.getY(), z0, x0 + 60, origin.getY() + 30, z0 + 60);
+                new net.minecraft.world.level.levelgen.structure.BoundingBox(x0, origin.getY(), z0, x0 + 120, origin.getY() + 30, z0 + 120);
         MilitaryBasePiece.prepare(level, area, groundTop, area);
         StructureTemplate template = level.getStructureManager().getOrCreate(
                 ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "base_militar/base"));
@@ -103,9 +103,9 @@ public final class CampSpawner {
                 .executes(ctx -> {
                     ServerPlayer player = ctx.getSource().getPlayerOrException();
                     ServerLevel level = player.serverLevel();
-                    BlockPos c = player.blockPosition().relative(player.getDirection(), 40);
+                    BlockPos c = player.blockPosition().relative(player.getDirection(), 80);
                     int top = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, c.getX(), c.getZ()) - 1;
-                    buildBase(level, c.getX() - 30, c.getZ() - 30, top);
+                    buildBase(level, c.getX() - 60, c.getZ() - 60, top);
                     ctx.getSource().sendSuccess(() -> Component.literal("Base militar colocada"), true);
                     return 1;
                 }));

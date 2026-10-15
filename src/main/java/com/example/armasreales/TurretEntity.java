@@ -13,7 +13,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -38,6 +40,9 @@ public class TurretEntity extends Mob {
     private static final EntityDataAccessor<Integer> DATA_TYPE =
             SynchedEntityData.defineId(TurretEntity.class, EntityDataSerializers.INT);
 
+    private static final EntityDataAccessor<Float> DATA_PITCH =
+            SynchedEntityData.defineId(TurretEntity.class, EntityDataSerializers.FLOAT);
+
     private int cooldown = 0;
 
     public TurretEntity(EntityType<? extends TurretEntity> type, Level level) {
@@ -56,10 +61,16 @@ public class TurretEntity extends Mob {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_TYPE, MG);
+        builder.define(DATA_PITCH, 0.0f);
     }
 
     public int getTurretType() {
         return this.entityData.get(DATA_TYPE);
+    }
+
+    /** Cabeceo del arma cuando la maneja un soldado (si la maneja un jugador, se usa su mirada). */
+    public float getAimPitch() {
+        return this.entityData.get(DATA_PITCH);
     }
 
     public void setTurretType(int type) {
@@ -138,7 +149,45 @@ public class TurretEntity extends Mob {
             this.yRotO = this.getYRot();
             this.yBodyRot = this.getYRot();
             this.yHeadRot = this.getYRot();
+        } else if (!this.level().isClientSide && this.getFirstPassenger() instanceof SoldadoEntity soldier) {
+            LivingEntity target = soldier.getTarget();
+            if (target != null) {
+                Vec3 d = target.getEyePosition().subtract(this.position().add(0.0, PIVOT_Y, 0.0));
+                float yaw = (float) (Mth.atan2(-d.x, d.z) * (180.0 / Math.PI));
+                float pitch = (float) (-(Mth.atan2(d.y, Math.sqrt(d.x * d.x + d.z * d.z)) * (180.0 / Math.PI)));
+                this.setYRot(Mth.approachDegrees(this.getYRot(), yaw, 30.0f));
+                this.entityData.set(DATA_PITCH, Mth.clamp(
+                        Mth.approach(this.getAimPitch(), pitch, 25.0f), -60.0f, 45.0f));
+            }
+            this.yBodyRot = this.getYRot();
+            this.yHeadRot = this.getYRot();
+            soldier.setYRot(this.getYRot());
+            soldier.yBodyRot = this.getYRot();
+            soldier.yHeadRot = this.getYRot();
         }
+    }
+
+    /** Disparo de un soldado montado: ráfaga con la ametralladora hacia su objetivo. */
+    public void fireByMob(SoldadoEntity soldier, LivingEntity target) {
+        if (this.cooldown > 0 || !(this.level() instanceof ServerLevel level)) {
+            return;
+        }
+        Vec3 pivot = this.position().add(0.0, PIVOT_Y, 0.0);
+        Vec3 aim = target.position().add(0.0, target.getBbHeight() * 0.6, 0.0);
+        Vec3 dir = aim.subtract(pivot).normalize();
+        Vec3 muzzle = pivot.add(dir.scale(1.3));
+        double dist = pivot.distanceTo(aim);
+        Vec3 d = Bullets.spread(level, dir, 0.02 + dist * 0.0008);
+        Bullets.Hit hit = Bullets.trace(level, this, muzzle, d, 100.0,
+                e -> e != this && !(e instanceof SoldadoEntity) && !e.isPassengerOfSameVehicle(this));
+        if (hit.entity() != null) {
+            hit.entity().invulnerableTime = 0;
+            hit.entity().hurt(level.damageSources().mobAttack(soldier), 4.5f);
+        }
+        level.sendParticles(ParticleTypes.SMOKE, muzzle.x, muzzle.y, muzzle.z, 2, 0.04, 0.04, 0.04, 0.01);
+        level.sendParticles(ParticleTypes.FLAME, muzzle.x, muzzle.y, muzzle.z, 1, 0.02, 0.02, 0.02, 0.0);
+        level.playSound(null, this.blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.HOSTILE, 1.4f, 0.6f);
+        this.cooldown = 3;
     }
 
     // ------------------------------------------------------------------ Disparo

@@ -36,13 +36,14 @@ public class SoldadoEntity extends Monster {
     public static final int ROLE_AK = 0;
     public static final int ROLE_SHOTGUN = 1;
     public static final int ROLE_SNIPER = 2;
-    private static final int HOME_RADIUS = 24;
+    private static final int HOME_RADIUS = 40;
 
     private static final EntityDataAccessor<Integer> DATA_ROLE =
             SynchedEntityData.defineId(SoldadoEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_SKIN =
             SynchedEntityData.defineId(SoldadoEntity.class, EntityDataSerializers.INT);
 
+    private int turretIdle;
     private boolean homeSet;
     private BlockPos home;
 
@@ -54,11 +55,11 @@ public class SoldadoEntity extends Monster {
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 40.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.26)
+                .add(Attributes.MOVEMENT_SPEED, 0.34)
                 .add(Attributes.ATTACK_DAMAGE, 2.0)
                 .add(Attributes.ARMOR, 4.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.2)
-                .add(Attributes.FOLLOW_RANGE, 48.0);
+                .add(Attributes.FOLLOW_RANGE, 96.0);
     }
 
     @Override
@@ -87,16 +88,17 @@ public class SoldadoEntity extends Monster {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new SoldadoShootGoal(this));
-        this.goalSelector.addGoal(2, new MoveTowardsRestrictionGoal(this, 1.0));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.6) {
+        this.goalSelector.addGoal(1, new SoldadoMountTurretGoal(this));
+        this.goalSelector.addGoal(2, new SoldadoShootGoal(this));
+        this.goalSelector.addGoal(3, new MoveTowardsRestrictionGoal(this, 1.0));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8) {
             @Override
             public boolean canUse() {
                 return SoldadoEntity.this.getRole() != ROLE_SNIPER && super.canUse();   // los francotiradores no patrullan
             }
         });
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 16.0f));
-        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 16.0f));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
@@ -140,11 +142,21 @@ public class SoldadoEntity extends Monster {
         LivingEntity target = this.getTarget();
         if (target != null && this.home != null
                 && target.distanceToSqr(this.home.getX() + 0.5, this.home.getY(), this.home.getZ() + 0.5)
-                > (double) (HOME_RADIUS + 28) * (HOME_RADIUS + 28)) {
+                > (double) (HOME_RADIUS + 40) * (HOME_RADIUS + 40)) {
             this.setTarget(null);                        // no persigue más allá de su base
             target = null;
         }
         this.setAggressive(target != null && target.isAlive());
+        // Se baja de la torreta cuando pierde de vista al enemigo
+        if (this.getVehicle() instanceof TurretEntity) {
+            if (target == null) {
+                if (++this.turretIdle > 100) {
+                    this.stopRiding();
+                }
+            } else {
+                this.turretIdle = 0;
+            }
+        }
     }
 
     @Override

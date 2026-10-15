@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 /**
  * Dibuja la torreta con cajas (sin archivos de modelo), usando las casillas de la textura del tanque.
@@ -55,9 +55,11 @@ public class TurretRenderer extends EntityRenderer<TurretEntity> {
 
         float yaw = entityYaw;
         float pitch = 0.0f;
-        if (t.getFirstPassenger() instanceof LivingEntity rider) {
+        if (t.getFirstPassenger() instanceof Player rider) {
             yaw = rider.getViewYRot(partialTick);
             pitch = Mth.clamp(rider.getViewXRot(partialTick), -70.0f, 45.0f);
+        } else {
+            pitch = t.getAimPitch();
         }
 
         ps.pushPose();

@@ -16,11 +16,11 @@ import java.util.Optional;
 
 /**
  * Base militar gigante. Funciona con /locate y puede aparecer en cualquier bioma del Overworld, pero rechaza el sitio
- * si hay agua o demasiado desnivel bajo su área de 61x61.
+ * si hay agua o demasiado desnivel bajo su área de 121x121.
  */
 public class MilitaryBaseStructure extends Structure {
     public static final MapCodec<MilitaryBaseStructure> CODEC = simpleCodec(MilitaryBaseStructure::new);
-    private static final int SIZE = 61;
+    private static final int SIZE = 121;
 
     public MilitaryBaseStructure(Structure.StructureSettings settings) {
         super(settings);
@@ -36,8 +36,8 @@ public class MilitaryBaseStructure extends Structure {
         RandomState random = context.randomState();
 
         int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE, sum = 0, n = 0;
-        for (int dx = 0; dx < SIZE; dx += 6) {
-            for (int dz = 0; dz < SIZE; dz += 6) {
+        for (int dx = 0; dx < SIZE; dx += 10) {
+            for (int dz = 0; dz < SIZE; dz += 10) {
                 int x = x0 + dx, z = z0 + dz;
                 int h = gen.getFirstOccupiedHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, accessor, random);
                 NoiseColumn column = gen.getBaseColumn(x, z, accessor, random);
@@ -51,7 +51,7 @@ public class MilitaryBaseStructure extends Structure {
                 n++;
             }
         }
-        if (max - min > 8) {
+        if (max - min > 10) {
             return Optional.empty();                         // demasiado desnivel
         }
         // h es la altura del bloque superior; la capa del suelo de la plantilla es la 3ª (índice 2)
