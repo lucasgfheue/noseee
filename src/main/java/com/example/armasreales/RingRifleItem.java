@@ -39,6 +39,7 @@ public class RingRifleItem extends Item implements Gun {
     private static final double AIM_SPREAD = 0.005;
     private static final double MAX_RECOIL = 0.014;
 
+    private static final int SHIELD_COST = 5;           // cargas LAB-10 que gasta el escudo
     private static final int DEFLECT_COOLDOWN = 200;     // 10 s (el escudo dura 5 s)
 
     public RingRifleItem(Properties properties) {
@@ -82,6 +83,36 @@ public class RingRifleItem extends Item implements Gun {
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
 
+    /** Cuántas Cargas LAB-10 lleva el jugador en total (inventario y mano secundaria). */
+    private static int countAmmo(ServerPlayer player) {
+        int total = 0;
+        for (ItemStack s : player.getInventory().items) {
+            if (s.is(ModItems.CARGA_LAB10.get())) total += s.getCount();
+        }
+        for (ItemStack s : player.getInventory().offhand) {
+            if (s.is(ModItems.CARGA_LAB10.get())) total += s.getCount();
+        }
+        return total;
+    }
+
+    private static void consumeAmmo(ServerPlayer player, int amount) {
+        int left = amount;
+        for (ItemStack s : player.getInventory().items) {
+            if (left > 0 && s.is(ModItems.CARGA_LAB10.get())) {
+                int take = Math.min(left, s.getCount());
+                s.shrink(take);
+                left -= take;
+            }
+        }
+        for (ItemStack s : player.getInventory().offhand) {
+            if (left > 0 && s.is(ModItems.CARGA_LAB10.get())) {
+                int take = Math.min(left, s.getCount());
+                s.shrink(take);
+                left -= take;
+            }
+        }
+    }
+
     private void activateDeflect(ServerLevel level, ServerPlayer player, ItemStack gun) {
         long now = level.getGameTime();
         if (now < getLong(gun, "ReadyAt")) {
@@ -90,13 +121,23 @@ public class RingRifleItem extends Item implements Gun {
             player.displayClientMessage(Component.translatable("message.armasreales.desvio_recarga"), true);
             return;
         }
+        boolean creative = player.getAbilities().instabuild;
+        if (!creative && countAmmo(player) < SHIELD_COST) {
+            level.playSound(null, player.blockPosition(), SoundEvents.DISPENSER_FAIL,
+                    SoundSource.PLAYERS, 0.8f, 1.4f);
+            player.displayClientMessage(Component.translatable("message.armasreales.escudo_sin_carga", SHIELD_COST), true);
+            return;
+        }
+        if (!creative) {
+            consumeAmmo(player, SHIELD_COST);
+        }
         ShieldEntity.spawn(level, player);
         setLong(gun, "ReadyAt", now + DEFLECT_COOLDOWN);
         level.playSound(null, player.blockPosition(), SoundEvents.BEACON_ACTIVATE,
                 SoundSource.PLAYERS, 0.8f, 2.0f);
         level.playSound(null, player.blockPosition(), SoundEvents.ENDERMAN_TELEPORT,
                 SoundSource.PLAYERS, 0.6f, 1.6f);
-        player.displayClientMessage(Component.translatable("message.armasreales.desvio_activo"), true);
+        player.displayClientMessage(Component.translatable("message.armasreales.desvio_activo", SHIELD_COST), true);
     }
 
     // ------------------------------------------------------------------ Disparo

@@ -79,6 +79,7 @@
   "message.armasreales.titan_pulso": "¡Pulso liberado! (%s de energía)",
   "item.armasreales.fusil_anillo": "Fusil Anillo",
   "item.armasreales.carga_lab10": "Carga LAB-10",
-  "message.armasreales.desvio_activo": "¡Desvío activado!",
-  "message.armasreales.desvio_recarga": "Desvío recargándose..."
+  "message.armasreales.desvio_activo": "¡Escudo activado! (-%s cargas)",
+  "message.armasreales.desvio_recarga": "Desvío recargándose...",
+  "message.armasreales.escudo_sin_carga": "Necesitas %s Cargas LAB-10 para el escudo"
 }

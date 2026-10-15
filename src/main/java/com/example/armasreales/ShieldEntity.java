@@ -18,8 +18,8 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * Escudo celeste transparente del Fusil Anillo. Sigue al jugador, dura 5 segundos y desvía los
- * proyectiles ENERGÉTICOS (disparos eléctricos y del taser) que lo toquen. No detiene explosiones
- * ni ataques cuerpo a cuerpo. El dibujo lo hace ShieldRenderer.
+ * proyectiles ENERGÉTICOS (disparos eléctricos y del taser) y detiene en seco cualquier otro proyectil
+ * (flechas, cohetes, granadas...). No detiene ataques cuerpo a cuerpo ni explosiones ya detonadas. El dibujo lo hace ShieldRenderer.
  */
 public class ShieldEntity extends Entity {
     public static final int DURATION = 100;           // 5 s
@@ -67,7 +67,7 @@ public class ShieldEntity extends Entity {
         Vec3 center = player.getEyePosition().add(look.scale(DISTANCE));
         AABB zone = new AABB(center, center).inflate(RADIUS + 0.8);
         for (Projectile proj : level.getEntitiesOfClass(Projectile.class, zone,
-                p -> p instanceof ElectricShot || p instanceof TaserProjectile)) {
+                p -> true)) {
             if (proj.getOwner() == player) {
                 continue;
             }
@@ -75,6 +75,17 @@ public class ShieldEntity extends Entity {
             double dist = rel.length();
             // Sólo lo que está dentro de la cúpula delantera y cerca de su superficie
             if (dist > DISTANCE + RADIUS + 0.6 || rel.normalize().dot(look) < 0.2) {
+                continue;
+            }
+            if (!(proj instanceof ElectricShot || proj instanceof TaserProjectile)) {
+                // Cualquier otro proyectil (flechas, cohetes, granadas, bolas de fuego...) se detiene contra el escudo
+                level.sendParticles(ParticleTypes.ELECTRIC_SPARK, proj.getX(), proj.getY(), proj.getZ(),
+                        16, 0.25, 0.25, 0.25, 0.12);
+                level.sendParticles(ParticleTypes.END_ROD, proj.getX(), proj.getY(), proj.getZ(),
+                        5, 0.15, 0.15, 0.15, 0.05);
+                level.playSound(null, proj.blockPosition(), SoundEvents.AMETHYST_BLOCK_RESONATE,
+                        SoundSource.PLAYERS, 1.2f, 1.4f);
+                proj.discard();
                 continue;
             }
             Vec3 v = proj.getDeltaMovement();

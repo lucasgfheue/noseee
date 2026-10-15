@@ -79,6 +79,7 @@
   "message.armasreales.titan_pulso": "Pulse released! (%s energy)",
   "item.armasreales.fusil_anillo": "Ring Rifle",
   "item.armasreales.carga_lab10": "LAB-10 Charge",
-  "message.armasreales.desvio_activo": "Deflect active!",
-  "message.armasreales.desvio_recarga": "Deflect recharging..."
+  "message.armasreales.desvio_activo": "Shield active! (-%s charges)",
+  "message.armasreales.desvio_recarga": "Deflect recharging...",
+  "message.armasreales.escudo_sin_carga": "You need %s LAB-10 Charges for the shield"
 }
