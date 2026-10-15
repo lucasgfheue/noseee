@@ -72,5 +72,9 @@
   "item.armasreales.carga_explosiva": "Carga explosiva",
   "entity.armasreales.proyectil_explosivo": "Proyectil explosivo",
   "item.armasreales.bola_electrica": "Bola eléctrica",
-  "item.armasreales.chispa": "Chispa"
+  "item.armasreales.chispa": "Chispa",
+  "item.armasreales.revolver_titan": "Revólver Titán",
+  "message.armasreales.titan_energia": "Energía: %s/%s",
+  "message.armasreales.titan_vacio": "Sin energía almacenada",
+  "message.armasreales.titan_pulso": "¡Pulso liberado! (%s de energía)"
 }

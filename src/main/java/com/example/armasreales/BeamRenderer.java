@@ -55,7 +55,7 @@ public class BeamRenderer extends EntityRenderer<BeamEntity> {
     public void render(BeamEntity beam, float yaw, float partialTick, PoseStack poseStack,
                        MultiBufferSource buffer, int light) {
         float length = beam.getLength();
-        boolean fixed = beam.getStyle() == BeamEntity.STYLE_VIOLET;
+        boolean fixed = beam.getStyle() == BeamEntity.STYLE_VIOLET || beam.getStyle() == BeamEntity.STYLE_TITAN;
         Vec3 eye;
         Vec3 look;
         if (fixed) {
@@ -90,6 +90,8 @@ public class BeamRenderer extends EntityRenderer<BeamEntity> {
             drawPlasma(vc, m, a, b, beam);
         } else if (beam.getStyle() == BeamEntity.STYLE_VIOLET) {
             drawViolet(vc, m, a, b, time);
+        } else if (beam.getStyle() == BeamEntity.STYLE_TITAN) {
+            drawTitan(vc, m, a, b, time);
         } else {
             drawLaser(vc, m, a, b, time);
         }
@@ -104,6 +106,16 @@ public class BeamRenderer extends EntityRenderer<BeamEntity> {
         tube(vc, m, a, b, 0.070 * pulse, 1.0f, 0.00f, 0.00f, 0.20f);  // halo
         cube(vc, m, b, 0.11 * pulse, 1.0f, 0.35f, 0.25f, 0.60f);      // punto de impacto
         cube(vc, m, a, 0.05, 1.0f, 0.30f, 0.20f, 0.60f);              // boca del arma
+    }
+
+    /** Pulso del Revólver Titán: haz celeste-blanco grueso que se desvanece rápido. */
+    private void drawTitan(VertexConsumer vc, Matrix4f m, Vec3 a, Vec3 b, float time) {
+        float fade = Mth.clamp(1.0f - time / 10.0f, 0.1f, 1.0f);
+        tube(vc, m, a, b, 0.035, 1.0f, 1.0f, 1.0f, 0.98f * fade);
+        tube(vc, m, a, b, 0.085, 0.40f, 0.90f, 1.0f, 0.60f * fade);
+        tube(vc, m, a, b, 0.180, 0.10f, 0.55f, 1.0f, 0.25f * fade);
+        cube(vc, m, a, 0.10, 0.6f, 0.95f, 1.0f, 0.7f * fade);
+        cube(vc, m, b, 0.16, 0.6f, 0.95f, 1.0f, 0.55f * fade);
     }
 
     /** Láser violeta: igual que el rojo pero morado, más grueso, y se desvanece tras el disparo. */

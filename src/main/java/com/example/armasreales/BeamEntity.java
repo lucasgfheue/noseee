@@ -23,6 +23,7 @@ public class BeamEntity extends Entity {
     public static final int STYLE_LASER = 0;
     public static final int STYLE_PLASMA = 1;
     public static final int STYLE_VIOLET = 2;
+    public static final int STYLE_TITAN = 3;
 
     private static final Map<UUID, BeamEntity> ACTIVE = new HashMap<>();
 

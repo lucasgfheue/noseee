@@ -89,7 +89,7 @@ public class ClientSetup {
                 ModItems.TASER.get(), ModItems.PISTOLA_ACIDA.get(), ModItems.RIFLE_VIOLETA.get(),
                 ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get(),
                 ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get(), ModItems.REVOLVER_LATON.get(),
-                ModItems.SUBFUSIL_TORMENTA.get(), ModItems.FUSIL_AMBAR.get(), ModItems.REVOLVER_COLMILLO.get(), ModItems.REVOLVER_ECLIPSE.get(), ModItems.LANZAGRANADAS_CHISPA.get(), ModItems.BAZUCA_NOVA.get(), ModItems.LANZADOR_RACIMO.get(), ModItems.CANON_ADHESIVO.get());
+                ModItems.SUBFUSIL_TORMENTA.get(), ModItems.FUSIL_AMBAR.get(), ModItems.REVOLVER_COLMILLO.get(), ModItems.REVOLVER_ECLIPSE.get(), ModItems.LANZAGRANADAS_CHISPA.get(), ModItems.BAZUCA_NOVA.get(), ModItems.LANZADOR_RACIMO.get(), ModItems.CANON_ADHESIVO.get(), ModItems.REVOLVER_TITAN.get());
     }
 
     /** Propiedad "aiming": el modelo del arma cambia mientras apuntas (rotación para brazo levantado). */
@@ -102,7 +102,7 @@ public class ClientSetup {
                     ModItems.TASER.get(), ModItems.PISTOLA_ACIDA.get(), ModItems.RIFLE_VIOLETA.get(),
                     ModItems.AK47.get(), ModItems.ESCOPETA.get(), ModItems.CANON_CALABAZAS.get(),
                 ModItems.FRANCOTIRADOR.get(), ModItems.RIFLE_CRIOGENICO.get(), ModItems.REVOLVER_LATON.get(),
-                ModItems.SUBFUSIL_TORMENTA.get(), ModItems.FUSIL_AMBAR.get(), ModItems.REVOLVER_COLMILLO.get(), ModItems.REVOLVER_ECLIPSE.get(), ModItems.LANZAGRANADAS_CHISPA.get(), ModItems.BAZUCA_NOVA.get(), ModItems.LANZADOR_RACIMO.get(), ModItems.CANON_ADHESIVO.get()};
+                ModItems.SUBFUSIL_TORMENTA.get(), ModItems.FUSIL_AMBAR.get(), ModItems.REVOLVER_COLMILLO.get(), ModItems.REVOLVER_ECLIPSE.get(), ModItems.LANZAGRANADAS_CHISPA.get(), ModItems.BAZUCA_NOVA.get(), ModItems.LANZADOR_RACIMO.get(), ModItems.CANON_ADHESIVO.get(), ModItems.REVOLVER_TITAN.get()};
             for (Item gun : guns) {
                 ItemProperties.register(gun, aiming, (stack, level, entity, seed) ->
                         entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);

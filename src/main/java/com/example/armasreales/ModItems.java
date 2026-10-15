@@ -69,6 +69,9 @@ public class ModItems {
             props -> new TankItem(props, () -> ModEntities.TWIN_TANK.get()),
             new Item.Properties().stacksTo(1));
 
+    public static final DeferredItem<TitanRevolverItem> REVOLVER_TITAN = ITEMS.registerItem(
+            "revolver_titan", TitanRevolverItem::new, new Item.Properties().stacksTo(1).durability(400));
+
     public static final DeferredItem<Item> MUNICION_FUSIL = ITEMS.registerItem(
             "municion_fusil", Item::new, new Item.Properties());
 
