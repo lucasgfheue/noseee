@@ -1,0 +1,106 @@
+{
+  "textures": {
+    "extintor": "armasreales:block/deco_extintor",
+    "metal": "armasreales:block/deco_metal",
+    "negro": "armasreales:block/deco_negro",
+    "particle": "armasreales:block/deco_extintor"
+  },
+  "elements": [
+    {
+      "from": [
+        5,
+        0,
+        6
+      ],
+      "to": [
+        11,
+        11,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#extintor"
+        },
+        "east": {
+          "texture": "#extintor"
+        },
+        "south": {
+          "texture": "#extintor"
+        },
+        "west": {
+          "texture": "#extintor"
+        },
+        "up": {
+          "texture": "#extintor"
+        },
+        "down": {
+          "texture": "#extintor"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        11,
+        8
+      ],
+      "to": [
+        9,
+        13,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        13,
+        7
+      ],
+      "to": [
+        10,
+        14,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    }
+  ]
+}

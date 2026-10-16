@@ -1,0 +1,80 @@
+{
+  "textures": {
+    "mueble_puertas": "armasreales:block/deco_mueble_puertas",
+    "madera_oscura": "armasreales:block/deco_madera_oscura",
+    "encimera": "armasreales:block/deco_encimera",
+    "particle": "armasreales:block/deco_madera_oscura"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        14,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#mueble_puertas",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "up": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        14,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#encimera"
+        },
+        "east": {
+          "texture": "#encimera"
+        },
+        "south": {
+          "texture": "#encimera"
+        },
+        "west": {
+          "texture": "#encimera"
+        },
+        "up": {
+          "texture": "#encimera"
+        },
+        "down": {
+          "texture": "#encimera"
+        }
+      }
+    }
+  ]
+}

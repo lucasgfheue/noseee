@@ -1,0 +1,139 @@
+{
+  "textures": {
+    "blanco": "armasreales:block/deco_blanco",
+    "agua": "armasreales:block/deco_agua",
+    "tela_azul": "armasreales:block/deco_tela_azul",
+    "tela_roja": "armasreales:block/deco_tela_roja",
+    "particle": "armasreales:block/deco_blanco"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        11,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#blanco"
+        },
+        "east": {
+          "texture": "#blanco"
+        },
+        "south": {
+          "texture": "#blanco"
+        },
+        "west": {
+          "texture": "#blanco"
+        },
+        "up": {
+          "texture": "#blanco"
+        },
+        "down": {
+          "texture": "#blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        11,
+        4
+      ],
+      "to": [
+        12,
+        16,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#agua"
+        },
+        "east": {
+          "texture": "#agua"
+        },
+        "south": {
+          "texture": "#agua"
+        },
+        "west": {
+          "texture": "#agua"
+        },
+        "up": {
+          "texture": "#agua"
+        },
+        "down": {
+          "texture": "#agua"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        6,
+        2
+      ],
+      "to": [
+        7,
+        8,
+        3
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tela_azul"
+        },
+        "east": {
+          "texture": "#tela_azul"
+        },
+        "south": {
+          "texture": "#tela_azul"
+        },
+        "west": {
+          "texture": "#tela_azul"
+        },
+        "up": {
+          "texture": "#tela_azul"
+        },
+        "down": {
+          "texture": "#tela_azul"
+        }
+      }
+    },
+    {
+      "from": [
+        9,
+        6,
+        2
+      ],
+      "to": [
+        11,
+        8,
+        3
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tela_roja"
+        },
+        "east": {
+          "texture": "#tela_roja"
+        },
+        "south": {
+          "texture": "#tela_roja"
+        },
+        "west": {
+          "texture": "#tela_roja"
+        },
+        "up": {
+          "texture": "#tela_roja"
+        },
+        "down": {
+          "texture": "#tela_roja"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "textures": {
+    "tela_beige": "armasreales:block/deco_tela_beige",
+    "particle": "armasreales:block/deco_tela_beige"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        8,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tela_beige"
+        },
+        "east": {
+          "texture": "#tela_beige"
+        },
+        "south": {
+          "texture": "#tela_beige"
+        },
+        "west": {
+          "texture": "#tela_beige"
+        },
+        "up": {
+          "texture": "#tela_beige"
+        },
+        "down": {
+          "texture": "#tela_beige"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        8,
+        4
+      ],
+      "to": [
+        12,
+        9,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tela_beige"
+        },
+        "east": {
+          "texture": "#tela_beige"
+        },
+        "south": {
+          "texture": "#tela_beige"
+        },
+        "west": {
+          "texture": "#tela_beige"
+        },
+        "up": {
+          "texture": "#tela_beige"
+        },
+        "down": {
+          "texture": "#tela_beige"
+        }
+      }
+    }
+  ]
+}

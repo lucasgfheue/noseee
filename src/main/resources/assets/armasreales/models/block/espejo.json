@@ -1,0 +1,79 @@
+{
+  "textures": {
+    "metal": "armasreales:block/deco_metal",
+    "espejo": "armasreales:block/deco_espejo",
+    "particle": "armasreales:block/deco_metal"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        1,
+        14
+      ],
+      "to": [
+        14,
+        15,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        2,
+        13.5
+      ],
+      "to": [
+        13,
+        14,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#espejo",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#espejo"
+        },
+        "south": {
+          "texture": "#espejo"
+        },
+        "west": {
+          "texture": "#espejo"
+        },
+        "up": {
+          "texture": "#espejo"
+        },
+        "down": {
+          "texture": "#espejo"
+        }
+      }
+    }
+  ]
+}

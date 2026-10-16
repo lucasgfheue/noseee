@@ -1,0 +1,46 @@
+{
+  "textures": {
+    "aire": "armasreales:block/deco_aire",
+    "particle": "armasreales:block/deco_aire"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        8,
+        10
+      ],
+      "to": [
+        15,
+        15,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#aire",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#aire"
+        },
+        "south": {
+          "texture": "#aire"
+        },
+        "west": {
+          "texture": "#aire"
+        },
+        "up": {
+          "texture": "#aire"
+        },
+        "down": {
+          "texture": "#aire"
+        }
+      }
+    }
+  ]
+}

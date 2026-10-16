@@ -1,0 +1,238 @@
+{
+  "textures": {
+    "madera_oscura": "armasreales:block/deco_madera_oscura",
+    "vidrio": "armasreales:block/deco_vidrio",
+    "agua": "armasreales:block/deco_agua",
+    "arena": "armasreales:block/deco_arena",
+    "hojas": "armasreales:block/deco_hojas",
+    "maceta": "armasreales:block/deco_maceta",
+    "lampara_pantalla": "armasreales:block/deco_lampara_pantalla",
+    "particle": "armasreales:block/deco_madera_oscura"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        6,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_oscura"
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "up": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        6,
+        1
+      ],
+      "to": [
+        15,
+        15,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#vidrio"
+        },
+        "east": {
+          "texture": "#vidrio"
+        },
+        "south": {
+          "texture": "#vidrio"
+        },
+        "west": {
+          "texture": "#vidrio"
+        },
+        "up": {
+          "texture": "#vidrio"
+        },
+        "down": {
+          "texture": "#vidrio"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        7,
+        2
+      ],
+      "to": [
+        14,
+        14,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#agua"
+        },
+        "east": {
+          "texture": "#agua"
+        },
+        "south": {
+          "texture": "#agua"
+        },
+        "west": {
+          "texture": "#agua"
+        },
+        "up": {
+          "texture": "#agua"
+        },
+        "down": {
+          "texture": "#agua"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        6,
+        2
+      ],
+      "to": [
+        14,
+        7,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#arena"
+        },
+        "east": {
+          "texture": "#arena"
+        },
+        "south": {
+          "texture": "#arena"
+        },
+        "west": {
+          "texture": "#arena"
+        },
+        "up": {
+          "texture": "#arena"
+        },
+        "down": {
+          "texture": "#arena"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        7,
+        3
+      ],
+      "to": [
+        5,
+        12,
+        5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hojas"
+        },
+        "east": {
+          "texture": "#hojas"
+        },
+        "south": {
+          "texture": "#hojas"
+        },
+        "west": {
+          "texture": "#hojas"
+        },
+        "up": {
+          "texture": "#hojas"
+        },
+        "down": {
+          "texture": "#hojas"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        9,
+        7
+      ],
+      "to": [
+        10,
+        11,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#maceta"
+        },
+        "east": {
+          "texture": "#maceta"
+        },
+        "south": {
+          "texture": "#maceta"
+        },
+        "west": {
+          "texture": "#maceta"
+        },
+        "up": {
+          "texture": "#maceta"
+        },
+        "down": {
+          "texture": "#maceta"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        15,
+        1
+      ],
+      "to": [
+        15,
+        16,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#lampara_pantalla"
+        },
+        "east": {
+          "texture": "#lampara_pantalla"
+        },
+        "south": {
+          "texture": "#lampara_pantalla"
+        },
+        "west": {
+          "texture": "#lampara_pantalla"
+        },
+        "up": {
+          "texture": "#lampara_pantalla"
+        },
+        "down": {
+          "texture": "#lampara_pantalla"
+        }
+      }
+    }
+  ]
+}

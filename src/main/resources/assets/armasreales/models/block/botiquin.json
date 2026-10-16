@@ -1,0 +1,46 @@
+{
+  "textures": {
+    "botiquin": "armasreales:block/deco_botiquin",
+    "particle": "armasreales:block/deco_botiquin"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        5,
+        13
+      ],
+      "to": [
+        13,
+        12,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#botiquin",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#botiquin"
+        },
+        "south": {
+          "texture": "#botiquin"
+        },
+        "west": {
+          "texture": "#botiquin"
+        },
+        "up": {
+          "texture": "#botiquin"
+        },
+        "down": {
+          "texture": "#botiquin"
+        }
+      }
+    }
+  ]
+}

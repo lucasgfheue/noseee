@@ -1,0 +1,138 @@
+{
+  "textures": {
+    "ceramica": "armasreales:block/deco_ceramica",
+    "hojas": "armasreales:block/deco_hojas",
+    "flores": "armasreales:block/deco_flores",
+    "particle": "armasreales:block/deco_ceramica"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        9,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#ceramica"
+        },
+        "east": {
+          "texture": "#ceramica"
+        },
+        "south": {
+          "texture": "#ceramica"
+        },
+        "west": {
+          "texture": "#ceramica"
+        },
+        "up": {
+          "texture": "#ceramica"
+        },
+        "down": {
+          "texture": "#ceramica"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        9,
+        6
+      ],
+      "to": [
+        10,
+        12,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#ceramica"
+        },
+        "east": {
+          "texture": "#ceramica"
+        },
+        "south": {
+          "texture": "#ceramica"
+        },
+        "west": {
+          "texture": "#ceramica"
+        },
+        "up": {
+          "texture": "#ceramica"
+        },
+        "down": {
+          "texture": "#ceramica"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        9,
+        7
+      ],
+      "to": [
+        9,
+        12,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hojas"
+        },
+        "east": {
+          "texture": "#hojas"
+        },
+        "south": {
+          "texture": "#hojas"
+        },
+        "west": {
+          "texture": "#hojas"
+        },
+        "up": {
+          "texture": "#hojas"
+        },
+        "down": {
+          "texture": "#hojas"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        12,
+        4
+      ],
+      "to": [
+        12,
+        16,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#flores"
+        },
+        "east": {
+          "texture": "#flores"
+        },
+        "south": {
+          "texture": "#flores"
+        },
+        "west": {
+          "texture": "#flores"
+        },
+        "up": {
+          "texture": "#flores"
+        },
+        "down": {
+          "texture": "#flores"
+        }
+      }
+    }
+  ]
+}
