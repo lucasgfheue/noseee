@@ -36,6 +36,7 @@ public class ArmasRealesMod {
         event.put(ModEntities.CITADEL_TANK.get(), CitadelTankEntity.createAttributes().build());
         event.put(ModEntities.UMBRA_TANK.get(), UmbraTankEntity.createAttributes().build());
         event.put(ModEntities.COLOSO_TANK.get(), ColosoTankEntity.createAttributes().build());
+        event.put(ModEntities.MECHA_HIERRO.get(), MechaEntity.createAttributes().build());
         event.put(ModEntities.TITAN_TANK.get(), TitanTankEntity.createAttributes().build());
         event.put(ModEntities.LEVIATHAN_TANK.get(), LeviathanTankEntity.createAttributes().build());
         event.put(ModEntities.SINGULARITY_TANK.get(), SingularityTankEntity.createAttributes().build());
@@ -100,6 +101,7 @@ public class ArmasRealesMod {
             event.accept(ModItems.TANQUE_UMBRA);
             event.accept(ModItems.TANQUE_COLOSO);
             event.accept(ModItems.TANQUE_TITAN);
+            event.accept(ModItems.MECHA_HIERRO);
             event.accept(ModItems.TANQUE_LEVIATAN);
             event.accept(ModItems.TANQUE_SINGULARIDAD);
             event.accept(ModItems.TANQUE_APOCALIPSIS);

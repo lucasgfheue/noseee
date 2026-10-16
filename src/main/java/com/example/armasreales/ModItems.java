@@ -79,6 +79,11 @@ public class ModItems {
             props -> new TankItem(props, () -> ModEntities.COLOSO_TANK.get()),
             new Item.Properties().stacksTo(1));
 
+    public static final DeferredItem<TankItem> MECHA_HIERRO = ITEMS.registerItem(
+            "mecha_hierro",
+            props -> new TankItem(props, () -> ModEntities.MECHA_HIERRO.get()),
+            new Item.Properties().stacksTo(1));
+
     public static final DeferredItem<TankItem> TANQUE_TITAN = ITEMS.registerItem(
             "tanque_titan",
             props -> new TankItem(props, () -> ModEntities.TITAN_TANK.get()),

@@ -42,6 +42,7 @@ public class ClientSetup {
         event.registerEntityRenderer(ModEntities.UMBRA_TANK.get(), UmbraTankRenderer::new);
         event.registerEntityRenderer(ModEntities.COLOSO_TANK.get(), ColosoTankRenderer::new);
         event.registerEntityRenderer(ModEntities.TITAN_TANK.get(), TitanTankRenderer::new);
+        event.registerEntityRenderer(ModEntities.MECHA_HIERRO.get(), MechaRenderer::new);
         event.registerEntityRenderer(ModEntities.LEVIATHAN_TANK.get(), LeviathanTankRenderer::new);
         event.registerEntityRenderer(ModEntities.SINGULARITY_TANK.get(), SingularityTankRenderer::new);
         event.registerEntityRenderer(ModEntities.APOCALYPSE_TANK.get(), ApocalypseTankRenderer::new);

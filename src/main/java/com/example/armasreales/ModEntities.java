@@ -111,6 +111,16 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque_titan"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<MechaEntity>> MECHA_HIERRO =
+            ENTITIES.register("mecha_hierro", () ->
+                    EntityType.Builder.<MechaEntity>of(MechaEntity::new, MobCategory.MISC)
+                            .sized(3.4f, 3.3f * TankEntity.SCALE)
+                            .passengerAttachments(2.4f * TankEntity.SCALE)
+                            .fireImmune()
+                            .clientTrackingRange(16)
+                            .updateInterval(1)
+                            .build("mecha_hierro"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<LeviathanTankEntity>> LEVIATHAN_TANK =
             ENTITIES.register("tanque_leviatan", () ->
                     EntityType.Builder.<LeviathanTankEntity>of(LeviathanTankEntity::new, MobCategory.MISC)
