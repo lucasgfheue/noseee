@@ -134,6 +134,8 @@ public class CiudadanoEntity extends PathfinderMob {
         });
         this.goalSelector.addGoal(2, new CiudadanoGoals.FleeAimGoal(this));
         this.goalSelector.addGoal(2, new CiudadanoGoals.FleeAfterTheftGoal(this));
+        this.goalSelector.addGoal(2, new CiudadanoGoals.ClimbLadderGoal(this));
+        this.goalSelector.addGoal(2, new CiudadanoGoals.BreakGlassGoal(this));
         this.goalSelector.addGoal(3, new CiudadanoGoals.ShootGoal(this));
         this.goalSelector.addGoal(3, new CiudadanoGoals.StealGoal(this));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.1, false) {
@@ -146,8 +148,9 @@ public class CiudadanoEntity extends PathfinderMob {
         this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.3));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<Player>(this, Player.class, 10, true, false,
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<Player>(this, Player.class, 10, false, false,
                 p -> CiudadanoEntity.this.isHostileKind() && isNight(CiudadanoEntity.this.level())
+                        && CiudadanoGoals.canSee(CiudadanoEntity.this, p)
                         && !((Player) p).isCreative() && !p.isSpectator()
                         && CiudadanoEntity.this.level().getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL));
     }
@@ -206,6 +209,12 @@ public class CiudadanoEntity extends PathfinderMob {
             this.vanish(level);
             return;
         }
+        // Los ladrones solo existen de noche: al amanecer se esfuman (soltando lo robado si lo llevan)
+        if (this.isThief() && !isNight(level) && this.random.nextInt(60) == 0) {
+            this.dropLoot();
+            this.vanish(level);
+            return;
+        }
         // Un jugador que apunta con un arma a un armado lo provoca (y a los armados de alrededor)
         if (this.tickCount % 5 == 0 && !this.isCivil() && this.hasGun() && this.provoked <= 0) {
             for (Player p : level.players()) {
@@ -238,6 +247,17 @@ public class CiudadanoEntity extends PathfinderMob {
             this.setTarget(null);
         }
         this.setAggressive(this.getTarget() != null && this.hasGun());
+    }
+
+    void dropLoot() {
+        for (int i = 0; i < this.loot.getContainerSize(); i++) {
+            ItemStack st = this.loot.getItem(i);
+            if (!st.isEmpty()) {
+                this.spawnAtLocation(st.copy());
+            }
+        }
+        this.loot.clearContent();
+        this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
     }
 
     void vanish(ServerLevel level) {

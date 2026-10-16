@@ -24,7 +24,7 @@ public final class CitizenSpawner {
         boolean peaceful = level.getDifficulty() == Difficulty.PEACEFUL;
         int capCivil = night ? 0 : 26;
         int capArmed = night && !peaceful ? 8 : 4;
-        int capThief = night ? (peaceful ? 0 : 6) : 3;
+        int capThief = night && !peaceful ? 6 : 0;
         for (ServerPlayer p : level.players()) {
             if (p.isSpectator() || Math.abs(p.getX()) > CityPlan.HALF || Math.abs(p.getZ()) > CityPlan.HALF) {
                 continue;

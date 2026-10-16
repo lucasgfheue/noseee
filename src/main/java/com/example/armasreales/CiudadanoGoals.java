@@ -43,6 +43,233 @@ final class CiudadanoGoals {
         return p.getViewVector(1.0f).dot(to) / d > Math.min(0.995, minCos) && p.hasLineOfSight(e);
     }
 
+    // ------------------------------------------------------------------ Cristales y escaleras
+
+    static boolean isGlass(net.minecraft.world.level.block.state.BlockState st) {
+        return st.is(net.neoforged.neoforge.common.Tags.Blocks.GLASS_BLOCKS)
+                || st.is(net.neoforged.neoforge.common.Tags.Blocks.GLASS_PANES);
+    }
+
+    /** Resultado de mirar de un punto a otro ignorando los cristales. */
+    record Look(boolean clear, net.minecraft.core.BlockPos glass) {}
+
+    static Look look(net.minecraft.world.level.Level level, Entity who, Vec3 from, Vec3 to) {
+        net.minecraft.core.BlockPos firstGlass = null;
+        Vec3 start = from;
+        Vec3 dir = to.subtract(from);
+        double len = dir.length();
+        if (len < 1.0e-4) {
+            return new Look(true, null);
+        }
+        dir = dir.scale(1.0 / len);
+        for (int i = 0; i < 10; i++) {
+            var hit = level.clip(new net.minecraft.world.level.ClipContext(start, to,
+                    net.minecraft.world.level.ClipContext.Block.COLLIDER,
+                    net.minecraft.world.level.ClipContext.Fluid.NONE, who));
+            if (hit.getType() == net.minecraft.world.phys.HitResult.Type.MISS) {
+                return new Look(true, firstGlass);
+            }
+            net.minecraft.core.BlockPos bp = hit.getBlockPos();
+            if (!isGlass(level.getBlockState(bp))) {
+                return new Look(false, firstGlass);
+            }
+            if (firstGlass == null) {
+                firstGlass = bp;
+            }
+            start = hit.getLocation().add(dir.scale(0.06));
+            if (start.distanceToSqr(from) >= len * len) {
+                return new Look(true, firstGlass);
+            }
+        }
+        return new Look(false, firstGlass);
+    }
+
+    static boolean canSee(CiudadanoEntity mob, Entity target) {
+        return look(mob.level(), mob, mob.getEyePosition(), target.getEyePosition()).clear();
+    }
+
+    static void breakGlass(CiudadanoEntity mob, net.minecraft.core.BlockPos pos, boolean shot) {
+        var level = mob.level();
+        if (!(level instanceof ServerLevel sl) || !isGlass(level.getBlockState(pos))) {
+            return;
+        }
+        mob.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+        if (shot) {
+            level.playSound(null, mob.blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.NEUTRAL, 1.2f, 0.7f);
+        }
+        sl.destroyBlock(pos, false, mob);
+    }
+
+    /** Sin arma: rompe a golpes el cristal que le separa de su objetivo. */
+    static final class BreakGlassGoal extends Goal {
+        private final CiudadanoEntity mob;
+        private int cooldown;
+
+        BreakGlassGoal(CiudadanoEntity mob) {
+            this.mob = mob;
+            this.setFlags(EnumSet.noneOf(Flag.class));
+        }
+
+        private net.minecraft.core.BlockPos glass() {
+            LivingEntity t = mob.getTarget();
+            if (t == null || !t.isAlive() || !mob.wantsToFight() || mob.hasGun()) {
+                return null;
+            }
+            Look l = look(mob.level(), mob, mob.getEyePosition(), t.getEyePosition());
+            if (l.glass() == null) {
+                return null;
+            }
+            return l.glass().getCenter().distanceToSqr(mob.getEyePosition()) < 3.6 * 3.6 ? l.glass() : null;
+        }
+
+        @Override
+        public boolean canUse() {
+            return mob.tickCount % 5 == 0 && glass() != null;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return glass() != null;
+        }
+
+        @Override
+        public void start() {
+            this.cooldown = 8;
+        }
+
+        @Override
+        public void tick() {
+            if (--this.cooldown <= 0) {
+                var g = glass();
+                if (g != null) {
+                    breakGlass(mob, g, false);
+                }
+                this.cooldown = 12;
+            }
+        }
+    }
+
+    /** Sube escaleras de mano hacia un objetivo situado más arriba. */
+    static final class ClimbLadderGoal extends Goal {
+        private final CiudadanoEntity mob;
+        private net.minecraft.core.BlockPos ladder;
+        private int giveUp;
+
+        ClimbLadderGoal(CiudadanoEntity mob) {
+            this.mob = mob;
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
+        }
+
+        private boolean wanted() {
+            LivingEntity t = mob.getTarget();
+            return t != null && t.isAlive() && mob.wantsToFight() && t.getY() - mob.getY() > 1.8;
+        }
+
+        @Override
+        public boolean canUse() {
+            if (mob.tickCount % 10 != 0 || !wanted()) {
+                return false;
+            }
+            if (mob.onClimbable()) {
+                this.ladder = mob.blockPosition();
+                return true;
+            }
+            net.minecraft.core.BlockPos base = mob.blockPosition();
+            net.minecraft.core.BlockPos best = null;
+            double bd = Double.MAX_VALUE;
+            for (int dx = -9; dx <= 9; dx++) {
+                for (int dz = -9; dz <= 9; dz++) {
+                    for (int dy = -1; dy <= 2; dy++) {
+                        net.minecraft.core.BlockPos p = base.offset(dx, dy, dz);
+                        var st = mob.level().getBlockState(p);
+                        if (st.is(net.minecraft.world.level.block.Blocks.LADDER)) {
+                            double d = p.distSqr(base);
+                            if (d < bd) {
+                                bd = d;
+                                best = p;
+                            }
+                        }
+                    }
+                }
+            }
+            this.ladder = best;
+            return best != null;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return this.ladder != null && this.giveUp < 400 && wanted() || mob.onClimbable() && wanted();
+        }
+
+        @Override
+        public void start() {
+            this.giveUp = 0;
+        }
+
+        @Override
+        public void stop() {
+            this.ladder = null;
+            mob.getNavigation().stop();
+        }
+
+        @Override
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        @Override
+        public void tick() {
+            this.giveUp++;
+            LivingEntity t = mob.getTarget();
+            if (t == null) {
+                return;
+            }
+            mob.getLookControl().setLookAt(t, 30.0f, 30.0f);
+            if (mob.onClimbable()) {
+                mob.getJumpControl().jump();                       // en escalera, saltar = trepar
+                var st = mob.level().getBlockState(mob.blockPosition());
+                net.minecraft.core.Direction wall = st.hasProperty(net.minecraft.world.level.block.LadderBlock.FACING)
+                        ? st.getValue(net.minecraft.world.level.block.LadderBlock.FACING).getOpposite()
+                        : net.minecraft.core.Direction.NORTH;
+                Vec3 c = mob.blockPosition().getCenter();
+                boolean top = !mob.level().getBlockState(mob.blockPosition().above()).is(net.minecraft.world.level.block.Blocks.LADDER);
+                if (top || mob.getY() + 0.5 >= t.getY()) {
+                    // llegó arriba: salir de la escalera hacia el objetivo
+                    mob.getMoveControl().setWantedPosition(t.getX(), t.getY(), t.getZ(), 1.0);
+                    if (top) {
+                        Vec3 out = Vec3.atLowerCornerOf(wall.getOpposite().getNormal()).scale(0.12);
+                        mob.setDeltaMovement(mob.getDeltaMovement().add(out.x, 0.0, out.z));
+                    }
+                } else {
+                    mob.getMoveControl().setWantedPosition(c.x + wall.getStepX() * 0.45, c.y + 1.0,
+                            c.z + wall.getStepZ() * 0.45, 0.6);
+                }
+                return;
+            }
+            net.minecraft.core.BlockPos l = this.ladder;
+            if (l == null) {
+                return;
+            }
+            var st = mob.level().getBlockState(l);
+            if (!st.is(net.minecraft.world.level.block.Blocks.LADDER)) {
+                this.ladder = null;
+                return;
+            }
+            Vec3 c = l.getCenter();
+            double hd = Math.hypot(mob.getX() - c.x, mob.getZ() - c.z);
+            if (hd > 1.6) {
+                if (mob.tickCount % 10 == 0 || mob.getNavigation().isDone()) {
+                    net.minecraft.core.Direction f = st.getValue(net.minecraft.world.level.block.LadderBlock.FACING);
+                    net.minecraft.core.BlockPos front = l.relative(f);
+                    mob.getNavigation().moveTo(front.getX() + 0.5, front.getY(), front.getZ() + 0.5, 1.2);
+                }
+            } else {
+                mob.getNavigation().stop();
+                mob.getMoveControl().setWantedPosition(c.x, l.getY(), c.z, 1.0);   // entra en la celda de la escalera
+            }
+        }
+    }
+
     // ------------------------------------------------------------------ Huir de quien apunta
 
     static final class FleeAimGoal extends Goal {
@@ -288,7 +515,7 @@ final class CiudadanoGoals {
                 return false;
             }
             double max = range();
-            return mob.distanceToSqr(t) < max * max && mob.getSensing().hasLineOfSight(t);
+            return mob.distanceToSqr(t) < max * max && CiudadanoGoals.canSee(mob, t);
         }
 
         @Override
@@ -341,7 +568,7 @@ final class CiudadanoGoals {
                 }
                 return;
             }
-            if (this.shotCooldown <= 0 && mob.getSensing().hasLineOfSight(target)) {
+            if (this.shotCooldown <= 0 && CiudadanoGoals.canSee(mob, target)) {
                 if (gun == ModItems.AK47.get()) {
                     this.burstLeft = 4;
                     this.burstDelay = 0;
@@ -356,6 +583,11 @@ final class CiudadanoGoals {
             Vec3 eye = mob.getEyePosition();
             Vec3 aim = target.position().add(0.0, target.getBbHeight() * 0.6, 0.0);
             Vec3 dir = aim.subtract(eye).normalize();
+            Look lk = look(level, mob, eye, aim);
+            if (lk.glass() != null) {                    // primero rompe el cristal de un disparo
+                CiudadanoGoals.breakGlass(mob, lk.glass(), true);
+                return;
+            }
             DamageSource source = level.damageSources().mobAttack(mob);
             java.util.function.Predicate<Entity> notCitizen = e -> !(e instanceof CiudadanoEntity);
 
