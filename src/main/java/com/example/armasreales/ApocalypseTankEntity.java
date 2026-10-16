@@ -69,6 +69,16 @@ public class ApocalypseTankEntity extends TankEntity {
     }
 
     @Override
+    protected double seatTopY() {
+        return 2.8 * SCALE;
+    }
+
+    @Override
+    public int[] interiorAccent() {
+        return new int[]{255, 60, 40};
+    }
+
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_CHARGE, 0);

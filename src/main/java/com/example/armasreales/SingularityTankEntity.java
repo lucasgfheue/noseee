@@ -74,6 +74,16 @@ public class SingularityTankEntity extends TankEntity {
     }
 
     @Override
+    protected double seatTopY() {
+        return 1.5 * SCALE;
+    }
+
+    @Override
+    public int[] interiorAccent() {
+        return new int[]{190, 90, 255};
+    }
+
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_CHARGE, 0);

@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -32,6 +33,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Tanque: casco de 6 de largo x 4 de ancho x 4 de alto (el modelo original de 3x2x2 al doble).
@@ -78,6 +83,21 @@ public class TankEntity extends Mob {
     private static final EntityDataAccessor<Integer> DATA_SKIN =
             SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.INT);
 
+    /** Asientos: 0 = arriba (torreta: conduce y dispara) y 1..4 = interior. */
+    public static final int SEAT_COUNT = 5;
+    private static final EntityDataAccessor<Optional<UUID>> DATA_SEAT_0 =
+            SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> DATA_SEAT_1 =
+            SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> DATA_SEAT_2 =
+            SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> DATA_SEAT_3 =
+            SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> DATA_SEAT_4 =
+            SynchedEntityData.defineId(TankEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final List<EntityDataAccessor<Optional<UUID>>> DATA_SEATS =
+            List.of(DATA_SEAT_0, DATA_SEAT_1, DATA_SEAT_2, DATA_SEAT_3, DATA_SEAT_4);
+
     // Ángulos de las ruedas (grados), lado izquierdo y derecho. Sólo se usan en el cliente.
     public float wheelAngleL, wheelAngleR, wheelAngleLO, wheelAngleRO;
 
@@ -102,6 +122,9 @@ public class TankEntity extends Mob {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_SKIN, SKIN_DEFAULT);
+        for (EntityDataAccessor<Optional<UUID>> seat : DATA_SEATS) {
+            builder.define(seat, Optional.empty());
+        }
     }
 
     public int getSkin() {
@@ -137,9 +160,183 @@ public class TankEntity extends Mob {
 
     // ------------------------------------------------------------------ Interacción
 
+    // ------------------------------------------------------------------ Asientos
+
+    /** Quién ocupa el asiento (null si nadie lo reclama). */
+    public UUID seatOccupantId(int seat) {
+        return this.entityData.get(DATA_SEATS.get(seat)).orElse(null);
+    }
+
+    public boolean isSeatFree(int seat) {
+        UUID id = this.seatOccupantId(seat);
+        if (id == null) {
+            return true;
+        }
+        for (Entity passenger : this.getPassengers()) {
+            if (passenger.getUUID().equals(id)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean hasFreeSeat() {
+        for (int i = 0; i < SEAT_COUNT; i++) {
+            if (this.isSeatFree(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Asiento que ocupa la entidad, o -1. */
+    public int seatOf(Entity entity) {
+        UUID id = entity.getUUID();
+        for (int i = 0; i < SEAT_COUNT; i++) {
+            if (id.equals(this.seatOccupantId(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void clearSeatsOf(UUID id) {
+        for (int i = 0; i < SEAT_COUNT; i++) {
+            if (id.equals(this.seatOccupantId(i))) {
+                this.entityData.set(DATA_SEATS.get(i), Optional.empty());
+            }
+        }
+    }
+
+    private void putInSeat(Entity entity, int seat) {
+        this.clearSeatsOf(entity.getUUID());
+        this.entityData.set(DATA_SEATS.get(seat), Optional.of(entity.getUUID()));
+    }
+
+    /** El servidor atiende la petición del menú de asientos: sube al jugador o lo cambia de sitio. */
+    public void requestSeat(ServerPlayer player, int seat) {
+        if (seat < 0 || seat >= SEAT_COUNT || !this.isAlive() || player.isSpectator()
+                || player.distanceToSqr(this) > 144.0) {
+            return;
+        }
+        if (!this.isSeatFree(seat) && this.seatOf(player) != seat) {
+            player.displayClientMessage(Component.literal("Ese asiento está ocupado"), true);
+            return;
+        }
+        if (player.getVehicle() != this && !player.startRiding(this)) {
+            return;
+        }
+        this.putInSeat(player, seat);
+    }
+
+    @Override
+    protected boolean canAddPassenger(Entity passenger) {
+        return this.getPassengers().size() < SEAT_COUNT;
+    }
+
+    @Override
+    protected void addPassenger(Entity passenger) {
+        super.addPassenger(passenger);
+        if (!this.level().isClientSide && this.seatOf(passenger) < 0) {
+            for (int i = 0; i < SEAT_COUNT; i++) {
+                if (this.isSeatFree(i)) {
+                    this.putInSeat(passenger, i);
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void removePassenger(Entity passenger) {
+        super.removePassenger(passenger);
+        if (!this.level().isClientSide) {
+            this.clearSeatsOf(passenger.getUUID());
+        }
+    }
+
+    /** Altura del asiento de la torreta (ya multiplicada por SCALE); coincide con passengerAttachments. */
+    protected double seatTopY() {
+        return 1.4 * SCALE;
+    }
+
+    /** Interior (en bloques, ejes del modelo: +X izquierda, +Z delante, medidos desde el centro del tanque). */
+    public double interiorHalfWidth() {
+        return Math.max(0.9, this.crushHalfWidth() * 0.42);
+    }
+
+    public double interiorBack() {
+        return -this.crushHalfLength() * 0.62;
+    }
+
+    public double interiorFront() {
+        return this.crushHalfLength() * 0.6;
+    }
+
+    public double interiorFloor() {
+        return 0.3 * this.seatTopY();
+    }
+
+    public double interiorCeil() {
+        return 0.85 * this.seatTopY();
+    }
+
+    /** Color de las luces del interior. */
+    public int[] interiorAccent() {
+        return new int[]{255, 170, 40};
+    }
+
+    /** Posición de los pies de cada asiento (x izquierda, y, z delante), relativa al centro del tanque. */
+    public Vec3 seatLocal(int seat) {
+        if (seat == 0) {
+            return new Vec3(this.turretOffsetX(), this.seatTopY(), this.turretOffsetZ());
+        }
+        double x = this.interiorHalfWidth() * 0.5 * ((seat == 1 || seat == 3) ? 1.0 : -1.0);
+        double z = (seat <= 2) ? this.interiorFront() * 0.55 : this.interiorBack() * 0.55;
+        return new Vec3(x, this.interiorFloor() + 0.45, z);
+    }
+
+    @Override
+    protected void positionRider(Entity passenger, Entity.MoveFunction callback) {
+        if (!this.hasPassenger(passenger)) {
+            return;
+        }
+        int seat = this.seatOf(passenger);
+        if (seat < 0) {
+            super.positionRider(passenger, callback);
+            return;
+        }
+        Vec3 local = this.seatLocal(seat);
+        Vec3 forward = Vec3.directionFromRotation(0.0f, this.getYRot());
+        Vec3 left = new Vec3(forward.z, 0.0, -forward.x);
+        double y = this.getY() + local.y;
+        if (seat == 0) {
+            y -= passenger.getVehicleAttachmentPoint(this).y;
+        }
+        callback.accept(passenger,
+                this.getX() + forward.x * local.z + left.x * local.x,
+                y,
+                this.getZ() + forward.z * local.z + left.z * local.x);
+    }
+
+    /**
+     * Controla el tanque (movimiento y cañón): el jugador del asiento de arriba; si no hay nadie arriba,
+     * el único jugador del interior. Con varios jugadores y la torreta vacía, nadie lo controla.
+     */
     @Override
     public LivingEntity getControllingPassenger() {
-        return this.getFirstPassenger() instanceof Player player ? player : null;
+        Player only = null;
+        int players = 0;
+        for (Entity passenger : this.getPassengers()) {
+            if (passenger instanceof Player player) {
+                if (this.seatOf(player) == 0) {
+                    return player;
+                }
+                players++;
+                only = player;
+            }
+        }
+        return players == 1 ? only : null;
     }
 
     @Override
@@ -174,12 +371,18 @@ public class TankEntity extends Mob {
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
-        // 3) Montar
-        if (player.isSecondaryUseActive() || this.isVehicle()) {
+        // 3) Montar: se abre el menú de asientos (arriba a la derecha); si está lleno, no deja subir
+        if (player.isSecondaryUseActive()) {
             return InteractionResult.PASS;
         }
-        if (!this.level().isClientSide) {
-            player.startRiding(this);
+        if (!this.hasFreeSeat()) {
+            if (!this.level().isClientSide) {
+                player.displayClientMessage(Component.literal("El tanque está lleno"), true);
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+        if (this.level().isClientSide) {
+            TankSeatScreen.open(this);
         }
         return InteractionResult.sidedSuccess(this.level().isClientSide);
     }

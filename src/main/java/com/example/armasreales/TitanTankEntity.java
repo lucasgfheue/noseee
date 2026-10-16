@@ -69,6 +69,16 @@ public class TitanTankEntity extends TankEntity {
     }
 
     @Override
+    protected double seatTopY() {
+        return 2.3 * SCALE;
+    }
+
+    @Override
+    public int[] interiorAccent() {
+        return new int[]{255, 120, 40};
+    }
+
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_BLOCKS, ALL_BLOCKS);

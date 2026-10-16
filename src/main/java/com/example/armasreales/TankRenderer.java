@@ -114,6 +114,7 @@ public class TankRenderer extends EntityRenderer<TankEntity> {
         }
         drawTurret(ps, vc, light, relYaw, pitch, main, dark);
 
+        TankInterior.draw(ps, buffer, light, tank);
         ps.popPose();
         super.render(tank, entityYaw, partialTick, ps, buffer, light);
     }

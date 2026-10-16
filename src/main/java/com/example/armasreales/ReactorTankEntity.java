@@ -78,6 +78,16 @@ public class ReactorTankEntity extends TankEntity {
     }
 
     @Override
+    protected double seatTopY() {
+        return 1.45 * SCALE;
+    }
+
+    @Override
+    public int[] interiorAccent() {
+        return new int[]{80, 255, 140};
+    }
+
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_CHARGE, 0);

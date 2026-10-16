@@ -40,6 +40,11 @@ public class FortressTankEntity extends TankEntity {
     }
 
     @Override
+    public int[] interiorAccent() {
+        return new int[]{90, 255, 120};
+    }
+
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_SHIELD_UNTIL, 0L);

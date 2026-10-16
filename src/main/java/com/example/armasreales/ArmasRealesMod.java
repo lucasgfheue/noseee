@@ -65,7 +65,8 @@ public class ArmasRealesMod {
     }
 
     private void registerPayloads(RegisterPayloadHandlersEvent event) {
-        event.registrar("1").playToServer(FirePayload.TYPE, FirePayload.STREAM_CODEC, FirePayload::handle);
+        event.registrar("1").playToServer(FirePayload.TYPE, FirePayload.STREAM_CODEC, FirePayload::handle)
+                .playToServer(SeatPayload.TYPE, SeatPayload.STREAM_CODEC, SeatPayload::handle);
     }
 
     private void addToCreativeTabs(BuildCreativeModeTabContentsEvent event) {

@@ -71,6 +71,11 @@ public class UmbraTankEntity extends TankEntity {
     }
 
     @Override
+    public int[] interiorAccent() {
+        return new int[]{170, 60, 255};
+    }
+
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_CHARGE, 0);
