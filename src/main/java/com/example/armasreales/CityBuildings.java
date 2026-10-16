@@ -226,64 +226,336 @@ final class CityBuildings {
         roofExtras(l, px, pz, H, o, st);
     }
 
+    // ------------------------------------------------------------------ Mobiliario
+
+    private static final Direction N = Direction.NORTH;
+    private static final Direction E = Direction.EAST;
+    private static final Direction S = Direction.SOUTH;
+    private static final Direction W = Direction.WEST;
+
+    private static void d(CityPlan.Out o, int rel, String id, Direction f) {
+        o.set(rel, ModDeco.state(id, f, "lampara".equals(id)));
+    }
+
+    private static boolean is(int px, int pz, int x, int z) {
+        return px == x && pz == z;
+    }
+
     private static void furnish(CityPlan.Lot l, int px, int pz, int rel, int k, CityPlan.Out o, int st) {
+        switch (st) {
+            case SKY, OFFICE -> office(l, px, pz, rel, k, o, st);
+            case APART -> apart(l, px, pz, rel, o);
+            case SHOPS -> shop(l, px, pz, rel, k, o, st);
+            case HOUSE, VILLAGE -> house(l, px, pz, rel, k, o);
+            case BARRACKS -> barracks(l, px, pz, rel, k, o);
+            default -> mill(l, px, pz, rel, k, o);
+        }
+    }
+
+    private static void house(CityPlan.Lot l, int px, int pz, int rel, int k, CityPlan.Out o) {
         int fw = l.fw;
         int fd = l.fd;
-        switch (st) {
-            case SKY, OFFICE -> {
-                if (px % 8 == 4 && pz % 8 == 4) {
-                    for (int r = 0; r < 3; r++) {
-                        o.set(rel + r, accB(l, st));
-                    }
-                } else if (px % 6 == 2 && pz % 5 == 2) {
-                    o.set(rel, s(Blocks.SPRUCE_SLAB));
-                } else {
-                    o.set(rel, s(Blocks.LIGHT_GRAY_CARPET));
+        int mid = fd / 2;
+        if (k == 0) {
+            if (px >= fw / 2 - 1 && px <= fw / 2 && pz >= 1 && pz <= 2) {
+                d(o, rel, "alfombra", N);
+            } else if (is(px, pz, 1, mid)) {
+                d(o, rel, "tv", E);
+            } else if (px == 5 && pz >= mid - 1 && pz <= mid + 1) {
+                d(o, rel, "sofa", W);
+            } else if (is(px, pz, 3, mid)) {
+                d(o, rel, "mesa", N);
+                d(o, rel + 1, "planta", N);
+            } else if (pz == fd - 2 && px == fw - 2) {
+                d(o, rel, "nevera", N);
+            } else if (pz == fd - 2 && px == fw - 3) {
+                d(o, rel, "cocina", N);
+            } else if (pz == fd - 2 && px == fw - 4) {
+                d(o, rel, "fregadero", N);
+            } else if (pz == fd - 2 && px == fw - 5) {
+                d(o, rel, "mueble_cocina", N);
+                d(o, rel + 1, "microondas", N);
+            } else if (is(px, pz, fw - 2, fd - 3)) {
+                d(o, rel, "lavadora", W);
+            } else if (is(px, pz, fw - 4, fd - 5)) {
+                d(o, rel, "mesa", N);
+            } else if (is(px, pz, fw - 5, fd - 5)) {
+                d(o, rel, "silla", E);
+            } else if (is(px, pz, fw - 3, fd - 5)) {
+                d(o, rel, "silla", W);
+            } else if (is(px, pz, fw - 4, fd - 6)) {
+                d(o, rel, "silla", S);
+            } else if (is(px, pz, fw - 4, fd - 4)) {
+                d(o, rel, "silla", N);
+            } else if (is(px, pz, fw - 2, 2)) {
+                d(o, rel, "planta", N);
+            } else if (is(px, pz, 2, fd - 2)) {
+                d(o, rel, "lampara", N);
+            } else if (is(px, pz, fw / 2 - 2, fd - 2)) {
+                d(o, rel + 1, "cuadro", N);
+            } else if (is(px, pz, fw / 2, fd - 2)) {
+                d(o, rel, "estanteria", N);
+            }
+            return;
+        }
+        if (is(px, pz, fw - 3, fd - 2)) {
+            d(o, rel, "cama", N);
+        } else if (is(px, pz, fw - 2, fd - 2)) {
+            d(o, rel, "mesita_noche", N);
+            d(o, rel + 1, "lampara", N);
+        } else if (is(px, pz, fw - 4, fd - 2)) {
+            d(o, rel, "mesita_noche", N);
+        } else if (is(px, pz, fw - 2, fd - 4)) {
+            d(o, rel, "armario", W);
+        } else if (is(px, pz, 3, fd - 2)) {
+            d(o, rel, "escritorio", N);
+            d(o, rel + 1, "computadora", N);
+        } else if (is(px, pz, 3, fd - 3)) {
+            d(o, rel, "silla_oficina", S);
+        } else if (is(px, pz, 1, 3)) {
+            d(o, rel, "lavabo", E);
+        } else if (is(px, pz, 1, 5)) {
+            d(o, rel, "inodoro", E);
+        } else if (is(px, pz, 1, 7) && fd >= 11) {
+            d(o, rel, "banera", E);
+        } else if (is(px, pz, fw - 2, 2)) {
+            d(o, rel, "planta", N);
+        } else if (is(px, pz, fw / 2, fd - 2)) {
+            d(o, rel, "estanteria", N);
+        } else if (is(px, pz, fw / 2, fd - 4)) {
+            d(o, rel, "alfombra", N);
+        } else if (is(px, pz, fw / 2 - 2, fd - 2)) {
+            d(o, rel + 1, "cuadro", N);
+        }
+    }
+
+    private static void apart(CityPlan.Lot l, int px, int pz, int rel, CityPlan.Out o) {
+        int fw = l.fw;
+        int fd = l.fd;
+        int ux = px % 12;
+        int mid = fd / 2;
+        if (px > fw - 2) {
+            return;
+        }
+        if (ux == 0) {
+            if (px > 1 && Math.abs(pz - mid) > 1) {
+                for (int r = 0; r < 3; r++) {
+                    o.set(rel + r, wallB(l, APART));
                 }
             }
-            case APART -> {
-                if (px % 12 == 0 && px > 1 && Math.abs(pz - fd / 2) > 1) {
-                    for (int r = 0; r < 3; r++) {
-                        o.set(rel + r, wallB(l, st));
-                    }
-                } else if (pz == fd - 2 && px % 12 == 4) {
-                    o.set(rel, s(Blocks.CRAFTING_TABLE));
-                } else {
-                    o.set(rel, s(Blocks.WHITE_CARPET));
-                }
+            return;
+        }
+        if (is(ux, pz, 1, mid - 3)) {
+            d(o, rel, "tv", E);
+        } else if (ux == 4 && pz >= mid - 4 && pz <= mid - 2) {
+            d(o, rel, "sofa", W);
+        } else if (is(ux, pz, 2, mid - 3)) {
+            d(o, rel, "mesa", N);
+        } else if (pz == fd - 2 && ux == 3) {
+            d(o, rel, "mueble_cocina", N);
+            d(o, rel + 1, "microondas", N);
+        } else if (pz == fd - 2 && ux == 4) {
+            d(o, rel, "fregadero", N);
+        } else if (pz == fd - 2 && ux == 5) {
+            d(o, rel, "cocina", N);
+        } else if (pz == fd - 2 && ux == 6) {
+            d(o, rel, "nevera", N);
+        } else if (is(ux, pz, 9, fd - 4)) {
+            d(o, rel, "mesa", N);
+        } else if (is(ux, pz, 8, fd - 4)) {
+            d(o, rel, "silla", E);
+        } else if (is(ux, pz, 10, fd - 4)) {
+            d(o, rel, "silla", W);
+        } else if (is(ux, pz, 9, fd - 5)) {
+            d(o, rel, "silla", S);
+        } else if (is(ux, pz, 9, fd - 3)) {
+            d(o, rel, "silla", N);
+        } else if (is(ux, pz, 10, 1)) {
+            d(o, rel, "cama", S);
+        } else if (is(ux, pz, 9, 1)) {
+            d(o, rel, "mesita_noche", S);
+            d(o, rel + 1, "lampara", S);
+        } else if (is(ux, pz, 11, 3)) {
+            d(o, rel, "armario", W);
+        } else if (is(ux, pz, 3, 1)) {
+            d(o, rel, "escritorio", S);
+            d(o, rel + 1, "computadora", S);
+        } else if (is(ux, pz, 3, 2)) {
+            d(o, rel, "silla_oficina", N);
+        } else if (is(ux, pz, 11, fd - 2)) {
+            d(o, rel, "lavabo", W);
+        } else if (is(ux, pz, 11, fd - 3)) {
+            d(o, rel, "inodoro", W);
+        } else if (is(ux, pz, 11, fd - 4)) {
+            d(o, rel, "banera", W);
+        } else if (is(ux, pz, 1, fd - 2)) {
+            d(o, rel, "planta", N);
+        } else if (is(ux, pz, 11, mid + 4)) {
+            d(o, rel, "lavadora", W);
+        } else if (is(ux, pz, 2, fd - 2)) {
+            d(o, rel, "lampara", N);
+        } else if (ux >= 2 && ux <= 4 && pz >= mid - 4 && pz <= mid - 2) {
+            d(o, rel, "alfombra", N);
+        }
+    }
+
+    private static void shop(CityPlan.Lot l, int px, int pz, int rel, int k, CityPlan.Out o, int st) {
+        int fw = l.fw;
+        int fd = l.fd;
+        if (k > 0) {
+            office(l, px, pz, rel, k, o, st);
+            return;
+        }
+        if (pz <= 2 && Math.abs(px - fw / 2) <= 2) {
+            if (pz == 1 && px >= fw / 2 - 1 && px <= fw / 2) {
+                d(o, rel, "alfombra", N);
             }
-            case SHOPS -> {
-                if (pz == 3 && px % 8 >= 2 && px % 8 <= 5) {
-                    o.set(rel, s(Blocks.SPRUCE_SLAB));
-                } else if (pz == fd - 2 && px % 4 < 2) {
-                    o.set(rel, s(Blocks.BOOKSHELF));
-                    o.set(rel + 1, s(Blocks.BOOKSHELF));
-                }
+            return;
+        }
+        if (pz == 4 && px % 8 >= 2 && px % 8 <= 5) {
+            d(o, rel, "escritorio", N);
+            if (px % 8 == 3) {
+                d(o, rel + 1, "computadora", S);
+            } else if (px % 8 == 5) {
+                d(o, rel + 1, "planta", N);
             }
-            case HOUSE, VILLAGE -> {
-                if (px == fw / 2 && pz == fd / 2) {
-                    o.set(rel, s(Blocks.OAK_FENCE));
-                    o.set(rel + 1, s(Blocks.OAK_PRESSURE_PLATE));
-                } else if (px == fw - 2 && pz == fd - 2) {
-                    o.set(rel, k == 0 ? s(Blocks.CRAFTING_TABLE) : s(Blocks.BOOKSHELF));
-                } else if (px == fw - 2 && pz >= 2 && pz <= 3) {
-                    o.set(rel, s(Blocks.BOOKSHELF));
-                    o.set(rel + 1, s(Blocks.BOOKSHELF));
-                } else if (Math.abs(px - fw / 2) <= 2 && Math.abs(pz - fd / 2) <= 1) {
-                    o.set(rel, s(Blocks.RED_CARPET));
-                }
+        } else if (pz == 5 && px % 8 == 3) {
+            d(o, rel, "silla_oficina", N);
+        } else if (pz == fd - 2 && px % 4 < 2) {
+            d(o, rel, "estanteria", N);
+        } else if (pz == fd / 2 && px % 6 >= 2 && px % 6 <= 3 && px > 3) {
+            d(o, rel, "estanteria", px % 6 == 2 ? N : S);
+        } else if (pz == 10 && px % 9 == 4) {
+            d(o, rel, "mesa", N);
+            d(o, rel + 1, "lampara", N);
+        } else if (pz == 9 && px % 9 == 4) {
+            d(o, rel, "silla", S);
+        } else if (pz == 11 && px % 9 == 4) {
+            d(o, rel, "silla", N);
+        } else if (pz == 2 && px % 10 == 1 && px > 1) {
+            d(o, rel, "planta", N);
+        } else if (pz == fd - 2 && px % 9 == 6) {
+            d(o, rel, "nevera", N);
+        }
+    }
+
+    private static void office(CityPlan.Lot l, int px, int pz, int rel, int k, CityPlan.Out o, int st) {
+        int fw = l.fw;
+        int fd = l.fd;
+        BlockState acc = accB(l, st);
+        if (px % 8 == 4 && pz % 8 == 4) {
+            for (int r = 0; r < 3; r++) {
+                o.set(rel + r, acc);
             }
-            case BARRACKS -> {
-                if (px % 3 == 1 && (pz == 2 || pz == fd - 3)) {
-                    o.set(rel, s(Blocks.GREEN_WOOL));
-                }
+            return;
+        }
+        int cx = fw / 2;
+        int cz = fd / 2;
+        if (k == 0 && l.t != CityPlan.T.SHOPS) {                           // vestíbulo con recepción
+            if (pz <= 2 && Math.abs(px - cx) <= 2) {
+                return;
             }
-            default -> {
-                if (px == fw - 2 && pz == fd - 2) {
-                    o.set(rel, s(Blocks.HAY_BLOCK));
-                    o.set(rel + 1, s(Blocks.HAY_BLOCK));
+            if (pz == 6 && px >= cx - 5 && px <= cx + 4) {
+                d(o, rel, "escritorio", N);
+                if ((px - cx) % 3 == 0) {
+                    d(o, rel + 1, "computadora", S);
                 }
+                return;
             }
+            if (pz == 7 && px >= cx - 5 && px <= cx + 4 && (px - cx) % 3 == 0) {
+                d(o, rel, "silla_oficina", N);
+                return;
+            }
+            if ((px == 4 || px == fw - 5) && pz >= 10 && pz <= 12) {
+                d(o, rel, "sofa", px == 4 ? E : W);
+                return;
+            }
+            if ((px == 6 || px == fw - 7) && pz == 11) {
+                d(o, rel, "mesa", N);
+                d(o, rel + 1, "planta", N);
+                return;
+            }
+            if ((px == 2 || px == fw - 3) && (pz == 2 || pz == fd - 3)) {
+                d(o, rel, "planta", N);
+                return;
+            }
+            if (pz == fd - 2 && px % 9 == 3) {
+                d(o, rel, "cuadro", N);
+                return;
+            }
+        }
+        boolean meeting = k % 3 == 2 && Math.abs(pz - cz) <= 3 && Math.abs(px - cx) <= 6;
+        if (meeting) {
+            if (pz == cz && px >= cx - 4 && px <= cx + 3) {
+                d(o, rel, "mesa", N);
+            } else if (pz == cz - 1 && px >= cx - 4 && px <= cx + 3 && px % 2 == 0) {
+                d(o, rel, "silla_oficina", S);
+            } else if (pz == cz + 1 && px >= cx - 4 && px <= cx + 3 && px % 2 == 0) {
+                d(o, rel, "silla_oficina", N);
+            } else if (pz == cz - 3 && px == cx) {
+                d(o, rel, "tv", S);
+            }
+            return;
+        }
+        if (px % 6 == 2 && pz % 5 == 2 && px > 1 && pz > 2) {
+            d(o, rel, "escritorio", N);
+            d(o, rel + 1, "computadora", N);
+        } else if (px % 6 == 2 && pz % 5 == 1 && pz > 2) {
+            d(o, rel, "silla_oficina", S);
+        } else if (pz == fd - 2 && px % 7 == 3) {
+            d(o, rel, "archivador", N);
+        } else if (pz == 2 && px % 12 == 6) {
+            d(o, rel, "planta", N);
+        } else if (pz == fd - 2 && px % 7 == 5) {
+            d(o, rel, "papelera", N);
+        } else {
+            o.set(rel, s(Blocks.LIGHT_GRAY_CARPET));
+        }
+    }
+
+    private static void barracks(CityPlan.Lot l, int px, int pz, int rel, int k, CityPlan.Out o) {
+        int fw = l.fw;
+        int fd = l.fd;
+        if (k == 0 && is(px, pz, 1, fd / 2)) {
+            d(o, rel, "tv", E);
+        } else if (pz == 1 && px % 3 == 1 && px > 2) {
+            d(o, rel, "cama", S);
+        } else if (pz == fd - 2 && px % 3 == 1 && px > 2) {
+            d(o, rel, "cama", N);
+        } else if ((pz == 2 || pz == fd - 3) && px % 3 == 2 && px > 2) {
+            d(o, rel, "mesita_noche", pz == 2 ? S : N);
+        } else if (px == fw - 2 && (pz == 4 || pz == 5 || pz == fd - 5)) {
+            d(o, rel, "armario", W);
+        } else if (k == 0 && pz == fd / 2 && px % 8 >= 3 && px % 8 <= 6 && px > 4) {
+            d(o, rel, "mesa", N);
+        } else if (k == 0 && pz == fd / 2 - 1 && px % 8 >= 3 && px % 8 <= 6 && px > 4 && px % 2 == 1) {
+            d(o, rel, "silla", S);
+        } else if (k == 0 && pz == fd / 2 + 1 && px % 8 >= 3 && px % 8 <= 6 && px > 4 && px % 2 == 1) {
+            d(o, rel, "silla", N);
+        }
+    }
+
+    private static void mill(CityPlan.Lot l, int px, int pz, int rel, int k, CityPlan.Out o) {
+        int fw = l.fw;
+        int fd = l.fd;
+        if (is(px, pz, fw - 2, fd - 2)) {
+            o.set(rel, s(Blocks.HAY_BLOCK));
+            o.set(rel + 1, s(Blocks.HAY_BLOCK));
+        } else if (k % 2 == 0 && is(px, pz, 4, 4)) {
+            d(o, rel, "mesa", N);
+            d(o, rel + 1, "lampara", N);
+        } else if (k % 2 == 0 && is(px, pz, 3, 4)) {
+            d(o, rel, "silla", E);
+        } else if (k % 2 == 0 && is(px, pz, 5, 4)) {
+            d(o, rel, "silla", W);
+        } else if (k % 2 == 0 && is(px, pz, 4, fd - 2)) {
+            d(o, rel, "estanteria", N);
+        } else if (k % 2 == 1 && is(px, pz, fw - 3, fd - 2)) {
+            d(o, rel, "cama", N);
+        } else if (k % 2 == 1 && is(px, pz, fw - 2, 4)) {
+            d(o, rel, "armario", W);
+        } else if (k % 2 == 1 && is(px, pz, 3, fd - 2)) {
+            d(o, rel, "planta", N);
         }
     }
 

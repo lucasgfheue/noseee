@@ -20,6 +20,7 @@ public class ArmasRealesMod {
         ModBlocks.BLOCKS.register(modBus);
         ModItems.ITEMS.register(modBus);
         ModEntities.ENTITIES.register(modBus);
+        ModDeco.init();
         ModMenus.MENUS.register(modBus);
         ModStructures.TYPES.register(modBus);
         ModStructures.PIECES.register(modBus);
@@ -151,6 +152,9 @@ public class ArmasRealesMod {
             event.accept(ModItems.CARTUCHO_ESCOPETA);
             event.accept(ModItems.FRANCOTIRADOR);
             event.accept(ModItems.RADIO);
+            for (var deco : ModDeco.ITEMS.values()) {
+                event.accept(deco);
+            }
             event.accept(ModItems.TORRETA);
             event.accept(ModItems.TORRETA_PESADA);
             event.accept(ModItems.MUNICION_FRANCOTIRADOR);
