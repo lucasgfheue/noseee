@@ -1,0 +1,73 @@
+{
+  "textures": {
+    "hormigon": "armasreales:block/deco_hormigon",
+    "naranja": "armasreales:block/deco_naranja",
+    "particle": "armasreales:block/deco_hormigon"
+  },
+  "elements": [
+    {
+      "from": [
+        5,
+        0,
+        5
+      ],
+      "to": [
+        11,
+        12,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hormigon"
+        },
+        "east": {
+          "texture": "#hormigon"
+        },
+        "south": {
+          "texture": "#hormigon"
+        },
+        "west": {
+          "texture": "#hormigon"
+        },
+        "up": {
+          "texture": "#hormigon"
+        },
+        "down": {
+          "texture": "#hormigon"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        9,
+        5
+      ],
+      "to": [
+        11,
+        11,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#naranja"
+        },
+        "east": {
+          "texture": "#naranja"
+        },
+        "south": {
+          "texture": "#naranja"
+        },
+        "west": {
+          "texture": "#naranja"
+        },
+        "up": {
+          "texture": "#naranja"
+        },
+        "down": {
+          "texture": "#naranja"
+        }
+      }
+    }
+  ]
+}

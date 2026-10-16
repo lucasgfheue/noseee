@@ -1,0 +1,73 @@
+{
+  "textures": {
+    "contenedor_verde": "armasreales:block/deco_contenedor_verde",
+    "negro": "armasreales:block/deco_negro",
+    "particle": "armasreales:block/deco_contenedor_verde"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        10,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#contenedor_verde"
+        },
+        "east": {
+          "texture": "#contenedor_verde"
+        },
+        "south": {
+          "texture": "#contenedor_verde"
+        },
+        "west": {
+          "texture": "#contenedor_verde"
+        },
+        "up": {
+          "texture": "#contenedor_verde"
+        },
+        "down": {
+          "texture": "#contenedor_verde"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        10,
+        0
+      ],
+      "to": [
+        16,
+        12,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    }
+  ]
+}

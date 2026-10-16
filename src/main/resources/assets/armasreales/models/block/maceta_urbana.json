@@ -1,0 +1,139 @@
+{
+  "textures": {
+    "hormigon": "armasreales:block/deco_hormigon",
+    "tierra": "armasreales:block/deco_tierra",
+    "hojas": "armasreales:block/deco_hojas",
+    "flores": "armasreales:block/deco_flores",
+    "particle": "armasreales:block/deco_hormigon"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        6,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hormigon"
+        },
+        "east": {
+          "texture": "#hormigon"
+        },
+        "south": {
+          "texture": "#hormigon"
+        },
+        "west": {
+          "texture": "#hormigon"
+        },
+        "up": {
+          "texture": "#hormigon"
+        },
+        "down": {
+          "texture": "#hormigon"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        6,
+        2
+      ],
+      "to": [
+        14,
+        7,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tierra"
+        },
+        "east": {
+          "texture": "#tierra"
+        },
+        "south": {
+          "texture": "#tierra"
+        },
+        "west": {
+          "texture": "#tierra"
+        },
+        "up": {
+          "texture": "#tierra"
+        },
+        "down": {
+          "texture": "#tierra"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        7,
+        3
+      ],
+      "to": [
+        13,
+        14,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hojas"
+        },
+        "east": {
+          "texture": "#hojas"
+        },
+        "south": {
+          "texture": "#hojas"
+        },
+        "west": {
+          "texture": "#hojas"
+        },
+        "up": {
+          "texture": "#hojas"
+        },
+        "down": {
+          "texture": "#hojas"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        13,
+        4
+      ],
+      "to": [
+        12,
+        14,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#flores"
+        },
+        "east": {
+          "texture": "#flores"
+        },
+        "south": {
+          "texture": "#flores"
+        },
+        "west": {
+          "texture": "#flores"
+        },
+        "up": {
+          "texture": "#flores"
+        },
+        "down": {
+          "texture": "#flores"
+        }
+      }
+    }
+  ]
+}

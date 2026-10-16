@@ -1,0 +1,105 @@
+{
+  "textures": {
+    "buzon_azul": "armasreales:block/deco_buzon_azul",
+    "negro": "armasreales:block/deco_negro",
+    "particle": "armasreales:block/deco_buzon_azul"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        0,
+        4
+      ],
+      "to": [
+        13,
+        12,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#buzon_azul"
+        },
+        "east": {
+          "texture": "#buzon_azul"
+        },
+        "south": {
+          "texture": "#buzon_azul"
+        },
+        "west": {
+          "texture": "#buzon_azul"
+        },
+        "up": {
+          "texture": "#buzon_azul"
+        },
+        "down": {
+          "texture": "#buzon_azul"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        12,
+        5
+      ],
+      "to": [
+        13,
+        14,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#buzon_azul"
+        },
+        "east": {
+          "texture": "#buzon_azul"
+        },
+        "south": {
+          "texture": "#buzon_azul"
+        },
+        "west": {
+          "texture": "#buzon_azul"
+        },
+        "up": {
+          "texture": "#buzon_azul"
+        },
+        "down": {
+          "texture": "#buzon_azul"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        9,
+        3
+      ],
+      "to": [
+        11,
+        10,
+        4
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    }
+  ]
+}

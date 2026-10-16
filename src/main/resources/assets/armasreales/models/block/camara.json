@@ -1,0 +1,177 @@
+{
+  "textures": {
+    "metal": "armasreales:block/deco_metal",
+    "negro": "armasreales:block/deco_negro",
+    "camara_lente": "armasreales:block/deco_camara_lente",
+    "tela_roja": "armasreales:block/deco_tela_roja",
+    "particle": "armasreales:block/deco_metal"
+  },
+  "elements": [
+    {
+      "from": [
+        7,
+        0,
+        7
+      ],
+      "to": [
+        9,
+        16,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        11,
+        5
+      ],
+      "to": [
+        9,
+        13,
+        7
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        10,
+        1
+      ],
+      "to": [
+        11,
+        14,
+        6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        11,
+        0
+      ],
+      "to": [
+        10,
+        13,
+        1
+      ],
+      "faces": {
+        "north": {
+          "texture": "#camara_lente",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#camara_lente"
+        },
+        "south": {
+          "texture": "#camara_lente"
+        },
+        "west": {
+          "texture": "#camara_lente"
+        },
+        "up": {
+          "texture": "#camara_lente"
+        },
+        "down": {
+          "texture": "#camara_lente"
+        }
+      }
+    },
+    {
+      "from": [
+        10,
+        13,
+        2
+      ],
+      "to": [
+        11,
+        14,
+        3
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tela_roja"
+        },
+        "east": {
+          "texture": "#tela_roja"
+        },
+        "south": {
+          "texture": "#tela_roja"
+        },
+        "west": {
+          "texture": "#tela_roja"
+        },
+        "up": {
+          "texture": "#tela_roja"
+        },
+        "down": {
+          "texture": "#tela_roja"
+        }
+      }
+    }
+  ]
+}

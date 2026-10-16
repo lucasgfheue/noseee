@@ -1,0 +1,80 @@
+{
+  "textures": {
+    "kiosco_cartel": "armasreales:block/deco_kiosco_cartel",
+    "madera_oscura": "armasreales:block/deco_madera_oscura",
+    "tela_roja": "armasreales:block/deco_tela_roja",
+    "particle": "armasreales:block/deco_madera_oscura"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        12,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#kiosco_cartel",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "up": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        12,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tela_roja"
+        },
+        "east": {
+          "texture": "#tela_roja"
+        },
+        "south": {
+          "texture": "#tela_roja"
+        },
+        "west": {
+          "texture": "#tela_roja"
+        },
+        "up": {
+          "texture": "#tela_roja"
+        },
+        "down": {
+          "texture": "#tela_roja"
+        }
+      }
+    }
+  ]
+}

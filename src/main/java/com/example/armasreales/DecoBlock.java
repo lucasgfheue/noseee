@@ -3,6 +3,8 @@ package com.example.armasreales;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -30,11 +32,13 @@ public class DecoBlock extends HorizontalDirectionalBlock {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     private final boolean toggle;
+    private final int mode;
     private final VoxelShape[] shapes = new VoxelShape[4];
 
     public DecoBlock(Properties properties, ModDeco.Def def) {
         super(properties);
         this.toggle = def.toggle();
+        this.mode = def.mode();
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
         for (int turns = 0; turns < 4; turns++) {
             VoxelShape s = Shapes.empty();
@@ -110,5 +114,37 @@ public class DecoBlock extends HorizontalDirectionalBlock {
         level.setBlock(pos, state.setValue(LIT, on), 3);
         level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.4f, on ? 0.7f : 0.5f);
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    // --- modo 1: farola automática (se enciende de noche o con lluvia)
+    private boolean wantsOn(Level level) {
+        long t = level.getDayTime() % 24000L;
+        return (t >= 12800L && t < 23200L) || level.isRaining();
+    }
+
+    @Override
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState old, boolean moving) {
+        if (mode == 1 && !level.isClientSide && !level.getBlockTicks().hasScheduledTick(pos, this)) {
+            level.scheduleTick(pos, this, 20);
+        }
+    }
+
+    @Override
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (mode == 1 && !level.getBlockTicks().hasScheduledTick(pos, this)) {
+            level.scheduleTick(pos, this, 20);
+        }
+    }
+
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (mode != 1) {
+            return;
+        }
+        boolean on = wantsOn(level);
+        if (state.getValue(LIT) != on) {
+            level.setBlock(pos, state.setValue(LIT, on), 3);
+        }
+        level.scheduleTick(pos, this, 100);
     }
 }

@@ -675,6 +675,9 @@ final class CityBuildings {
                     o.set(H + 1, s(Blocks.LIGHT_GRAY_CONCRETE));
                     o.set(H + 2, s(Blocks.IRON_BARS));
                 }
+                if (pz == 2 && px >= 3 && px < fw - 3 && px % 4 == 0 && CityPlan.h(l.seed, px / 4, 19) % 3 == 0) {
+                    d(o, H + 1, "cartelera", N);
+                }
             }
             case APART -> {
                 if (px == fw - 4 && pz == fd - 4) {
@@ -707,6 +710,22 @@ final class CityBuildings {
             }
         } else if (st == SHOPS && pz >= -2 && pz <= -1) {
             o.set(3, (px / 2) % 2 == 0 ? s(Blocks.WHITE_CONCRETE) : wallB(l, st));
+        }
+        if (pz == -1 && (st == SKY || st == OFFICE || st == SHOPS)) {
+            int half = st == SKY ? 2 : 1;
+            int mid = l.fw / 2;
+            if (px % 6 == 0 && Math.abs(px - mid) > half + 2) {
+                d(o, 1, "bolardo", N);
+            } else if (px == mid + half + 1 && CityPlan.h(l.seed, 5, 17) % 3 == 0) {
+                d(o, 1, "cajero", N);
+            } else if (px == mid - half - 1 && st == SHOPS && CityPlan.h(l.seed, 6, 17) % 2 == 0) {
+                d(o, 1, "bicicleta", E);
+            }
+            if (px == mid - half - 1 && st != SHOPS) {
+                d(o, 5, "camara_pared", N);
+            } else if (px == mid + half && st == SHOPS) {
+                d(o, 5, "camara_pared", N);
+            }
         }
     }
 
@@ -1039,10 +1058,18 @@ final class CityBuildings {
             o.ground = s(Blocks.STONE_BRICKS);
             if (lx == w / 2 + 2 && lz == d / 2 + 2) {
                 for (int r = 1; r <= 5; r++) {
-                    o.set(r, s(Blocks.COBBLESTONE_WALL));
+                    d(o, r, "poste", N);
                 }
-                o.set(6, s(Blocks.GLOWSTONE));
+                d(o, 6, "farola_verde", W);
             }
+            return;
+        }
+        if (lx == w / 2 + 2 && lz == d / 2 - 4) {
+            d(o, 1, "bebedero", W);
+            return;
+        }
+        if (lx == w / 2 - 2 && lz == d / 2 + 5) {
+            d(o, 1, "banqueta", E);
             return;
         }
         if ((lx == w / 2 - 3 || lx == w / 2 + 3) && lz % 8 == 1 && lz > 3 && lz < d - 3 && lx != 0) {
@@ -1076,6 +1103,20 @@ final class CityBuildings {
         }
         if ((lx == 3 || lx == w - 4) && lz % 8 == 1 && lz > 10 && lz < d - 10) {
             d(o, 1, "banco", lx == 3 ? E : W);
+        }
+        if (lx == w / 2 + 10 && lz == d / 2) {
+            d(o, 1, "kiosco", W);
+        } else if (lx == w / 2 - 10 && lz == d / 2) {
+            d(o, 1, "bebedero", E);
+        } else if ((lx == w / 2 - 8 || lx == w / 2 + 8) && (lz == d / 2 - 8 || lz == d / 2 + 8)) {
+            for (int r = 1; r <= 5; r++) {
+                d(o, r, "poste", N);
+            }
+            d(o, 6, lz < d / 2 ? "camara" : "farola", lx < w / 2 ? E : W);
+        } else if ((lx == w / 2 - 4 || lx == w / 2 + 4) && lz == d / 2 - 7) {
+            d(o, 1, "banqueta", S);
+        } else if ((lx == w / 2 - 4 || lx == w / 2 + 4) && lz == d / 2 + 7) {
+            d(o, 1, "banqueta", N);
         }
     }
 

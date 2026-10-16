@@ -1,5 +1,6 @@
 package com.example.armasreales;
 
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,6 +37,41 @@ final class CityRoads {
         o.o.set(6, lamp(x, z));
     }
 
+    private static boolean avenueW(int w) {
+        return w == 16;
+    }
+
+    private static void deco(CityPlan.Out o, int rel, String id, Direction f) {
+        o.set(rel, ModDeco.state(id, f, false));
+    }
+
+    /** Farola (o cámara de vigilancia cada cierto número de postes) mirando hacia la calzada. */
+    static void streetLamp(CityPlan.Out o, int x, int z, Direction toRoad, int salt) {
+        for (int r = 1; r <= 5; r++) {
+            deco(o, r, "poste", Direction.NORTH);
+        }
+        if (CityPlan.h(x >> 4, z >> 4, 77 + salt) % 4 == 0) {
+            deco(o, 6, "camara", toRoad);
+            return;
+        }
+        int dist = Math.max(Math.abs(x), Math.abs(z));
+        String id = z >= CityPlan.PORT_Z ? "farola_ambar" : dist <= 192 ? "farola" : dist <= 384 ? "farola_verde" : "farola_ambar";
+        deco(o, 6, id, toRoad);
+    }
+
+    private static final String[] FURN = {"banqueta", "hidrante", "buzon", "papelera_calle", "parquimetro", "parada_autobus",
+            "cabina_telefonica", "maceta_urbana", "bolardo", "banqueta", "papelera_calle", "bolardo"};
+
+    /** Mobiliario urbano en la acera, junto a la fachada. */
+    static void furniture(CityPlan.Out o, int ix, int iz, int a, int side, Direction toRoad) {
+        int k = CityPlan.h(ix * 31 + a / 16, iz, 90 + side) % 16;
+        if (k >= FURN.length) {
+            return;
+        }
+        String id = FURN[k];
+        deco(o, 1, id, "bolardo".equals(id) || "maceta_urbana".equals(id) ? Direction.NORTH : toRoad);
+    }
+
     /** Envoltorio mínimo para no repetir parámetros. */
     static final class Out2 {
         final CityPlan.Out o;
@@ -65,11 +101,12 @@ final class CityRoads {
         if (bx && bz) {                                         // cruce
             if (urban && (wx == 1 || wx == wX - 2) && (wz == 1 || wz == wZ - 2)) {
                 for (int r = 1; r <= 4; r++) {
-                    o.set(r, s(Blocks.COBBLESTONE_WALL));
+                    deco(o, r, "poste", Direction.NORTH);
                 }
-                o.set(5, s(Blocks.RED_CONCRETE));
-                o.set(6, s(Blocks.YELLOW_CONCRETE));
-                o.set(7, s(Blocks.LIME_CONCRETE));
+                Direction da = wz == 1 ? Direction.NORTH : Direction.SOUTH;
+                o.set(5, ModDeco.semaforo(da, SemaforoBlock.phaseFor(da, 0)));
+                Direction db = wx == 1 ? Direction.WEST : Direction.EAST;
+                o.set(6, ModDeco.semaforo(db, SemaforoBlock.phaseFor(db, 0)));
             }
             return;
         }
@@ -84,7 +121,7 @@ final class CityRoads {
                     o.ground = s(Blocks.YELLOW_CONCRETE);
                 }
                 if (u == 0 && a % 16 == 8) {
-                    lampPost(new Out2(o), x, z);
+                    streetLamp(o, x, z, ns ? Direction.EAST : Direction.SOUTH, 0);
                 }
             } else if (u == w / 2 && a % 8 < 4) {
                 o.ground = s(Blocks.YELLOW_CONCRETE);
@@ -93,8 +130,20 @@ final class CityRoads {
         }
         if (u < 2 || u >= w - 2) {                             // acera
             o.ground = (u == 0 || u == w - 1) ? s(Blocks.SMOOTH_STONE) : s(Blocks.LIGHT_GRAY_CONCRETE);
-            if ((u == 0 && a % 16 == 4) || (u == w - 1 && a % 16 == 12)) {
-                lampPost(new Out2(o), x, z);
+            boolean first = u == 0;
+            Direction toRoad = ns ? (first ? Direction.EAST : Direction.WEST) : (first ? Direction.SOUTH : Direction.NORTH);
+            if ((first && a % 16 == 4) || (u == w - 1 && a % 16 == 12)) {
+                streetLamp(o, x, z, toRoad, first ? 0 : 1);
+            } else if ((u == 0 || u == w - 1) && a >= cw + 3 && a < CityPlan.PITCH - 3
+                    && a % 16 == (first ? 10 : 2)) {
+                furniture(o, ix, iz, a, first ? 0 : 1, toRoad);
+            } else if (u == 0 && !(avenueW(w)) && a == CityPlan.PITCH - 4) {
+                int k = CityPlan.h(ix, iz, 95) % 4;
+                String id = k < 2 ? "senal_stop" : k == 2 ? "senal_ceda" : "senal_40";
+                for (int r = 1; r <= 3; r++) {
+                    deco(o, r, "poste", Direction.NORTH);
+                }
+                deco(o, 4, id, ns ? Direction.SOUTH : Direction.EAST);
             }
             return;
         }
@@ -144,7 +193,13 @@ final class CityRoads {
                 }
                 if (side >= 0) {
                     int cid = CityPlan.h(CityPlan.lineIdx(x), CityPlan.lineIdx(z), 21 + (ns ? 0 : 1));
-                    if (CityPlan.h(cid, k, 40 + side) % 3 == 0) {
+                    if (side == 0 && CityPlan.h(cid, k, 60) % 9 == 0 && CityPlan.h(cid, k, 40 + side) % 3 != 0) {
+                        if (r == 1 || r == 2) {
+                            deco(o, 1, "valla_obras", ns ? Direction.SOUTH : Direction.EAST);
+                        } else {
+                            deco(o, 1, "cono", Direction.NORTH);
+                        }
+                    } else if (CityPlan.h(cid, k, 40 + side) % 3 == 0) {
                         Block col = CAR[CityPlan.h(cid, k, 50 + side) % CAR.length];
                         o.set(1, s(col));
                         if (r == 1 || r == 2) {

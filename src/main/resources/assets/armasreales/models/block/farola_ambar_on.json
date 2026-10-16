@@ -1,0 +1,138 @@
+{
+  "textures": {
+    "metal": "armasreales:block/deco_metal",
+    "negro": "armasreales:block/deco_negro",
+    "farola_luz_ambar_on": "armasreales:block/deco_farola_luz_ambar_on",
+    "particle": "armasreales:block/deco_metal"
+  },
+  "elements": [
+    {
+      "from": [
+        7,
+        0,
+        7
+      ],
+      "to": [
+        9,
+        8,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        8,
+        2
+      ],
+      "to": [
+        9,
+        10,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        7,
+        0
+      ],
+      "to": [
+        11,
+        9,
+        4
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        6,
+        1
+      ],
+      "to": [
+        10,
+        7,
+        3
+      ],
+      "faces": {
+        "north": {
+          "texture": "#farola_luz_ambar_on"
+        },
+        "east": {
+          "texture": "#farola_luz_ambar_on"
+        },
+        "south": {
+          "texture": "#farola_luz_ambar_on"
+        },
+        "west": {
+          "texture": "#farola_luz_ambar_on"
+        },
+        "up": {
+          "texture": "#farola_luz_ambar_on"
+        },
+        "down": {
+          "texture": "#farola_luz_ambar_on"
+        }
+      }
+    }
+  ]
+}

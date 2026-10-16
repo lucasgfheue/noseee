@@ -1,0 +1,138 @@
+{
+  "textures": {
+    "hormigon": "armasreales:block/deco_hormigon",
+    "metal": "armasreales:block/deco_metal",
+    "agua": "armasreales:block/deco_agua",
+    "particle": "armasreales:block/deco_hormigon"
+  },
+  "elements": [
+    {
+      "from": [
+        5,
+        0,
+        5
+      ],
+      "to": [
+        11,
+        10,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hormigon"
+        },
+        "east": {
+          "texture": "#hormigon"
+        },
+        "south": {
+          "texture": "#hormigon"
+        },
+        "west": {
+          "texture": "#hormigon"
+        },
+        "up": {
+          "texture": "#hormigon"
+        },
+        "down": {
+          "texture": "#hormigon"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        10,
+        3
+      ],
+      "to": [
+        13,
+        12,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        11,
+        4
+      ],
+      "to": [
+        12,
+        12,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#agua"
+        },
+        "east": {
+          "texture": "#agua"
+        },
+        "south": {
+          "texture": "#agua"
+        },
+        "west": {
+          "texture": "#agua"
+        },
+        "up": {
+          "texture": "#agua"
+        },
+        "down": {
+          "texture": "#agua"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        12,
+        3
+      ],
+      "to": [
+        9,
+        14,
+        5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    }
+  ]
+}
