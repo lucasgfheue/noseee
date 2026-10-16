@@ -1,0 +1,44 @@
+{
+  "textures": {
+    "pantalla_cam": "armasreales:block/deco_pantalla_cam",
+    "negro": "armasreales:block/deco_negro",
+    "particle": "armasreales:block/deco_pantalla_cam"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        10
+      ],
+      "to": [
+        15.5,
+        14,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#pantalla_cam",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            14.0
+          ]
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        }
+      }
+    }
+  ]
+}

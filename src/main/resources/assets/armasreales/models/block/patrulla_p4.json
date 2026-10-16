@@ -1,0 +1,118 @@
+{
+  "textures": {
+    "negro": "armasreales:block/deco_negro",
+    "veh_blanco": "armasreales:block/deco_veh_blanco",
+    "pat_lado_f": "armasreales:block/deco_pat_lado_f",
+    "veh_vidrio": "armasreales:block/deco_veh_vidrio",
+    "particle": "armasreales:block/deco_negro"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        3,
+        0
+      ],
+      "to": [
+        16,
+        7,
+        16
+      ],
+      "faces": {
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        7,
+        0
+      ],
+      "to": [
+        16,
+        14,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#veh_blanco"
+        },
+        "south": {
+          "texture": "#veh_blanco"
+        },
+        "west": {
+          "texture": "#pat_lado_f",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#veh_blanco"
+        },
+        "down": {
+          "texture": "#veh_blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        14,
+        1
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#veh_vidrio"
+        },
+        "west": {
+          "texture": "#veh_vidrio"
+        },
+        "down": {
+          "texture": "#veh_vidrio"
+        }
+      }
+    },
+    {
+      "from": [
+        5,
+        14,
+        1
+      ],
+      "to": [
+        16,
+        15,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#veh_blanco"
+        },
+        "west": {
+          "texture": "#veh_blanco"
+        },
+        "up": {
+          "texture": "#veh_blanco"
+        },
+        "down": {
+          "texture": "#veh_blanco"
+        }
+      }
+    }
+  ]
+}

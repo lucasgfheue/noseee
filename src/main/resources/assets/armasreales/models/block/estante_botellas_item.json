@@ -1,0 +1,383 @@
+{
+  "textures": {
+    "madera_oscura": "armasreales:block/deco_madera_oscura",
+    "madera_clara": "armasreales:block/deco_madera_clara",
+    "botellas": "armasreales:block/deco_botellas",
+    "particle": "armasreales:block/deco_madera_oscura"
+  },
+  "elements": [
+    {
+      "from": [
+        0.0,
+        0.0,
+        10.0
+      ],
+      "to": [
+        16.0,
+        16.0,
+        12.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_oscura"
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "up": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    },
+    {
+      "from": [
+        0.0,
+        0.0,
+        8.0
+      ],
+      "to": [
+        1.0,
+        16.0,
+        10.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_oscura"
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "up": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    },
+    {
+      "from": [
+        15.0,
+        0.0,
+        8.0
+      ],
+      "to": [
+        16.0,
+        16.0,
+        10.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_oscura"
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "up": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    },
+    {
+      "from": [
+        1.0,
+        3.0,
+        8.0
+      ],
+      "to": [
+        15.0,
+        3.75,
+        10.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_clara"
+        },
+        "east": {
+          "texture": "#madera_clara"
+        },
+        "south": {
+          "texture": "#madera_clara"
+        },
+        "west": {
+          "texture": "#madera_clara"
+        },
+        "up": {
+          "texture": "#madera_clara"
+        },
+        "down": {
+          "texture": "#madera_clara"
+        }
+      }
+    },
+    {
+      "from": [
+        1.0,
+        7.5,
+        8.0
+      ],
+      "to": [
+        15.0,
+        8.25,
+        10.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_clara"
+        },
+        "east": {
+          "texture": "#madera_clara"
+        },
+        "south": {
+          "texture": "#madera_clara"
+        },
+        "west": {
+          "texture": "#madera_clara"
+        },
+        "up": {
+          "texture": "#madera_clara"
+        },
+        "down": {
+          "texture": "#madera_clara"
+        }
+      }
+    },
+    {
+      "from": [
+        1.0,
+        12.0,
+        8.0
+      ],
+      "to": [
+        15.0,
+        12.75,
+        10.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_clara"
+        },
+        "east": {
+          "texture": "#madera_clara"
+        },
+        "south": {
+          "texture": "#madera_clara"
+        },
+        "west": {
+          "texture": "#madera_clara"
+        },
+        "up": {
+          "texture": "#madera_clara"
+        },
+        "down": {
+          "texture": "#madera_clara"
+        }
+      }
+    },
+    {
+      "from": [
+        1.0,
+        3.75,
+        8.0
+      ],
+      "to": [
+        15.0,
+        7.5,
+        10.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#botellas",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#botellas"
+        },
+        "south": {
+          "texture": "#botellas"
+        },
+        "west": {
+          "texture": "#botellas"
+        },
+        "up": {
+          "texture": "#botellas"
+        },
+        "down": {
+          "texture": "#botellas"
+        }
+      }
+    },
+    {
+      "from": [
+        1.0,
+        8.25,
+        8.0
+      ],
+      "to": [
+        15.0,
+        12.0,
+        10.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#botellas",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#botellas"
+        },
+        "south": {
+          "texture": "#botellas"
+        },
+        "west": {
+          "texture": "#botellas"
+        },
+        "up": {
+          "texture": "#botellas"
+        },
+        "down": {
+          "texture": "#botellas"
+        }
+      }
+    },
+    {
+      "from": [
+        1.0,
+        12.75,
+        8.0
+      ],
+      "to": [
+        15.0,
+        15.5,
+        10.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#botellas",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#botellas"
+        },
+        "south": {
+          "texture": "#botellas"
+        },
+        "west": {
+          "texture": "#botellas"
+        },
+        "up": {
+          "texture": "#botellas"
+        },
+        "down": {
+          "texture": "#botellas"
+        }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "ground": {
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.45,
+        0.45,
+        0.45
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  }
+}

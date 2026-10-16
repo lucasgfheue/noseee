@@ -1,0 +1,135 @@
+{
+  "textures": {
+    "acero": "armasreales:block/deco_acero",
+    "blanco": "armasreales:block/deco_blanco",
+    "negro": "armasreales:block/deco_negro",
+    "camilla_tela": "armasreales:block/deco_camilla_tela",
+    "particle": "armasreales:block/deco_acero"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        4
+      ],
+      "to": [
+        14,
+        5,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "east": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        5,
+        6
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#blanco"
+        },
+        "east": {
+          "texture": "#blanco"
+        },
+        "down": {
+          "texture": "#blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        9,
+        5
+      ],
+      "to": [
+        10,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        9,
+        0
+      ],
+      "to": [
+        8,
+        11,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "east": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        11,
+        1
+      ],
+      "to": [
+        6,
+        13,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#camilla_tela"
+        },
+        "east": {
+          "texture": "#camilla_tela"
+        },
+        "up": {
+          "texture": "#camilla_tela"
+        },
+        "down": {
+          "texture": "#camilla_tela"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "textures": {
+    "acero": "armasreales:block/deco_acero",
+    "metal": "armasreales:block/deco_metal",
+    "particle": "armasreales:block/deco_acero"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        8,
+        6
+      ],
+      "to": [
+        16,
+        16,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        0,
+        13
+      ],
+      "to": [
+        16,
+        8,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        0,
+        4
+      ],
+      "to": [
+        8,
+        7,
+        5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "textures": {
+    "ladrillo": "armasreales:block/deco_ladrillo",
+    "particle": "armasreales:block/deco_ladrillo"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        1
+      ],
+      "to": [
+        14,
+        6,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#ladrillo"
+        },
+        "east": {
+          "texture": "#ladrillo"
+        },
+        "south": {
+          "texture": "#ladrillo"
+        },
+        "up": {
+          "texture": "#ladrillo"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        6,
+        3
+      ],
+      "to": [
+        10,
+        12,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#ladrillo"
+        },
+        "east": {
+          "texture": "#ladrillo"
+        },
+        "south": {
+          "texture": "#ladrillo"
+        },
+        "up": {
+          "texture": "#ladrillo"
+        },
+        "down": {
+          "texture": "#ladrillo"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        12,
+        5
+      ],
+      "to": [
+        4,
+        16,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#ladrillo"
+        },
+        "east": {
+          "texture": "#ladrillo"
+        },
+        "south": {
+          "texture": "#ladrillo"
+        },
+        "up": {
+          "texture": "#ladrillo"
+        },
+        "down": {
+          "texture": "#ladrillo"
+        }
+      }
+    }
+  ]
+}

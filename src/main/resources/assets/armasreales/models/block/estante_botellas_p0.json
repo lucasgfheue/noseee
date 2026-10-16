@@ -1,0 +1,155 @@
+{
+  "textures": {
+    "madera_oscura": "armasreales:block/deco_madera_oscura",
+    "madera_clara": "armasreales:block/deco_madera_clara",
+    "botellas": "armasreales:block/deco_botellas",
+    "particle": "armasreales:block/deco_madera_oscura"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        12
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        8
+      ],
+      "to": [
+        2,
+        16,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_oscura"
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        6,
+        8
+      ],
+      "to": [
+        16,
+        7.5,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_clara"
+        },
+        "south": {
+          "texture": "#madera_clara"
+        },
+        "west": {
+          "texture": "#madera_clara"
+        },
+        "up": {
+          "texture": "#madera_clara"
+        },
+        "down": {
+          "texture": "#madera_clara"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        15,
+        8
+      ],
+      "to": [
+        16,
+        16,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_clara"
+        },
+        "south": {
+          "texture": "#madera_clara"
+        },
+        "west": {
+          "texture": "#madera_clara"
+        },
+        "down": {
+          "texture": "#madera_clara"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        7.5,
+        8
+      ],
+      "to": [
+        16,
+        15,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#botellas",
+          "uv": [
+            8.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#botellas"
+        },
+        "west": {
+          "texture": "#botellas"
+        },
+        "up": {
+          "texture": "#botellas"
+        },
+        "down": {
+          "texture": "#botellas"
+        }
+      }
+    }
+  ]
+}

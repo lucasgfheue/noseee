@@ -1,0 +1,179 @@
+{
+  "textures": {
+    "acero": "armasreales:block/deco_acero",
+    "directorio": "armasreales:block/deco_directorio",
+    "negro": "armasreales:block/deco_negro",
+    "particle": "armasreales:block/deco_acero"
+  },
+  "elements": [
+    {
+      "from": [
+        5.0,
+        0.0,
+        7.0
+      ],
+      "to": [
+        11.0,
+        1.5,
+        10.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        1.5,
+        8.0
+      ],
+      "to": [
+        10.5,
+        13.0,
+        9.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#directorio",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        13.0,
+        7.5
+      ],
+      "to": [
+        11.0,
+        14.5,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "ground": {
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.45,
+        0.45,
+        0.45
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  }
+}

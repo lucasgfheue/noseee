@@ -1,0 +1,210 @@
+{
+  "textures": {
+    "acero": "armasreales:block/deco_acero",
+    "tela_verde": "armasreales:block/deco_tela_verde",
+    "particle": "armasreales:block/deco_acero"
+  },
+  "elements": [
+    {
+      "from": [
+        5.5,
+        0.0,
+        6.5
+      ],
+      "to": [
+        10.5,
+        1.0,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        7.0,
+        1.0,
+        7.0
+      ],
+      "to": [
+        9.0,
+        5.0,
+        9.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        5.0,
+        0.5
+      ],
+      "to": [
+        11.0,
+        6.0,
+        15.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        6.0,
+        1.5
+      ],
+      "to": [
+        10.5,
+        6.5,
+        14.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tela_verde"
+        },
+        "east": {
+          "texture": "#tela_verde"
+        },
+        "south": {
+          "texture": "#tela_verde"
+        },
+        "west": {
+          "texture": "#tela_verde"
+        },
+        "up": {
+          "texture": "#tela_verde",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "down": {
+          "texture": "#tela_verde"
+        }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "ground": {
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.45,
+        0.45,
+        0.45
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  }
+}

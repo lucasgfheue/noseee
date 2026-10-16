@@ -1,0 +1,70 @@
+{
+  "textures": {
+    "pantalla_cine_tex": "armasreales:block/deco_pantalla_cine_tex",
+    "vinilo": "armasreales:block/deco_vinilo",
+    "particle": "armasreales:block/deco_pantalla_cine_tex"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        14
+      ],
+      "to": [
+        16,
+        12,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#pantalla_cine_tex",
+          "uv": [
+            8.0,
+            0.0,
+            12.0,
+            4.8
+          ]
+        },
+        "south": {
+          "texture": "#pantalla_cine_tex",
+          "uv": [
+            4.0,
+            0.0,
+            8.0,
+            4.8
+          ]
+        },
+        "up": {
+          "texture": "#pantalla_cine_tex"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        12,
+        13
+      ],
+      "to": [
+        16,
+        14,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#vinilo"
+        },
+        "south": {
+          "texture": "#vinilo"
+        },
+        "up": {
+          "texture": "#vinilo"
+        },
+        "down": {
+          "texture": "#vinilo"
+        }
+      }
+    }
+  ]
+}

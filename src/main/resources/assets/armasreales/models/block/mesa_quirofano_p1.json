@@ -1,0 +1,131 @@
+{
+  "textures": {
+    "acero": "armasreales:block/deco_acero",
+    "tela_verde": "armasreales:block/deco_tela_verde",
+    "particle": "armasreales:block/deco_acero"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        0,
+        0
+      ],
+      "to": [
+        13,
+        2,
+        3
+      ],
+      "faces": {
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        2,
+        0
+      ],
+      "to": [
+        10,
+        10,
+        2
+      ],
+      "faces": {
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        10,
+        0
+      ],
+      "to": [
+        14,
+        12,
+        15
+      ],
+      "faces": {
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        12,
+        0
+      ],
+      "to": [
+        13,
+        13,
+        13
+      ],
+      "faces": {
+        "east": {
+          "texture": "#tela_verde"
+        },
+        "south": {
+          "texture": "#tela_verde"
+        },
+        "west": {
+          "texture": "#tela_verde"
+        },
+        "up": {
+          "texture": "#tela_verde",
+          "uv": [
+            0.0,
+            8.0,
+            16.0,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#tela_verde"
+        }
+      }
+    }
+  ]
+}

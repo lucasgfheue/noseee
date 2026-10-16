@@ -1,0 +1,132 @@
+{
+  "textures": {
+    "acero": "armasreales:block/deco_acero",
+    "hornillas": "armasreales:block/deco_hornillas",
+    "negro": "armasreales:block/deco_negro",
+    "particle": "armasreales:block/deco_acero"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        1
+      ],
+      "to": [
+        16,
+        14,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        14,
+        1
+      ],
+      "to": [
+        16,
+        15,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hornillas"
+        },
+        "east": {
+          "texture": "#hornillas"
+        },
+        "south": {
+          "texture": "#hornillas"
+        },
+        "up": {
+          "texture": "#hornillas",
+          "uv": [
+            8.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#hornillas"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        2,
+        0
+      ],
+      "to": [
+        15,
+        12,
+        1
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        15,
+        10
+      ],
+      "to": [
+        14,
+        16,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "textures": {
+    "mantel": "armasreales:block/deco_mantel",
+    "madera_oscura": "armasreales:block/deco_madera_oscura",
+    "blanco": "armasreales:block/deco_blanco",
+    "flores": "armasreales:block/deco_flores",
+    "particle": "armasreales:block/deco_mantel"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        12,
+        0
+      ],
+      "to": [
+        16,
+        13,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#mantel"
+        },
+        "east": {
+          "texture": "#mantel"
+        },
+        "south": {
+          "texture": "#mantel"
+        },
+        "west": {
+          "texture": "#mantel"
+        },
+        "up": {
+          "texture": "#mantel",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "down": {
+          "texture": "#mantel"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        5,
+        0
+      ],
+      "to": [
+        16,
+        12,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#mantel"
+        },
+        "east": {
+          "texture": "#mantel"
+        },
+        "south": {
+          "texture": "#mantel"
+        },
+        "west": {
+          "texture": "#mantel"
+        },
+        "up": {
+          "texture": "#mantel"
+        },
+        "down": {
+          "texture": "#mantel"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        5,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_oscura"
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "up": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        1,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_oscura"
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "up": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        13,
+        2
+      ],
+      "to": [
+        6,
+        13.6,
+        6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#blanco"
+        },
+        "east": {
+          "texture": "#blanco"
+        },
+        "south": {
+          "texture": "#blanco"
+        },
+        "west": {
+          "texture": "#blanco"
+        },
+        "up": {
+          "texture": "#blanco"
+        },
+        "down": {
+          "texture": "#blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        10,
+        13,
+        10
+      ],
+      "to": [
+        14,
+        13.6,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#blanco"
+        },
+        "east": {
+          "texture": "#blanco"
+        },
+        "south": {
+          "texture": "#blanco"
+        },
+        "west": {
+          "texture": "#blanco"
+        },
+        "up": {
+          "texture": "#blanco"
+        },
+        "down": {
+          "texture": "#blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        13,
+        7
+      ],
+      "to": [
+        9,
+        16,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#flores"
+        },
+        "east": {
+          "texture": "#flores"
+        },
+        "south": {
+          "texture": "#flores"
+        },
+        "west": {
+          "texture": "#flores"
+        },
+        "up": {
+          "texture": "#flores"
+        },
+        "down": {
+          "texture": "#flores"
+        }
+      }
+    }
+  ]
+}

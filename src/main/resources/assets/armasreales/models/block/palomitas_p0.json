@@ -1,0 +1,133 @@
+{
+  "textures": {
+    "palomitas": "armasreales:block/deco_palomitas",
+    "metal": "armasreales:block/deco_metal",
+    "vidrio": "armasreales:block/deco_vidrio",
+    "arena": "armasreales:block/deco_arena",
+    "particle": "armasreales:block/deco_palomitas"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        3
+      ],
+      "to": [
+        14,
+        12,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#palomitas"
+        },
+        "east": {
+          "texture": "#palomitas"
+        },
+        "south": {
+          "texture": "#palomitas"
+        },
+        "west": {
+          "texture": "#palomitas"
+        },
+        "up": {
+          "texture": "#palomitas"
+        },
+        "down": {
+          "texture": "#palomitas"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        12,
+        2
+      ],
+      "to": [
+        15,
+        13,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        13,
+        3
+      ],
+      "to": [
+        14,
+        16,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#vidrio"
+        },
+        "east": {
+          "texture": "#vidrio"
+        },
+        "south": {
+          "texture": "#vidrio"
+        },
+        "west": {
+          "texture": "#vidrio"
+        },
+        "down": {
+          "texture": "#vidrio"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        14,
+        4
+      ],
+      "to": [
+        13,
+        16,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#arena"
+        },
+        "east": {
+          "texture": "#arena"
+        },
+        "south": {
+          "texture": "#arena"
+        },
+        "west": {
+          "texture": "#arena"
+        },
+        "down": {
+          "texture": "#arena"
+        }
+      }
+    }
+  ]
+}

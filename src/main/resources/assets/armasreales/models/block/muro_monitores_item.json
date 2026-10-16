@@ -1,0 +1,255 @@
+{
+  "textures": {
+    "negro": "armasreales:block/deco_negro",
+    "pantalla_cam": "armasreales:block/deco_pantalla_cam",
+    "teclado": "armasreales:block/deco_teclado",
+    "particle": "armasreales:block/deco_negro"
+  },
+  "elements": [
+    {
+      "from": [
+        0.0,
+        0.0,
+        8.0
+      ],
+      "to": [
+        16.0,
+        6.5,
+        12.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        1.0,
+        6.5,
+        8.5
+      ],
+      "to": [
+        15.0,
+        7.0,
+        11.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        0.5,
+        7.0,
+        9.0
+      ],
+      "to": [
+        7.75,
+        15.0,
+        10.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#pantalla_cam",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        8.25,
+        7.0,
+        9.0
+      ],
+      "to": [
+        15.5,
+        15.0,
+        10.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#pantalla_cam",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        0.5,
+        6.5,
+        6.0
+      ],
+      "to": [
+        15.5,
+        7.0,
+        8.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#teclado",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "ground": {
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.45,
+        0.45,
+        0.45
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  }
+}

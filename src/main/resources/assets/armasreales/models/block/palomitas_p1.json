@@ -1,0 +1,100 @@
+{
+  "textures": {
+    "vidrio": "armasreales:block/deco_vidrio",
+    "arena": "armasreales:block/deco_arena",
+    "palomitas": "armasreales:block/deco_palomitas",
+    "particle": "armasreales:block/deco_vidrio"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        3
+      ],
+      "to": [
+        14,
+        10,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#vidrio"
+        },
+        "east": {
+          "texture": "#vidrio"
+        },
+        "south": {
+          "texture": "#vidrio"
+        },
+        "west": {
+          "texture": "#vidrio"
+        },
+        "up": {
+          "texture": "#vidrio"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        0,
+        4
+      ],
+      "to": [
+        13,
+        6,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#arena"
+        },
+        "east": {
+          "texture": "#arena"
+        },
+        "south": {
+          "texture": "#arena"
+        },
+        "west": {
+          "texture": "#arena"
+        },
+        "up": {
+          "texture": "#arena"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        10,
+        2
+      ],
+      "to": [
+        15,
+        14,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#palomitas"
+        },
+        "east": {
+          "texture": "#palomitas"
+        },
+        "south": {
+          "texture": "#palomitas"
+        },
+        "west": {
+          "texture": "#palomitas"
+        },
+        "up": {
+          "texture": "#palomitas"
+        },
+        "down": {
+          "texture": "#palomitas"
+        }
+      }
+    }
+  ]
+}

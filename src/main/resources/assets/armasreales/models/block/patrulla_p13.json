@@ -1,0 +1,108 @@
+{
+  "textures": {
+    "veh_rueda": "armasreales:block/deco_veh_rueda",
+    "negro": "armasreales:block/deco_negro",
+    "veh_blanco": "armasreales:block/deco_veh_blanco",
+    "pat_lado_t": "armasreales:block/deco_pat_lado_t",
+    "veh_atras_luz": "armasreales:block/deco_veh_atras_luz",
+    "particle": "armasreales:block/deco_veh_rueda"
+  },
+  "elements": [
+    {
+      "from": [
+        11,
+        0,
+        0
+      ],
+      "to": [
+        14,
+        7,
+        8
+      ],
+      "faces": {
+        "east": {
+          "texture": "#veh_rueda"
+        },
+        "south": {
+          "texture": "#veh_rueda"
+        },
+        "west": {
+          "texture": "#veh_rueda"
+        },
+        "up": {
+          "texture": "#veh_rueda"
+        },
+        "down": {
+          "texture": "#veh_rueda"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        3,
+        0
+      ],
+      "to": [
+        13,
+        7,
+        14
+      ],
+      "faces": {
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        7,
+        0
+      ],
+      "to": [
+        13,
+        14,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#veh_blanco"
+        },
+        "east": {
+          "texture": "#pat_lado_t",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#veh_atras_luz",
+          "uv": [
+            8.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#veh_blanco"
+        },
+        "down": {
+          "texture": "#veh_blanco"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "textures": {
+    "veh_rueda": "armasreales:block/deco_veh_rueda",
+    "negro": "armasreales:block/deco_negro",
+    "pat_frente": "armasreales:block/deco_pat_frente",
+    "pat_lado_f": "armasreales:block/deco_pat_lado_f",
+    "veh_blanco": "armasreales:block/deco_veh_blanco",
+    "particle": "armasreales:block/deco_veh_rueda"
+  },
+  "elements": [
+    {
+      "from": [
+        11,
+        0,
+        6
+      ],
+      "to": [
+        14,
+        7,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#veh_rueda"
+        },
+        "east": {
+          "texture": "#veh_rueda"
+        },
+        "south": {
+          "texture": "#veh_rueda"
+        },
+        "west": {
+          "texture": "#veh_rueda"
+        },
+        "up": {
+          "texture": "#veh_rueda"
+        },
+        "down": {
+          "texture": "#veh_rueda"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        3,
+        2
+      ],
+      "to": [
+        13,
+        7,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        3,
+        0
+      ],
+      "to": [
+        12,
+        7,
+        2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        7,
+        1
+      ],
+      "to": [
+        13,
+        14,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#pat_frente",
+          "uv": [
+            0.0,
+            0.0,
+            8.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#pat_lado_f",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#veh_blanco"
+        },
+        "up": {
+          "texture": "#veh_blanco"
+        },
+        "down": {
+          "texture": "#veh_blanco"
+        }
+      }
+    }
+  ]
+}

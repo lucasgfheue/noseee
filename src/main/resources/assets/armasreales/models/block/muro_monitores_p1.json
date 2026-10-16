@@ -1,0 +1,138 @@
+{
+  "textures": {
+    "negro": "armasreales:block/deco_negro",
+    "pantalla_cam": "armasreales:block/deco_pantalla_cam",
+    "teclado": "armasreales:block/deco_teclado",
+    "particle": "armasreales:block/deco_negro"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        8
+      ],
+      "to": [
+        16,
+        13,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        13,
+        9
+      ],
+      "to": [
+        14,
+        14,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        0.5,
+        14,
+        10
+      ],
+      "to": [
+        15,
+        16,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#pantalla_cam",
+          "uv": [
+            0.0,
+            14.0,
+            16.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        13,
+        4
+      ],
+      "to": [
+        15,
+        14,
+        8
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#teclado",
+          "uv": [
+            8.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    }
+  ]
+}

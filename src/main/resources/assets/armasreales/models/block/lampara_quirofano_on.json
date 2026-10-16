@@ -1,0 +1,105 @@
+{
+  "textures": {
+    "acero": "armasreales:block/deco_acero",
+    "lampara_pantalla_on": "armasreales:block/deco_lampara_pantalla_on",
+    "particle": "armasreales:block/deco_acero"
+  },
+  "elements": [
+    {
+      "from": [
+        7.5,
+        12,
+        7.5
+      ],
+      "to": [
+        8.5,
+        16,
+        8.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        9,
+        2
+      ],
+      "to": [
+        14,
+        12,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        8,
+        3
+      ],
+      "to": [
+        13,
+        9,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#lampara_pantalla_on"
+        },
+        "east": {
+          "texture": "#lampara_pantalla_on"
+        },
+        "south": {
+          "texture": "#lampara_pantalla_on"
+        },
+        "west": {
+          "texture": "#lampara_pantalla_on"
+        },
+        "up": {
+          "texture": "#lampara_pantalla_on"
+        },
+        "down": {
+          "texture": "#lampara_pantalla_on"
+        }
+      }
+    }
+  ]
+}
