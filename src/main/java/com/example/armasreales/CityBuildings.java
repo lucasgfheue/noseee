@@ -4,7 +4,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FarmBlock;
-import net.minecraft.world.level.block.LadderBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -41,8 +41,38 @@ final class CityBuildings {
         return Blocks.OAK_LEAVES.defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
     }
 
-    static BlockState ladder() {
-        return Blocks.LADDER.defaultBlockState().setValue(LadderBlock.FACING, Direction.SOUTH);
+    /** Escalera común (peldaños que suben hacia el este). */
+    static BlockState stair(int st) {
+        Block b = switch (st) {
+            case HOUSE, VILLAGE -> Blocks.SPRUCE_STAIRS;
+            case SKY, OFFICE, APART, SHOPS -> Blocks.SMOOTH_QUARTZ_STAIRS;
+            default -> Blocks.STONE_BRICK_STAIRS;
+        };
+        return b.defaultBlockState().setValue(StairBlock.FACING, Direction.EAST);
+    }
+
+    /**
+     * Escalera recta a lo largo de pz == 1 (px 1..4): 4 peldaños suben de un piso al siguiente (y a la azotea).
+     * Se entra desde (1,2) y se sale por (5,1).
+     */
+    private static void stairCell(CityPlan.Lot l, int px, CityPlan.Out o, int st, int F) {
+        BlockState roof = roofB(l, st);
+        for (int k = 1; k <= F; k++) {
+            o.set(4 * k, k == F ? roof : floorB(st));
+        }
+        int i = px - 1;
+        BlockState stair = stair(st);
+        for (int k = 0; k < F; k++) {
+            int base = 4 * k;
+            if (i < 3) {
+                o.set(base + 1 + i, stair);
+            }
+            if (i == 3) {
+                o.set(base + 4, stair);
+            } else if (i >= 1) {
+                o.set(base + 4, s(Blocks.AIR));
+            }
+        }
     }
 
     // ------------------------------------------------------------------ Materiales por estilo
@@ -201,10 +231,8 @@ final class CityBuildings {
             o.set(H + 1, acc);
             return;
         }
-        if (px == 1 && pz == 1) {                                           // hueco de escalera
-            for (int r = 1; r <= H + 1; r++) {
-                o.set(r, ladder());
-            }
+        if (!hall && pz == 1 && px >= 1 && px <= 4) {                       // escalera común
+            stairCell(l, px, o, st, F);
             return;
         }
         BlockState roof = roofB(l, st);
@@ -219,8 +247,10 @@ final class CityBuildings {
                 }
                 o.set(4 * k, slab);
             }
-            for (int k = 0; k < F; k++) {
-                furnish(l, px, pz, 4 * k + 1, k, o, st);
+            if (!(px == 1 && pz == 2) && !(px == 5 && pz == 1)) {            // accesos de la escalera libres
+                for (int k = 0; k < F; k++) {
+                    furnish(l, px, pz, 4 * k + 1, k, o, st);
+                }
             }
         }
         roofExtras(l, px, pz, H, o, st);

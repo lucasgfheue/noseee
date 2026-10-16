@@ -8,10 +8,14 @@ import net.minecraft.resources.ResourceLocation;
 /** Dibuja a los ciudadanos con modelo de jugador y una de 20 skins. */
 public class CiudadanoRenderer extends HumanoidMobRenderer<CiudadanoEntity, CiudadanoModel> {
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[CiudadanoEntity.TOTAL_SKINS];
+    private static final ResourceLocation[] THIEF = new ResourceLocation[CiudadanoEntity.THIEF_SKINS];
 
     static {
         for (int i = 0; i < TEXTURES.length; i++) {
             TEXTURES[i] = ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "textures/entity/ciudadano_" + i + ".png");
+        }
+        for (int i = 0; i < THIEF.length; i++) {
+            THIEF[i] = ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "textures/entity/ladron_" + i + ".png");
         }
     }
 
@@ -21,6 +25,6 @@ public class CiudadanoRenderer extends HumanoidMobRenderer<CiudadanoEntity, Ciud
 
     @Override
     public ResourceLocation getTextureLocation(CiudadanoEntity entity) {
-        return TEXTURES[entity.getSkin()];
+        return entity.isThiefType() ? THIEF[entity.getSkin()] : TEXTURES[entity.getSkin()];
     }
 }

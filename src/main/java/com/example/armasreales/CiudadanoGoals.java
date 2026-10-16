@@ -364,49 +364,50 @@ final class CiudadanoGoals {
         }
     }
 
-    // ------------------------------------------------------------------ Buscar al jugador de noche
+    // ------------------------------------------------------------------ Perseguir (armados)
 
+    /** Con arma y objetivo fuera de alcance o sin línea de tiro (paredes), camina hacia él. */
     static final class NightSeekGoal extends Goal {
         private final CiudadanoEntity mob;
-        private Player player;
 
         NightSeekGoal(CiudadanoEntity mob) {
             this.mob = mob;
             this.setFlags(EnumSet.of(Flag.MOVE));
         }
 
+        private boolean needsChase() {
+            LivingEntity t = mob.getTarget();
+            if (t == null || !t.isAlive() || !mob.carriesGun() || !mob.wantsToFight() || mob.fleeTicks > 0) {
+                return false;
+            }
+            if (!mob.hasGun()) {
+                return true;
+            }
+            double max = ShootGoal.rangeOf(mob);
+            return mob.distanceToSqr(t) >= max * max || !CiudadanoGoals.canSee(mob, t);
+        }
+
         @Override
         public boolean canUse() {
-            if (mob.isCivil() || mob.tickCount % 20 != 0 || mob.getTarget() != null || mob.fleeTicks > 0
-                    || !CiudadanoEntity.isNight(mob.level())
-                    || mob.level().getDifficulty() == net.minecraft.world.Difficulty.PEACEFUL) {
-                return false;
-            }
-            if (!mob.carriesGun() && !mob.isThief()) {
-                return false;
-            }
-            Player p = mob.level().getNearestPlayer(mob, 64.0);
-            if (p == null || p.isSpectator()) {
-                return false;
-            }
-            this.player = p;
-            return true;
+            return mob.tickCount % 5 == 0 && needsChase();
         }
 
         @Override
         public boolean canContinueToUse() {
-            return this.player != null && this.player.isAlive() && mob.getTarget() == null
-                    && !mob.getNavigation().isDone() && CiudadanoEntity.isNight(mob.level());
+            return needsChase();
         }
 
         @Override
-        public void start() {
-            mob.getNavigation().moveTo(this.player, 1.0);
+        public boolean requiresUpdateEveryTick() {
+            return true;
         }
 
         @Override
-        public void stop() {
-            this.player = null;
+        public void tick() {
+            LivingEntity t = mob.getTarget();
+            if (t != null && (mob.tickCount % 10 == 0 || mob.getNavigation().isDone())) {
+                mob.getNavigation().moveTo(t, 1.2);
+            }
         }
     }
 
@@ -503,9 +504,14 @@ final class CiudadanoGoals {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
 
+        static double rangeOf(CiudadanoEntity m) {
+            Item i = m.hasGun() ? m.getMainHandItem().getItem() : m.holster.getItem();
+            return i instanceof SniperItem ? 70.0 : i == ModItems.ESCOPETA.get() ? 22.0
+                    : i instanceof PistolItem || i instanceof RevolverItem ? 32.0 : 40.0;
+        }
+
         private double range() {
-            Item i = mob.getMainHandItem().getItem();
-            return i instanceof SniperItem ? 45.0 : 24.0;
+            return rangeOf(mob);
         }
 
         @Override

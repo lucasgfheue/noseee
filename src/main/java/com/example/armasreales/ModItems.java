@@ -232,6 +232,11 @@ public class ModItems {
             props -> new SpawnEggItem(ModEntities.CIUDADANO.get(), 0x4A7FB5, 0xE0C9A6, props),
             new Item.Properties());
 
+    public static final DeferredItem<SpawnEggItem> LADRON_SPAWN_EGG = ITEMS.registerItem(
+            "ladron_spawn_egg",
+            props -> new SpawnEggItem(ModEntities.LADRON.get(), 0x1E1E22, 0x8A2B2B, props),
+            new Item.Properties());
+
     public static final DeferredItem<SpawnEggItem> ANCIANO_SPAWN_EGG = ITEMS.registerItem(
             "anciano_spawn_egg",
             props -> new SpawnEggItem(ModEntities.ANCIANO.get(), 0xE6E6E6, 0x6B6B6B, props),

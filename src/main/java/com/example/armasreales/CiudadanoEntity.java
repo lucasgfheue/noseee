@@ -48,10 +48,8 @@ import java.util.List;
  * Todos pueden abrir puertas.
  */
 public class CiudadanoEntity extends PathfinderMob {
-    public static final int CIVIL_SKINS = 12;
-    public static final int ARMED_SKINS = 4;
+    public static final int TOTAL_SKINS = 20;
     public static final int THIEF_SKINS = 4;
-    public static final int TOTAL_SKINS = CIVIL_SKINS + ARMED_SKINS + THIEF_SKINS;
 
     private static final EntityDataAccessor<Integer> DATA_SKIN =
             SynchedEntityData.defineId(CiudadanoEntity.class, EntityDataSerializers.INT);
@@ -76,7 +74,7 @@ public class CiudadanoEntity extends PathfinderMob {
                 .add(Attributes.MAX_HEALTH, 20.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.3)
                 .add(Attributes.ATTACK_DAMAGE, 2.0)
-                .add(Attributes.FOLLOW_RANGE, 40.0);
+                .add(Attributes.FOLLOW_RANGE, 80.0);
     }
 
     // ------------------------------------------------------------------ Rol
@@ -94,6 +92,11 @@ public class CiudadanoEntity extends PathfinderMob {
 
     public boolean isThief() {
         return this.role == 2;
+    }
+
+    /** Tipo de entidad "Ladrón" (con huevo, nombre y skins propios). */
+    public boolean isThiefType() {
+        return this.getType() == ModEntities.LADRON.get();
     }
 
     public void setRole(int role) {
@@ -282,11 +285,14 @@ public class CiudadanoEntity extends PathfinderMob {
         // Se asigna el objetivo a mano para que también funcione con jugadores en creativo.
         if (this.tickCount % 10 == 0 && this.isHostileKind() && isNight(level) && this.getTarget() == null
                 && this.fleeTicks <= 0 && level.getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL) {
+            // Los armados detectan al jugador desde muy lejos y a través de las paredes; el ladrón, sólo si lo ve.
+            boolean gunner = this.carriesGun();
+            double reach = gunner ? 110.0 : 40.0;
             Player best = null;
-            double bd = 40.0 * 40.0;
+            double bd = reach * reach;
             for (Player p : level.players()) {
                 double d = p.distanceToSqr(this);
-                if (!p.isSpectator() && p.isAlive() && d < bd && CiudadanoGoals.canSee(this, p)) {
+                if (!p.isSpectator() && p.isAlive() && d < bd && (gunner || CiudadanoGoals.canSee(this, p))) {
                     best = p;
                     bd = d;
                 }
@@ -295,7 +301,7 @@ public class CiudadanoEntity extends PathfinderMob {
                 this.setTarget(best);
             }
         }
-        if (this.getTarget() != null && this.provoked <= 0 && this.distanceToSqr(this.getTarget()) > 56.0 * 56.0) {
+        if (this.getTarget() != null && this.provoked <= 0 && this.distanceToSqr(this.getTarget()) > (this.carriesGun() ? 130.0 * 130.0 : 56.0 * 56.0)) {
             this.setTarget(null);
         }
         // Armados sin motivo de día: se calman
@@ -390,7 +396,7 @@ public class CiudadanoEntity extends PathfinderMob {
     }
 
     public int getSkin() {
-        return Math.floorMod(this.entityData.get(DATA_SKIN), TOTAL_SKINS);
+        return Math.floorMod(this.entityData.get(DATA_SKIN), this.isThiefType() ? THIEF_SKINS : TOTAL_SKINS);
     }
 
     public void setSkin(int skin) {
@@ -426,12 +432,15 @@ public class CiudadanoEntity extends PathfinderMob {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                         MobSpawnType reason, @Nullable SpawnGroupData data) {
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, reason, data);
-        if (this.role < 0) {                                  // huevo o comando: rol al azar
+        if (this.isThiefType()) {
+            this.role = 2;
+        } else if (this.role < 0) {                           // huevo o comando: rol al azar (civil o armado)
             boolean night = level.getLevel().getDayTime() % 24000L >= 13000L && level.getLevel().getDayTime() % 24000L < 23000L;
             int r = level.getRandom().nextInt(10);
-            this.role = night ? (r < 3 ? 0 : r < 7 ? 1 : 2) : (r < 7 ? 0 : 1);
+            this.role = night ? (r < 3 ? 0 : 1) : (r < 7 ? 0 : 1);
         }
-        this.setSkin(level.getRandom().nextInt(TOTAL_SKINS));  // cualquier skin puede tener cualquier rol
+        // civiles y armados comparten las 20 skins (el rol no se ve); los ladrones tienen las suyas
+        this.setSkin(level.getRandom().nextInt(this.isThiefType() ? THIEF_SKINS : TOTAL_SKINS));
         if (this.isArmedType()) {
             Item gun = switch (level.getRandom().nextInt(3)) {
                 case 0 -> ModItems.PISTOLA.get();

@@ -78,7 +78,7 @@ public final class CitizenSpawner {
             if (level.canSeeSky(pos) == indoor) {
                 continue;
             }
-            CiudadanoEntity e = ModEntities.CIUDADANO.get().create(level);
+            CiudadanoEntity e = (type == 2 ? ModEntities.LADRON.get() : ModEntities.CIUDADANO.get()).create(level);
             if (e == null) {
                 return;
             }

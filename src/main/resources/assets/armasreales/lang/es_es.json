@@ -273,5 +273,7 @@
   "block.armasreales.taburete_cocina": "Taburete de cocina",
   "entity.armasreales.ciudadano": "Ciudadano",
   "item.armasreales.ciudadano_spawn_egg": "Generar Ciudadano",
-  "msg.armasreales.robado": "¡Te han robado: %s!"
+  "msg.armasreales.robado": "¡Te han robado: %s!",
+  "entity.armasreales.ladron": "Ladrón",
+  "item.armasreales.ladron_spawn_egg": "Generar Ladrón"
 }

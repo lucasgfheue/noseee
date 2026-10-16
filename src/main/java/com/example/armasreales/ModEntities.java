@@ -247,6 +247,14 @@ public class ModEntities {
                             .clientTrackingRange(10)
                             .build("ciudadano"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<CiudadanoEntity>> LADRON =
+            ENTITIES.register("ladron", () ->
+                    EntityType.Builder.<CiudadanoEntity>of(CiudadanoEntity::new, MobCategory.MISC)
+                            .sized(0.6f, 1.95f)
+                            .eyeHeight(1.62f)
+                            .clientTrackingRange(10)
+                            .build("ladron"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<AncianoEntity>> ANCIANO =
             ENTITIES.register("anciano", () ->
                     EntityType.Builder.<AncianoEntity>of(AncianoEntity::new, MobCategory.MISC)
