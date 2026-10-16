@@ -12,6 +12,10 @@ public final class TankSeatEvents {
 
     @SubscribeEvent
     public static void onIncomingDamage(LivingIncomingDamageEvent event) {
+        if (event.getEntity().getVehicle() instanceof MechaEntity mecha
+                && event.getSource().getEntity() instanceof net.minecraft.world.entity.LivingEntity attacker) {
+            mecha.noteAttacker(attacker);                  // el modo automático responderá a quien dañe al piloto
+        }
         if (event.getEntity().getVehicle() instanceof TankEntity tank && tank.isAlive()
                 && !event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             event.setCanceled(true);

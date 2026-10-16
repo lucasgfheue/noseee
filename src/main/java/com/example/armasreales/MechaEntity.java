@@ -21,6 +21,9 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -34,6 +37,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Mecha de Hierro (ficticio): robot bípedo de hierro con un solo piloto en la cabeza.
@@ -60,6 +67,14 @@ public class MechaEntity extends TankEntity {
             SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_BOOST =
             SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_AUTO =
+            SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_AUTO_TARGET =
+            SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DATA_AIM_YAW =
+            SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DATA_AIM_PITCH =
+            SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> DATA_FUEL =
             SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.INT);
 
@@ -75,6 +90,9 @@ public class MechaEntity extends TankEntity {
     private boolean sprintHeldServer;
     private int jumpHeldTicks;
     private int flyTicks;
+
+    // Modo automático (servidor): quién nos atacó y cuándo deja de contar
+    private final Map<UUID, Long> attackers = new HashMap<>();
 
     // Animación de la marcha (cliente)
     public float walkPhase, walkPhaseO, walkAmp, walkAmpO;
@@ -98,6 +116,10 @@ public class MechaEntity extends TankEntity {
         builder.define(DATA_FLYING, false);
         builder.define(DATA_FUEL, 0);
         builder.define(DATA_BOOST, false);
+        builder.define(DATA_AUTO, false);
+        builder.define(DATA_AUTO_TARGET, false);
+        builder.define(DATA_AIM_YAW, 0.0f);
+        builder.define(DATA_AIM_PITCH, 0.0f);
     }
 
     /** Ticks (con decimales) desde el último disparo, para el retroceso del brazo. */
@@ -112,6 +134,47 @@ public class MechaEntity extends TankEntity {
 
     public boolean isFlying() {
         return this.entityData.get(DATA_FLYING);
+    }
+
+    public boolean isAuto() {
+        return this.entityData.get(DATA_AUTO);
+    }
+
+    /** true si el modo automático está apuntando a un objetivo (los brazos giran hacia él). */
+    public boolean hasAutoTarget() {
+        return this.entityData.get(DATA_AUTO_TARGET);
+    }
+
+    public float autoAimYaw() {
+        return this.entityData.get(DATA_AIM_YAW);
+    }
+
+    public float autoAimPitch() {
+        return this.entityData.get(DATA_AIM_PITCH);
+    }
+
+    public void toggleAuto(Player player) {
+        boolean on = !this.isAuto();
+        this.entityData.set(DATA_AUTO, on);
+        if (!on) {
+            this.entityData.set(DATA_AUTO_TARGET, false);
+        }
+        player.displayClientMessage(Component.literal(on ? "Modo automático: ACTIVADO" : "Modo automático: desactivado"), true);
+    }
+
+    /** Anota a quien nos ha hecho daño (a nosotros o al piloto) para que el modo automático le responda. */
+    public void noteAttacker(LivingEntity attacker) {
+        if (attacker != this && !this.hasPassenger(attacker)) {
+            this.attackers.put(attacker.getUUID(), this.level().getGameTime() + 600L);
+        }
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (!this.level().isClientSide && source.getEntity() instanceof LivingEntity attacker) {
+            this.noteAttacker(attacker);
+        }
+        return super.hurt(source, amount);
     }
 
     /** true mientras vuela con los propulsores a tope (Ctrl + W). */
@@ -235,6 +298,7 @@ public class MechaEntity extends TankEntity {
             this.sprintHeldServer = false;
         }
         this.jumpHeldTicks = this.jumpHeldServer ? this.jumpHeldTicks + 1 : 0;
+        this.autoTick(level, pilot);
 
         boolean boost = this.isFlying() && this.sprintHeldServer;
         if (boost != this.isBoosting()) {
@@ -396,6 +460,77 @@ public class MechaEntity extends TankEntity {
         }
     }
 
+    // ------------------------------------------------------------------ Modo automático
+
+    private boolean isThreat(LivingEntity e, Player pilot, long now) {
+        if (e == this || e == pilot || !e.isAlive() || this.hasPassenger(e) || e instanceof TankEntity) {
+            return false;
+        }
+        Long until = this.attackers.get(e.getUUID());
+        if (until != null && until > now) {
+            return true;                                        // nos atacó a nosotros o al piloto
+        }
+        if (e instanceof Mob mob && (mob.getTarget() == pilot || mob.getTarget() == this)) {
+            return true;                                        // quiere atacarnos
+        }
+        return e instanceof Enemy;                              // cualquier entidad hostil
+    }
+
+    private void autoTick(ServerLevel level, Player pilot) {
+        if (!this.isAuto() || !(pilot instanceof ServerPlayer sp)) {
+            if (this.hasAutoTarget()) {
+                this.entityData.set(DATA_AUTO_TARGET, false);
+            }
+            return;
+        }
+        long now = level.getGameTime();
+        if (this.tickCount % 20 == 0) {
+            this.attackers.values().removeIf(t -> t <= now);
+        }
+        if (this.tickCount % 4 != 0) {
+            return;
+        }
+        Vec3 from = this.position().add(0.0, this.pivotY(), 0.0);
+        LivingEntity best = null;
+        double bestScore = Double.MAX_VALUE;
+        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(48.0),
+                x -> this.isThreat(x, sp, now))) {
+            if (!this.hasLineOfSight(e)) {
+                continue;
+            }
+            double d = e.distanceToSqr(this);
+            Long until = this.attackers.get(e.getUUID());
+            boolean urgent = (until != null && until > now) || (e instanceof Mob m && (m.getTarget() == sp || m.getTarget() == this));
+            double score = urgent ? d * 0.25 : d;               // primero los que nos atacan
+            if (score < bestScore) {
+                bestScore = score;
+                best = e;
+            }
+        }
+        if (best == null) {
+            if (this.hasAutoTarget()) {
+                this.entityData.set(DATA_AUTO_TARGET, false);
+            }
+            return;
+        }
+        Vec3 d = best.getBoundingBox().getCenter().subtract(from);
+        double horizontal = Math.sqrt(d.x * d.x + d.z * d.z);
+        float yaw = (float) (Mth.atan2(-d.x, d.z) * (180.0 / Math.PI));
+        float pitch = (float) (-Math.toDegrees(Mth.atan2(d.y, horizontal)));
+        if (!this.hasAutoTarget()) {
+            this.entityData.set(DATA_AUTO_TARGET, true);
+        }
+        if (Math.abs(Mth.wrapDegrees(yaw - this.autoAimYaw())) > 1.0f) {
+            this.entityData.set(DATA_AIM_YAW, yaw);
+        }
+        if (Math.abs(pitch - this.autoAimPitch()) > 1.0f) {
+            this.entityData.set(DATA_AIM_PITCH, pitch);
+        }
+        if (this.cannonCooldown <= 0 && !this.tryFire(sp, yaw, pitch)) {
+            this.cannonCooldown = 20;                            // sin munición: reintenta más tarde
+        }
+    }
+
     // ------------------------------------------------------------------ Munición y disparo
 
     public static boolean isAmmo(ItemStack stack) {
@@ -407,6 +542,15 @@ public class MechaEntity extends TankEntity {
         if (this.getControllingPassenger() != player || this.cannonCooldown > 0) {
             return;
         }
+        if (!this.tryFire(player, player.getYRot(), player.getXRot())) {
+            player.serverLevel().playSound(null, this.blockPosition(), SoundEvents.DISPENSER_FAIL,
+                    SoundSource.PLAYERS, 1.0f, 0.7f);
+            this.cannonCooldown = 10;
+        }
+    }
+
+    /** Dispara con el brazo que toca (o el otro si ese no tiene munición) hacia yaw/pitch; false si no pudo. */
+    private boolean tryFire(ServerPlayer player, float yaw, float pitch) {
         boolean creative = player.getAbilities().instabuild;
         boolean first = !this.lastShotRight();
         for (int attempt = 0; attempt < 2; attempt++) {
@@ -415,7 +559,7 @@ public class MechaEntity extends TankEntity {
             if (ammo.isEmpty() ? !creative : !isAmmo(ammo)) {
                 continue;
             }
-            int cooldown = this.shoot(player, right, ammo.isEmpty() ? new ItemStack(Items.TNT) : ammo);
+            int cooldown = this.shoot(player, right, ammo.isEmpty() ? new ItemStack(Items.TNT) : ammo, yaw, pitch);
             if (cooldown <= 0) {
                 continue;
             }
@@ -426,18 +570,16 @@ public class MechaEntity extends TankEntity {
             this.entityData.set(DATA_RIGHT_ARM, right);
             this.entityData.set(DATA_LAST_SHOT, this.level().getGameTime());
             this.cannonCooldown = cooldown;
-            return;
+            return true;
         }
-        player.serverLevel().playSound(null, this.blockPosition(), SoundEvents.DISPENSER_FAIL,
-                SoundSource.PLAYERS, 1.0f, 0.7f);
-        this.cannonCooldown = 10;
+        return false;
     }
 
     /** Dispara un proyectil con la munición dada; devuelve la espera en ticks (0 si no pudo). */
-    private int shoot(ServerPlayer player, boolean right, ItemStack ammo) {
+    private int shoot(ServerPlayer player, boolean right, ItemStack ammo, float yawIn, float pitchIn) {
         ServerLevel level = player.serverLevel();
-        float pitch = Mth.clamp(player.getXRot(), -AIM_LIMIT, AIM_LIMIT);
-        float yaw = player.getYRot();
+        float pitch = Mth.clamp(pitchIn, -AIM_LIMIT, AIM_LIMIT);
+        float yaw = yawIn;
         Vec3 dir = Vec3.directionFromRotation(pitch, yaw);
         Vec3 flat = Vec3.directionFromRotation(0.0f, yaw);
         Vec3 side = new Vec3(-flat.z, 0.0, flat.x);                   // hacia la derecha
@@ -497,12 +639,14 @@ public class MechaEntity extends TankEntity {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.put("MechaInv", this.inventory.createTag(this.level().registryAccess()));
+        tag.putBoolean("Auto", this.isAuto());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.inventory.fromTag(tag.getList("MechaInv", 10), this.level().registryAccess());
+        this.entityData.set(DATA_AUTO, tag.getBoolean("Auto"));
     }
 
     @Override

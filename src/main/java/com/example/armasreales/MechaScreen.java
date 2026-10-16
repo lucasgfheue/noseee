@@ -1,6 +1,7 @@
 package com.example.armasreales;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,6 +14,19 @@ public class MechaScreen extends AbstractContainerScreen<MechaMenu> {
         this.imageWidth = 176;
         this.imageHeight = 228;
         this.inventoryLabelY = 133;
+    }
+
+    private Button autoButton;
+
+    @Override
+    protected void init() {
+        super.init();
+        this.autoButton = Button.builder(Component.literal("Auto: NO"), b -> {
+            if (this.minecraft != null && this.minecraft.gameMode != null) {
+                this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 0);
+            }
+        }).bounds(this.leftPos + 100, this.topPos + 3, 68, 13).build();
+        this.addRenderableWidget(this.autoButton);
     }
 
     @Override
@@ -45,6 +59,10 @@ public class MechaScreen extends AbstractContainerScreen<MechaMenu> {
 
     @Override
     public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+        MechaEntity mecha = this.menu.mecha();
+        if (this.autoButton != null && mecha != null) {
+            this.autoButton.setMessage(Component.literal(mecha.isAuto() ? "Auto: SÍ" : "Auto: NO"));
+        }
         super.render(g, mouseX, mouseY, partialTick);
         this.renderTooltip(g, mouseX, mouseY);
     }

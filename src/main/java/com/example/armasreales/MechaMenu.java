@@ -65,6 +65,17 @@ public class MechaMenu extends AbstractContainerMenu {
         return copy;
     }
 
+    /** Botón del modo automático (id 0). */
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        MechaEntity mecha = this.mecha();
+        if (id == 0 && mecha != null) {
+            mecha.toggleAuto(player);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean stillValid(Player player) {
         MechaEntity mecha = this.mecha();

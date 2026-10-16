@@ -110,7 +110,10 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
         float relYaw = 0.0f;
         float pitch = 0.0f;
         LivingEntity rider = mecha.getControllingPassenger();
-        if (rider != null) {
+        if (mecha.hasAutoTarget()) {
+            relYaw = Mth.wrapDegrees(mecha.autoAimYaw() - entityYaw);
+            pitch = Mth.clamp(mecha.autoAimPitch(), -MechaEntity.ARM_AIM_LIMIT, MechaEntity.ARM_AIM_LIMIT);
+        } else if (rider != null) {
             relYaw = Mth.wrapDegrees(rider.getViewYRot(partialTick) - entityYaw);
             pitch = Mth.clamp(rider.getViewXRot(partialTick), -MechaEntity.ARM_AIM_LIMIT, MechaEntity.ARM_AIM_LIMIT);
         }
