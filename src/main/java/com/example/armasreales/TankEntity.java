@@ -313,6 +313,11 @@ public class TankEntity extends Mob {
         return PIVOT_Y;
     }
 
+    /** Desplazamiento hacia delante del eje de la torreta respecto al centro del tanque (ya multiplicado por SCALE). */
+    protected double turretOffsetZ() {
+        return 0.0;
+    }
+
     /** Desplazamiento lateral del eje de la torreta (en el eje X del modelo, ya multiplicado por SCALE; +X = izquierda). */
     protected double turretOffsetX() {
         return 0.0;
@@ -368,7 +373,7 @@ public class TankEntity extends Mob {
         Vec3 side = new Vec3(-flat.z, 0.0, flat.x);
         Vec3 tankFlat = Vec3.directionFromRotation(0.0f, this.getYRot());
         Vec3 tankSide = new Vec3(-tankFlat.z, 0.0, tankFlat.x);
-        Vec3 pivot = this.position().add(0.0, this.pivotY(), 0.0).add(tankSide.scale(-this.turretOffsetX()))
+        Vec3 pivot = this.position().add(0.0, this.pivotY(), 0.0).add(tankSide.scale(-this.turretOffsetX())).add(tankFlat.scale(this.turretOffsetZ()))
                 .add(flat.scale(this.pivotForward())).add(side.scale(lateral));
         Vec3 muzzle = pivot.add(dir.scale(this.barrelLength()));
 

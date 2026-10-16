@@ -135,6 +135,18 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque_singularidad"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<ApocalypseTankEntity>> APOCALYPSE_TANK =
+            ENTITIES.register("tanque_apocalipsis", () ->
+                    EntityType.Builder.<ApocalypseTankEntity>of(ApocalypseTankEntity::new, MobCategory.MISC)
+                            // el más grande: 4,2 de ancho con los faldones, 15 de largo de modelo y la torre hasta 3,0
+                            .sized(4.2f * TankEntity.SCALE, 3.1f * TankEntity.SCALE)
+                            // cadera del conductor en la cúpula de la torreta (suelo a 2,5 del modelo)
+                            .passengerAttachments(2.8f * TankEntity.SCALE)
+                            .fireImmune()
+                            .clientTrackingRange(20)
+                            .updateInterval(1)
+                            .build("tanque_apocalipsis"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<UmbraTankEntity>> UMBRA_TANK =
             ENTITIES.register("tanque_umbra", () ->
                     EntityType.Builder.<UmbraTankEntity>of(UmbraTankEntity::new, MobCategory.MISC)

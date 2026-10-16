@@ -146,5 +146,7 @@
   "item.armasreales.tanque_leviatan": "Leviatán Mk II",
   "entity.armasreales.tanque_leviatan": "Leviatán Mk II",
   "item.armasreales.tanque_singularidad": "Tanque Singularidad",
-  "entity.armasreales.tanque_singularidad": "Tanque Singularidad"
+  "entity.armasreales.tanque_singularidad": "Tanque Singularidad",
+  "item.armasreales.tanque_apocalipsis": "Tanque Apocalipsis",
+  "entity.armasreales.tanque_apocalipsis": "Tanque Apocalipsis"
 }

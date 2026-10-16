@@ -86,7 +86,12 @@ public class LeviathanTankEntity extends TankEntity {
         return (this.level().getGameTime() - this.entityData.get(DATA_LAST_SIEGE)) + partialTick;
     }
 
-    // Geometría del cañón (debe coincidir con LeviathanTankRenderer): eje a 1,9 de alto y 1,45 por delante del centro
+    // Geometría del cañón (debe coincidir con LeviathanTankRenderer): eje a 1,9 de alto, torreta a 0,3 por delante del centro y cañón a 1,15 de su eje
+    @Override
+    protected double turretOffsetZ() {
+        return 0.3 * SCALE;
+    }
+
     @Override
     protected double pivotY() {
         return 1.9 * SCALE;
@@ -94,7 +99,7 @@ public class LeviathanTankEntity extends TankEntity {
 
     @Override
     protected double pivotForward() {
-        return 1.45 * SCALE;
+        return 1.15 * SCALE;
     }
 
     @Override
@@ -169,7 +174,7 @@ public class LeviathanTankEntity extends TankEntity {
         }
         this.entityData.set(DATA_LAST_SHOT, now);
         Vec3 flat = Vec3.directionFromRotation(0.0f, player.getYRot());
-        Vec3 muzzle = this.position().add(0.0, this.pivotY(), 0.0).add(flat.scale(this.pivotForward()))
+        Vec3 muzzle = this.position().add(0.0, this.pivotY(), 0.0).add(Vec3.directionFromRotation(0.0f, this.getYRot()).scale(this.turretOffsetZ())).add(flat.scale(this.pivotForward()))
                 .add(Vec3.directionFromRotation(player.getXRot(), player.getYRot()).scale(this.barrelLength()));
         level.sendParticles(ParticleTypes.ELECTRIC_SPARK, muzzle.x, muzzle.y, muzzle.z,
                 siege ? 40 : 10, 0.4, 0.4, 0.4, 0.3);
