@@ -2,9 +2,10 @@
   "type": "armasreales:ciudad",
   "generator": {
     "type": "armasreales:ciudad",
+    "settings": "minecraft:overworld",
     "biome_source": {
-      "type": "minecraft:fixed",
-      "biome": "minecraft:the_void"
+      "type": "minecraft:multi_noise",
+      "preset": "minecraft:overworld"
     }
   }
 }
