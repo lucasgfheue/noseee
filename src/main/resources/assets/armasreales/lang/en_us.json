@@ -148,5 +148,7 @@
   "item.armasreales.tanque_singularidad": "Singularity Tank",
   "entity.armasreales.tanque_singularidad": "Singularity Tank",
   "item.armasreales.tanque_apocalipsis": "Apocalypse Tank",
-  "entity.armasreales.tanque_apocalipsis": "Apocalypse Tank"
+  "entity.armasreales.tanque_apocalipsis": "Apocalypse Tank",
+  "item.armasreales.tanque_reactor": "Living Reactor",
+  "entity.armasreales.tanque_reactor": "Living Reactor"
 }

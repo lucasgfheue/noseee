@@ -99,6 +99,11 @@ public class ModItems {
             props -> new TankItem(props, () -> ModEntities.APOCALYPSE_TANK.get()),
             new Item.Properties().stacksTo(1));
 
+    public static final DeferredItem<TankItem> TANQUE_REACTOR = ITEMS.registerItem(
+            "tanque_reactor",
+            props -> new TankItem(props, () -> ModEntities.REACTOR_TANK.get()),
+            new Item.Properties().stacksTo(1));
+
     public static final DeferredItem<TankItem> TANQUE_UMBRA = ITEMS.registerItem(
             "tanque_umbra",
             props -> new TankItem(props, () -> ModEntities.UMBRA_TANK.get()),
