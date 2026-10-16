@@ -49,12 +49,16 @@ public class MechaEntity extends TankEntity {
     private static final double JUMP_VELOCITY = 1.5;       // unos 12 bloques de altura
     private static final int FLIGHT_HOLD_TICKS = 60;       // 3 s con Espacio pulsado
     private static final double RADIUS = 4.0;
+    private static final float AIM_LIMIT = 80.0f;             // los brazos apuntan casi a cualquier altura
+    private static final int BOOST_FUEL_FACTOR = 3;           // los propulsores gastan el triple
 
     private static final EntityDataAccessor<Long> DATA_LAST_SHOT =
             SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<Boolean> DATA_RIGHT_ARM =
             SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_FLYING =
+            SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_BOOST =
             SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_FUEL =
             SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.INT);
@@ -68,6 +72,7 @@ public class MechaEntity extends TankEntity {
 
     // Estado del servidor
     private boolean jumpHeldServer;
+    private boolean sprintHeldServer;
     private int jumpHeldTicks;
     private int flyTicks;
 
@@ -92,6 +97,7 @@ public class MechaEntity extends TankEntity {
         builder.define(DATA_RIGHT_ARM, true);
         builder.define(DATA_FLYING, false);
         builder.define(DATA_FUEL, 0);
+        builder.define(DATA_BOOST, false);
     }
 
     /** Ticks (con decimales) desde el último disparo, para el retroceso del brazo. */
@@ -108,6 +114,11 @@ public class MechaEntity extends TankEntity {
         return this.entityData.get(DATA_FLYING);
     }
 
+    /** true mientras vuela con los propulsores a tope (Ctrl + W). */
+    public boolean isBoosting() {
+        return this.entityData.get(DATA_BOOST);
+    }
+
     public int fuelSecondsLeft() {
         return this.entityData.get(DATA_FUEL) / 20;
     }
@@ -116,6 +127,9 @@ public class MechaEntity extends TankEntity {
         this.clientJump = jump;
         this.clientSprint = sprint;
     }
+
+    /** Límite de elevación de los brazos (también lo usa el renderizador). */
+    public static final float ARM_AIM_LIMIT = AIM_LIMIT;
 
     // Geometría (debe coincidir con MechaRenderer): hombros a 2,4 del modelo y brazos a 1,25 a cada lado
     @Override
@@ -177,6 +191,9 @@ public class MechaEntity extends TankEntity {
             // Control en el aire (salto y jetpack)
             Vec3 f = Vec3.directionFromRotation(0.0f, this.getYRot());
             double target = 2.2 * this.getRiddenSpeed(player) * (flying ? 2.0 : 1.0) * Math.max(0.0f, player.zza);
+            if (flying && this.clientSprint) {
+                target *= 1.7;                                 // propulsores
+            }
             Vec3 now = this.getDeltaMovement();
             this.setDeltaMovement(now.x + (f.x * target - now.x) * 0.2, now.y, now.z + (f.z * target - now.z) * 0.2);
         }
@@ -215,9 +232,14 @@ public class MechaEntity extends TankEntity {
         Player pilot = this.getControllingPassenger() instanceof Player p ? p : null;
         if (pilot == null) {
             this.jumpHeldServer = false;
+            this.sprintHeldServer = false;
         }
         this.jumpHeldTicks = this.jumpHeldServer ? this.jumpHeldTicks + 1 : 0;
 
+        boolean boost = this.isFlying() && this.sprintHeldServer;
+        if (boost != this.isBoosting()) {
+            this.entityData.set(DATA_BOOST, boost);
+        }
         if (!this.isFlying()) {
             if (pilot != null && this.jumpHeldTicks >= FLIGHT_HOLD_TICKS) {
                 if (this.entityData.get(DATA_FUEL) > 0 || this.consumeFuel()) {
@@ -234,7 +256,7 @@ public class MechaEntity extends TankEntity {
 
         // Jetpack encendido
         this.flyTicks++;
-        int fuel = this.entityData.get(DATA_FUEL) - 1;
+        int fuel = this.entityData.get(DATA_FUEL) - (boost ? BOOST_FUEL_FACTOR : 1);
         this.entityData.set(DATA_FUEL, Math.max(fuel, 0));
         boolean out = fuel <= 0 && !this.consumeFuel();
         if (pilot == null || out || (this.flyTicks > 10 && this.onGround())) {
@@ -252,6 +274,14 @@ public class MechaEntity extends TankEntity {
                 Vec3 p = base.add(left.scale(s * 0.35 * SCALE));
                 level.sendParticles(ParticleTypes.FLAME, p.x, p.y, p.z, 2, 0.1, 0.05, 0.1, 0.02);
                 level.sendParticles(ParticleTypes.LARGE_SMOKE, p.x, p.y - 0.2, p.z, 1, 0.1, 0.05, 0.1, 0.02);
+            }
+            if (boost) {
+                Vec3 pods = this.position().add(0.0, 1.5 * SCALE, 0.0).add(flat.scale(-1.1 * SCALE));
+                for (int s = -1; s <= 1; s += 2) {
+                    Vec3 p = pods.add(left.scale(s * 0.75 * SCALE));
+                    level.sendParticles(ParticleTypes.FLAME, p.x, p.y, p.z, 3, 0.15, 0.1, 0.15, 0.05);
+                    level.sendParticles(ParticleTypes.SMOKE, p.x, p.y, p.z, 2, 0.2, 0.1, 0.2, 0.03);
+                }
             }
         }
         if (this.tickCount % 8 == 0) {
@@ -308,6 +338,8 @@ public class MechaEntity extends TankEntity {
         }
         if (action == MechaInputPayload.JUMP) {
             this.jumpHeldServer = value;
+        } else if (action == MechaInputPayload.SPRINT) {
+            this.sprintHeldServer = value;
         } else if (action == MechaInputPayload.OPEN_INVENTORY && value) {
             player.openMenu(new SimpleMenuProvider(
                     (id, inv, p) -> new MechaMenu(id, inv, this.inventory, this.getId()),
@@ -319,7 +351,9 @@ public class MechaEntity extends TankEntity {
     protected void removePassenger(Entity passenger) {
         super.removePassenger(passenger);
         this.jumpHeldServer = false;
+        this.sprintHeldServer = false;
         this.entityData.set(DATA_FLYING, false);
+        this.entityData.set(DATA_BOOST, false);
     }
 
     // ------------------------------------------------------------------ Destrucción alrededor
@@ -404,7 +438,7 @@ public class MechaEntity extends TankEntity {
     /** Dispara un proyectil con la munición dada; devuelve la espera en ticks (0 si no pudo). */
     private int shoot(ServerPlayer player, boolean right, ItemStack ammo) {
         ServerLevel level = player.serverLevel();
-        float pitch = Mth.clamp(player.getXRot(), MIN_PITCH, MAX_PITCH);
+        float pitch = Mth.clamp(player.getXRot(), -AIM_LIMIT, AIM_LIMIT);
         float yaw = player.getYRot();
         Vec3 dir = Vec3.directionFromRotation(pitch, yaw);
         Vec3 flat = Vec3.directionFromRotation(0.0f, yaw);

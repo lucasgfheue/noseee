@@ -79,6 +79,10 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
         this.tex = TEXTURES[this.skin];
         VertexConsumer vc = buffer.getBuffer(RenderType.entityCutoutNoCull(this.tex));
 
+        // En primera persona, el piloto no ve el cuerpo del mecha (sólo los brazos que apuntan)
+        Minecraft mc = Minecraft.getInstance();
+        boolean inside = mc.options.getCameraType().isFirstPerson() && mc.player != null && mecha.hasPassenger(mc.player);
+
         // Marcha: cada pierna tiene su propia fase (una va adelante cuando la otra va atrás)
         float phase = Mth.lerp(partialTick, mecha.walkPhaseO, mecha.walkPhase);
         float amp = Mth.lerp(partialTick, mecha.walkAmpO, mecha.walkAmp);
@@ -92,19 +96,23 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
                 hip = -22.0f;
                 knee = 45.0f;
             }
-            drawLeg(ps, vc, light, side, hip, knee);
+            if (!inside) {
+                drawLeg(ps, vc, light, side, hip, knee);
+            }
         }
 
         ps.pushPose();
         ps.translate(0.0f, bob, 0.0f);
-        drawPelvis(ps, vc, light);
+        if (!inside) {
+            drawPelvis(ps, vc, light);
+        }
 
         float relYaw = 0.0f;
         float pitch = 0.0f;
         LivingEntity rider = mecha.getControllingPassenger();
         if (rider != null) {
             relYaw = Mth.wrapDegrees(rider.getViewYRot(partialTick) - entityYaw);
-            pitch = Mth.clamp(rider.getViewXRot(partialTick), TankEntity.MIN_PITCH, TankEntity.MAX_PITCH);
+            pitch = Mth.clamp(rider.getViewXRot(partialTick), -MechaEntity.ARM_AIM_LIMIT, MechaEntity.ARM_AIM_LIMIT);
         }
         float since = mecha.ticksSinceShot(partialTick);
         float recoil = since < 10.0f ? 0.25f * (1.0f - since / 10.0f) : 0.0f;
@@ -113,12 +121,15 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
         ps.pushPose();
         ps.translate(0.0f, 1.75f, 0.0f);
         ps.mulPose(Axis.YP.rotationDegrees(-relYaw));
-        drawTorso(ps, vc, light, mecha.isFlying(), mecha.tickCount + partialTick);
+        if (!inside) {
+            drawTorso(ps, vc, light, mecha.isFlying(), mecha.tickCount + partialTick);
+            drawBoosters(ps, vc, light, mecha.isFlying(), mecha.isBoosting(), mecha.tickCount + partialTick);
+        }
         drawArm(ps, vc, light, -1, pitch, rightFired ? recoil : 0.0f);
         drawArm(ps, vc, light, 1, pitch, rightFired ? 0.0f : recoil);
-        Minecraft mc = Minecraft.getInstance();
-        boolean inside = mc.options.getCameraType().isFirstPerson() && mc.player != null && mecha.hasPassenger(mc.player);
-        drawHead(ps, vc, buffer, light, pitch, inside);
+        if (!inside) {
+            drawHead(ps, vc, buffer, light, pitch, false);
+        }
         ps.popPose();
         ps.popPose();
 
@@ -188,6 +199,19 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
             box(ps, vc, light, s * 1.43f - 0.02f, 0.66f, -0.3f, s * 1.47f, 0.96f, 0.3f, HAZARD);
         }
         torsoExtras(ps, vc, light, time);
+    }
+
+    /** Propulsores traseros: aparecen al volar y echan llamas largas con Ctrl + W (origen: base del torso). */
+    private void drawBoosters(PoseStack ps, VertexConsumer vc, int light, boolean flying, boolean boosting, float time) {
+        if (!flying) {
+            return;
+        }
+        for (int s = -1; s <= 1; s += 2) {
+            mb(ps, vc, light, s, 0.6f, -0.3f, -0.8f, 0.9f, 0.05f, -0.4f, DARK);
+            mb(ps, vc, light, s, 0.65f, -0.25f, -0.86f, 0.85f, 0.0f, -0.8f, JOINT);
+            float len = boosting ? 1.5f + 0.35f * Mth.sin(time * 2.1f + s) : 0.3f;
+            mb(ps, vc, light, s, 0.68f, -0.22f, -0.86f - len, 0.82f, -0.03f, -0.86f, EMBER);
+        }
     }
 
     // ------------------------------------------------------------------ Variantes por tinte

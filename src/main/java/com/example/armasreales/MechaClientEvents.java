@@ -12,6 +12,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 @EventBusSubscriber(modid = ArmasRealesMod.MOD_ID, value = Dist.CLIENT)
 public final class MechaClientEvents {
     private static boolean jumpWas = false;
+    private static boolean sprintWas = false;
 
     private MechaClientEvents() {}
 
@@ -27,16 +28,24 @@ public final class MechaClientEvents {
                 jumpWas = false;
                 PacketDistributor.sendToServer(new MechaInputPayload(MechaInputPayload.JUMP, false));
             }
+            if (sprintWas) {
+                sprintWas = false;
+                PacketDistributor.sendToServer(new MechaInputPayload(MechaInputPayload.SPRINT, false));
+            }
             return;
         }
         boolean free = mc.screen == null && mc.mouseHandler.isMouseGrabbed();
         boolean jump = free && mc.options.keyJump.isDown();
-        boolean sprint = free && mc.options.keySprint.isDown();
+        boolean sprint = free && mc.options.keySprint.isDown() && mc.options.keyUp.isDown();
         mecha.setClientInput(jump, sprint);
         if (jump || jumpWas) {
             PacketDistributor.sendToServer(new MechaInputPayload(MechaInputPayload.JUMP, jump));
         }
         jumpWas = jump;
+        if (sprint != sprintWas) {
+            PacketDistributor.sendToServer(new MechaInputPayload(MechaInputPayload.SPRINT, sprint));
+            sprintWas = sprint;
+        }
         while (MechaKeys.OPEN_INVENTORY.consumeClick()) {
             if (mc.screen == null) {
                 PacketDistributor.sendToServer(new MechaInputPayload(MechaInputPayload.OPEN_INVENTORY, true));

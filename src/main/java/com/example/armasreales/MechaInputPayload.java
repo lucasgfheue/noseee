@@ -8,10 +8,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-/** Cliente -> servidor: teclas del mecha. action 0 = espacio (salto/jetpack), 1 = abrir inventario (tecla U). */
+/** Cliente -> servidor: teclas del mecha. action 0 = espacio (salto/jetpack), 1 = abrir inventario (tecla U), 2 = Ctrl + W (propulsores). */
 public record MechaInputPayload(int action, boolean value) implements CustomPacketPayload {
     public static final int JUMP = 0;
     public static final int OPEN_INVENTORY = 1;
+    public static final int SPRINT = 2;
 
     public static final CustomPacketPayload.Type<MechaInputPayload> TYPE = new CustomPacketPayload.Type<>(
             ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "mecha_input"));
