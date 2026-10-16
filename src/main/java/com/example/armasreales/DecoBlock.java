@@ -41,38 +41,43 @@ public class DecoBlock extends HorizontalDirectionalBlock {
         this.mode = def.mode();
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
         for (int turns = 0; turns < 4; turns++) {
-            VoxelShape s = Shapes.empty();
-            for (double[] b : def.boxes()) {
-                double x0 = b[0];
-                double z0 = b[2];
-                double x1 = b[3];
-                double z1 = b[5];
-                for (int t = 0; t < turns; t++) {
-                    double nx0 = 16 - z1;
-                    double nx1 = 16 - z0;
-                    double nz0 = x0;
-                    double nz1 = x1;
-                    x0 = nx0;
-                    x1 = nx1;
-                    z0 = nz0;
-                    z1 = nz1;
-                }
-                double y0 = Math.max(0, b[1]);
-                double y1 = Math.min(16, b[4]);
-                x0 = Math.max(0, Math.min(16, x0));
-                x1 = Math.max(0, Math.min(16, x1));
-                z0 = Math.max(0, Math.min(16, z0));
-                z1 = Math.max(0, Math.min(16, z1));
-                if (x1 - x0 < 0.01 || z1 - z0 < 0.01 || y1 - y0 < 0.01) {
-                    continue;
-                }
-                s = Shapes.or(s, Block.box(x0, y0, z0, x1, y1, z1));
-            }
-            if (s.isEmpty()) {
-                s = Block.box(0, 0, 0, 16, 16, 16);
-            }
-            shapes[turns] = s;
+            shapes[turns] = buildShape(def.boxes(), turns);
         }
+    }
+
+    /** Forma a partir de cajas (en 1/16 de bloque) girada {@code turns} cuartos de vuelta. */
+    static VoxelShape buildShape(double[][] boxes, int turns) {
+        VoxelShape s = Shapes.empty();
+        for (double[] b : boxes) {
+            double x0 = b[0];
+            double z0 = b[2];
+            double x1 = b[3];
+            double z1 = b[5];
+            for (int t = 0; t < turns; t++) {
+                double nx0 = 16 - z1;
+                double nx1 = 16 - z0;
+                double nz0 = x0;
+                double nz1 = x1;
+                x0 = nx0;
+                x1 = nx1;
+                z0 = nz0;
+                z1 = nz1;
+            }
+            double y0 = Math.max(0, b[1]);
+            double y1 = Math.min(16, b[4]);
+            x0 = Math.max(0, Math.min(16, x0));
+            x1 = Math.max(0, Math.min(16, x1));
+            z0 = Math.max(0, Math.min(16, z0));
+            z1 = Math.max(0, Math.min(16, z1));
+            if (x1 - x0 < 0.01 || z1 - z0 < 0.01 || y1 - y0 < 0.01) {
+                continue;
+            }
+            s = Shapes.or(s, Block.box(x0, y0, z0, x1, y1, z1));
+        }
+        if (s.isEmpty()) {
+            s = Block.box(0, 0, 0, 16, 16, 16);
+        }
+        return s;
     }
 
     @Override

@@ -1,0 +1,126 @@
+{
+  "textures": {
+    "negro": "armasreales:block/deco_negro",
+    "plastico_azul": "armasreales:block/deco_plastico_azul",
+    "metal": "armasreales:block/deco_metal",
+    "particle": "armasreales:block/deco_negro"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        9,
+        5
+      ],
+      "to": [
+        6,
+        11,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        10,
+        9,
+        5
+      ],
+      "to": [
+        16,
+        11,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#plastico_azul"
+        },
+        "south": {
+          "texture": "#plastico_azul"
+        },
+        "west": {
+          "texture": "#plastico_azul"
+        },
+        "up": {
+          "texture": "#plastico_azul"
+        },
+        "down": {
+          "texture": "#plastico_azul"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        11,
+        7.5
+      ],
+      "to": [
+        5,
+        16,
+        8.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        11,
+        11,
+        7.5
+      ],
+      "to": [
+        12,
+        16,
+        8.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    }
+  ]
+}

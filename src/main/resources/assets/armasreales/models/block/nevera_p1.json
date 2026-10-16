@@ -1,0 +1,83 @@
+{
+  "textures": {
+    "nevera_inf": "armasreales:block/deco_nevera_inf",
+    "blanco": "armasreales:block/deco_blanco",
+    "nevera_sup": "armasreales:block/deco_nevera_sup",
+    "particle": "armasreales:block/deco_nevera_inf"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        2
+      ],
+      "to": [
+        15,
+        3,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#nevera_inf",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            2.526
+          ]
+        },
+        "east": {
+          "texture": "#blanco"
+        },
+        "south": {
+          "texture": "#blanco"
+        },
+        "west": {
+          "texture": "#blanco"
+        },
+        "up": {
+          "texture": "#blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        3,
+        2
+      ],
+      "to": [
+        15,
+        14,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#nevera_sup",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#blanco"
+        },
+        "south": {
+          "texture": "#blanco"
+        },
+        "west": {
+          "texture": "#blanco"
+        },
+        "up": {
+          "texture": "#blanco"
+        },
+        "down": {
+          "texture": "#blanco"
+        }
+      }
+    }
+  ]
+}

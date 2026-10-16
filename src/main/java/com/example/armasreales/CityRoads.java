@@ -42,7 +42,7 @@ final class CityRoads {
     }
 
     private static void deco(CityPlan.Out o, int rel, String id, Direction f) {
-        o.set(rel, ModDeco.state(id, f, false));
+        CityDeco.place(o, rel, id, f, false);
     }
 
     /** Farola (o cámara de vigilancia cada cierto número de postes) mirando hacia la calzada. */
@@ -61,16 +61,35 @@ final class CityRoads {
 
     private static final String[] FURN = {"banqueta", "hidrante", "buzon", "papelera_calle", "parquimetro", "parada_autobus",
             "cabina_telefonica", "maceta_urbana", "bolardo", "banqueta", "papelera_calle", "bolardo", "contenedor_reciclaje",
-            "bicicletero", "cartel_calle", "transformador", "bicicletero", "contenedor_reciclaje"};
+            "bicicletero", "cartel_calle", "transformador", "bicicletero", "contenedor"};
 
-    /** Mobiliario urbano en la acera, junto a la fachada. */
-    static void furniture(CityPlan.Out o, int ix, int iz, int a, int side, Direction toRoad) {
-        int k = CityPlan.h(ix * 31 + a / 16, iz, 90 + side) % 20;
+    /** Mobiliario urbano en la acera, junto a la fachada (incluye muebles de varias celdas a lo largo de la acera). */
+    static boolean sidewalkItem(CityPlan.Out o, int x, int z, int ix, int iz, int a, int cw, boolean ns,
+                                boolean first, Direction toRoad) {
+        int base = (a / 16) * 16 + (first ? 10 : 2);
+        if (Math.abs(a - base) > 2 || base < cw + 3 || base >= CityPlan.PITCH - 3) {
+            return false;
+        }
+        int k = CityPlan.h(ix * 31 + a / 16, iz, 90 + (first ? 0 : 1)) % 20;
         if (k >= FURN.length) {
-            return;
+            return false;
         }
         String id = FURN[k];
+        int[] dm = DecoDims.M.get(id);
+        boolean wide = dm != null && (dm[0] > 1 || dm[2] > 1);
+        if (wide) {
+            if (base < cw + 5 || base > 44) {
+                return false;
+            }
+            int ox = ns ? x : x - (a - base);
+            int oz = ns ? z - (a - base) : z;
+            return CityDeco.part(o, 1, id, toRoad, ox, oz, x, z);
+        }
+        if (a != base) {
+            return false;
+        }
         deco(o, 1, id, "bolardo".equals(id) || "maceta_urbana".equals(id) ? Direction.NORTH : toRoad);
+        return true;
     }
 
     /** Envoltorio mínimo para no repetir parámetros. */
@@ -127,18 +146,20 @@ final class CityRoads {
                 if (u == 1 || u == w - 2) {
                     o.ground = s(Blocks.YELLOW_CONCRETE);
                 }
-                if (!port && u == w - 1 && a % 16 == 8) {
+                if (u == 0 && a % 16 == 8) {
+                    streetLamp(o, x, z, ns ? Direction.EAST : Direction.SOUTH, 0);
+                }
+            } else {
+                if (u == w / 2 && a % 8 < 4) {
+                    o.ground = s(Blocks.YELLOW_CONCRETE);
+                }
+                if (u == w - 1 && a % 16 == 8) {
                     if (CityPlan.h(ix, iz, 150 + a) % 5 == 0) {
                         deco(o, 1, "transformador", ns ? Direction.WEST : Direction.NORTH);
                     } else {
                         deco(o, 1, "poste_electrico", Direction.NORTH);
                     }
                 }
-                if (u == 0 && a % 16 == 8) {
-                    streetLamp(o, x, z, ns ? Direction.EAST : Direction.SOUTH, 0);
-                }
-            } else if (u == w / 2 && a % 8 < 4) {
-                o.ground = s(Blocks.YELLOW_CONCRETE);
             }
             return;
         }
@@ -148,9 +169,8 @@ final class CityRoads {
             Direction toRoad = ns ? (first ? Direction.EAST : Direction.WEST) : (first ? Direction.SOUTH : Direction.NORTH);
             if ((first && a % 16 == 4) || (u == w - 1 && a % 16 == 12)) {
                 streetLamp(o, x, z, toRoad, first ? 0 : 1);
-            } else if ((u == 0 || u == w - 1) && a >= cw + 3 && a < CityPlan.PITCH - 3
-                    && a % 16 == (first ? 10 : 2)) {
-                furniture(o, ix, iz, a, first ? 0 : 1, toRoad);
+            } else if ((u == 0 || u == w - 1) && sidewalkItem(o, x, z, ix, iz, a, cw, ns, first, toRoad)) {
+                // mobiliario colocado
             } else if (u == 0 && !(avenueW(w)) && a == CityPlan.PITCH - 4) {
                 int k = CityPlan.h(ix, iz, 95) % 4;
                 String id = k < 2 ? "senal_stop" : k == 2 ? "senal_ceda" : "senal_40";

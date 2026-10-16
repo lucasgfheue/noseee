@@ -234,7 +234,7 @@ final class CityBuildings {
     private static final Direction W = Direction.WEST;
 
     private static void d(CityPlan.Out o, int rel, String id, Direction f) {
-        o.set(rel, ModDeco.state(id, f, "lampara".equals(id) || "chimenea".equals(id)));
+        CityDeco.place(o, rel, id, f, "lampara".equals(id) || "chimenea".equals(id));
     }
 
     private static boolean is(int px, int pz, int x, int z) {
@@ -322,9 +322,11 @@ final class CityBuildings {
             }
             return;
         }
-        if (is(px, pz, fw - 3, fd - 2)) {
-            d(o, rel, "cama", N);
-        } else if (is(px, pz, fw - 2, fd - 2)) {
+        if (CityDeco.part(o, rel, "cama", N, fw - 3, fd - 3, px, pz)
+                || CityDeco.part(o, rel, "tocador", W, fw - 2, fd - 6, px, pz)) {
+            return;
+        }
+        if (is(px, pz, fw - 2, fd - 2)) {
             d(o, rel, "mesita_noche", N);
             d(o, rel + 1, "lampara", N);
         } else if (is(px, pz, fw - 4, fd - 2)) {
@@ -360,8 +362,6 @@ final class CityBuildings {
             d(o, rel + 1, "cuadro", N);
         } else if (is(px, pz, fw - 2, 6)) {
             d(o, rel, "guitarra", W);
-        } else if (is(px, pz, fw - 2, fd - 6)) {
-            d(o, rel, "tocador", W);
         } else if (is(px, pz, fw - 3, fd - 6)) {
             d(o, rel, "taburete_cocina", E);
         } else if (is(px, pz, fw / 2 + 2, fd - 2)) {
@@ -385,6 +385,9 @@ final class CityBuildings {
                     o.set(rel + r, wallB(l, APART));
                 }
             }
+            return;
+        }
+        if (CityDeco.part(o, rel, "cama", S, px - ux + 10, 2, px, pz)) {
             return;
         }
         if (is(ux, pz, 1, mid - 3)) {
@@ -418,8 +421,6 @@ final class CityBuildings {
             d(o, rel, "silla", S);
         } else if (is(ux, pz, 9, fd - 3)) {
             d(o, rel, "silla", N);
-        } else if (is(ux, pz, 10, 1)) {
-            d(o, rel, "cama", S);
         } else if (is(ux, pz, 8, 1)) {
             d(o, rel, "puf", S);
         } else if (is(ux, pz, 9, 1)) {
@@ -622,12 +623,15 @@ final class CityBuildings {
     private static void barracks(CityPlan.Lot l, int px, int pz, int rel, int k, CityPlan.Out o) {
         int fw = l.fw;
         int fd = l.fd;
+        if (px % 3 == 1 && px > 2 && (CityDeco.part(o, rel, "litera", S, px, 2, px, pz)
+                || (fd >= 8 && CityDeco.part(o, rel, "litera", N, px, fd - 3, px, pz)))) {
+            return;
+        }
+        if (fw >= 14 && fd >= 10 && k == 0 && CityDeco.part(o, rel, "mesa_billar", N, 9, 3, px, pz)) {
+            return;
+        }
         if (k == 0 && is(px, pz, 1, fd / 2)) {
             d(o, rel, "tv", E);
-        } else if (pz == 1 && px % 3 == 1 && px > 2) {
-            d(o, rel, "litera", S);
-        } else if (pz == fd - 2 && px % 3 == 1 && px > 2) {
-            d(o, rel, "litera", N);
         } else if ((pz == 2 || pz == fd - 3) && px % 3 == 2 && px > 2) {
             d(o, rel, "mesita_noche", pz == 2 ? S : N);
         } else if (px == fw - 2 && (pz == 4 || pz == 5 || pz == fd - 5)) {
@@ -638,8 +642,6 @@ final class CityBuildings {
             d(o, rel, "silla", S);
         } else if (k == 0 && pz == fd / 2 + 1 && px % 8 >= 3 && px % 8 <= 6 && px > 4 && px % 2 == 1) {
             d(o, rel, "silla", N);
-        } else if (k == 0 && pz == 3 && px % 10 == 9) {
-            d(o, rel, "mesa_billar", N);
         } else if (k == 0 && is(px, pz, 1, 2)) {
             d(o, rel, "perchero", E);
         }
@@ -648,6 +650,9 @@ final class CityBuildings {
     private static void mill(CityPlan.Lot l, int px, int pz, int rel, int k, CityPlan.Out o) {
         int fw = l.fw;
         int fd = l.fd;
+        if (k % 2 == 1 && CityDeco.part(o, rel, "cama", N, fw - 3, fd - 3, px, pz)) {
+            return;
+        }
         if (is(px, pz, fw - 2, fd - 2)) {
             o.set(rel, s(Blocks.HAY_BLOCK));
             o.set(rel + 1, s(Blocks.HAY_BLOCK));
@@ -660,8 +665,6 @@ final class CityBuildings {
             d(o, rel, "silla", W);
         } else if (k % 2 == 0 && is(px, pz, 4, fd - 2)) {
             d(o, rel, "estanteria", N);
-        } else if (k % 2 == 1 && is(px, pz, fw - 3, fd - 2)) {
-            d(o, rel, "cama", N);
         } else if (k % 2 == 1 && is(px, pz, fw - 2, 4)) {
             d(o, rel, "armario", W);
         } else if (k % 2 == 1 && is(px, pz, 3, fd - 2)) {
@@ -1027,9 +1030,11 @@ final class CityBuildings {
             case FUEL -> fuel(l, lx, lz, w, d, o);
             case BARRACKS -> {
                 o.ground = s(Blocks.GRAY_CONCRETE);
-                building(l, px, pz, o, BARRACKS, l.floors);
                 military(l, lx, lz, w, d, o);
-                barriers(l, lx, lz, o);
+                building(l, px, pz, o, BARRACKS, l.floors);
+                if (px < 0 || pz < 0 || px >= l.fw || pz >= l.fd) {
+                    barriers(l, lx, lz, o);
+                }
             }
             case MOTOR -> {
                 o.ground = s(Blocks.GRAY_CONCRETE);
@@ -1133,17 +1138,12 @@ final class CityBuildings {
             d(o, 1, "bebedero", W);
             return;
         }
-        if (w / 2 - lx > 5 && d / 2 - lz > 5) {
-            if (lx == 7 && lz == 7) {
-                d(o, 1, "columpio", N);
+        if (w / 2 > 16 && d / 2 > 16) {
+            if (CityDeco.part(o, 1, "columpio", N, 5, 5, lx, lz) || CityDeco.part(o, 1, "tobogan", N, 10, 5, lx, lz)
+                    || CityDeco.part(o, 1, "subibaja", N, 5, 9, lx, lz)) {
                 return;
-            } else if (lx == 7 && lz == 11) {
-                d(o, 1, "tobogan", E);
-                return;
-            } else if (lx == 11 && lz == 7) {
-                d(o, 1, "subibaja", N);
-                return;
-            } else if (lx >= 11 && lx <= 12 && lz >= 11 && lz <= 12) {
+            }
+            if (lx >= 10 && lx <= 11 && lz >= 10 && lz <= 11) {
                 d(o, 1, "arenero", N);
                 return;
             }
@@ -1193,8 +1193,8 @@ final class CityBuildings {
                 d(o, r, "poste", N);
             }
             d(o, 6, lz < d / 2 ? "camara" : "farola", lx < w / 2 ? E : W);
-        } else if (lx == w / 2 - 10 && lz == d / 2 + 4) {
-            d(o, 1, "puesto_comida", E);
+        } else if (CityDeco.part(o, 1, "puesto_comida", E, w / 2 - 10, d / 2 + 4, lx, lz)) {
+            return;
         } else if (lx == w / 2 + 7 && (lz == d / 2 + 3 || lz == d / 2 - 3)) {
             d(o, 1, "mesa_terraza", N);
         } else if (lx == w / 2 && d / 2 > 14 && (lz == d / 2 - 12 || lz == d / 2 + 12)) {

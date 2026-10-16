@@ -1,0 +1,159 @@
+{
+  "textures": {
+    "bronce": "armasreales:block/deco_bronce",
+    "particle": "armasreales:block/deco_bronce"
+  },
+  "elements": [
+    {
+      "from": [
+        5,
+        0,
+        6
+      ],
+      "to": [
+        7.6,
+        13,
+        9.4
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bronce"
+        },
+        "east": {
+          "texture": "#bronce"
+        },
+        "south": {
+          "texture": "#bronce"
+        },
+        "west": {
+          "texture": "#bronce"
+        },
+        "up": {
+          "texture": "#bronce"
+        },
+        "down": {
+          "texture": "#bronce"
+        }
+      }
+    },
+    {
+      "from": [
+        8.4,
+        0,
+        6
+      ],
+      "to": [
+        11,
+        13,
+        9.4
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bronce"
+        },
+        "east": {
+          "texture": "#bronce"
+        },
+        "south": {
+          "texture": "#bronce"
+        },
+        "west": {
+          "texture": "#bronce"
+        },
+        "up": {
+          "texture": "#bronce"
+        },
+        "down": {
+          "texture": "#bronce"
+        }
+      }
+    },
+    {
+      "from": [
+        4.5,
+        13,
+        6
+      ],
+      "to": [
+        11.5,
+        16,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bronce"
+        },
+        "east": {
+          "texture": "#bronce"
+        },
+        "south": {
+          "texture": "#bronce"
+        },
+        "west": {
+          "texture": "#bronce"
+        },
+        "down": {
+          "texture": "#bronce"
+        }
+      }
+    },
+    {
+      "from": [
+        2.8,
+        15,
+        6.5
+      ],
+      "to": [
+        4.5,
+        16,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bronce"
+        },
+        "east": {
+          "texture": "#bronce"
+        },
+        "south": {
+          "texture": "#bronce"
+        },
+        "west": {
+          "texture": "#bronce"
+        },
+        "down": {
+          "texture": "#bronce"
+        }
+      }
+    },
+    {
+      "from": [
+        11.5,
+        15,
+        6.5
+      ],
+      "to": [
+        13.2,
+        16,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bronce"
+        },
+        "east": {
+          "texture": "#bronce"
+        },
+        "south": {
+          "texture": "#bronce"
+        },
+        "west": {
+          "texture": "#bronce"
+        },
+        "down": {
+          "texture": "#bronce"
+        }
+      }
+    }
+  ]
+}
