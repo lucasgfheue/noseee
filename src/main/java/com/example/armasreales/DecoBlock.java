@@ -31,12 +31,14 @@ public class DecoBlock extends HorizontalDirectionalBlock {
     public static final MapCodec<DecoBlock> CODEC = simpleCodec(p -> new DecoBlock(p, ModDeco.DEFS.get(0)));
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
+    private final String id;
     private final boolean toggle;
     private final int mode;
     private final VoxelShape[] shapes = new VoxelShape[4];
 
     public DecoBlock(Properties properties, ModDeco.Def def) {
         super(properties);
+        this.id = def.id();
         this.toggle = def.toggle();
         this.mode = def.mode();
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
@@ -112,6 +114,12 @@ public class DecoBlock extends HorizontalDirectionalBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
                                                BlockHitResult hit) {
+        if (DecoLoot.isSearchable(id)) {
+            if (!level.isClientSide) {
+                DecoLoot.search(level, pos, state, player, id);
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
         if (!toggle) {
             return InteractionResult.PASS;
         }
@@ -119,6 +127,14 @@ public class DecoBlock extends HorizontalDirectionalBlock {
         level.setBlock(pos, state.setValue(LIT, on), 3);
         level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.4f, on ? 0.7f : 0.5f);
         return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock()) && DecoLoot.isSearchable(id)) {
+            DecoLoot.forget(level, pos);
+        }
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     // --- modo 1: farola automática (se enciende de noche o con lluvia)

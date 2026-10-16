@@ -275,5 +275,8 @@
   "item.armasreales.ciudadano_spawn_egg": "Citizen Spawn Egg",
   "msg.armasreales.robado": "You were robbed: %s!",
   "entity.armasreales.ladron": "Thief",
-  "item.armasreales.ladron_spawn_egg": "Thief Spawn Egg"
+  "item.armasreales.ladron_spawn_egg": "Thief Spawn Egg",
+  "msg.armasreales.vacio": "Already searched: it's empty.",
+  "msg.armasreales.nada": "Nothing here.",
+  "msg.armasreales.encontrado": "You found: %s"
 }

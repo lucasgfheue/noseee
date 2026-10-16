@@ -275,5 +275,8 @@
   "item.armasreales.ciudadano_spawn_egg": "Generar Ciudadano",
   "msg.armasreales.robado": "¡Te han robado: %s!",
   "entity.armasreales.ladron": "Ladrón",
-  "item.armasreales.ladron_spawn_egg": "Generar Ladrón"
+  "item.armasreales.ladron_spawn_egg": "Generar Ladrón",
+  "msg.armasreales.vacio": "Ya lo registraron: está vacío.",
+  "msg.armasreales.nada": "No hay nada aquí.",
+  "msg.armasreales.encontrado": "Encontraste: %s"
 }
