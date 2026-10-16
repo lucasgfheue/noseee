@@ -386,7 +386,7 @@ final class CiudadanoGoals {
                 return false;
             }
             Player p = mob.level().getNearestPlayer(mob, 64.0);
-            if (p == null || p.isCreative() || p.isSpectator()) {
+            if (p == null || p.isSpectator()) {
                 return false;
             }
             this.player = p;

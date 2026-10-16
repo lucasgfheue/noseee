@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Habitante de la ciudad. Hay tres tipos (un tipo de entidad cada uno):
+ * Habitante de la ciudad. Un solo tipo de entidad; el rol es oculto (no se ve en la skin ni en el nombre):
  * <ul>
  *   <li>Civil: inofensivo. Huye si le apuntas con un arma o le disparas. Al caer la noche desaparece y vuelve de día.</li>
  *   <li>Armado: lleva un arma. De día sólo ataca si le apuntas o le disparas; de noche intenta matarte.</li>
@@ -81,16 +81,23 @@ public class CiudadanoEntity extends PathfinderMob {
 
     // ------------------------------------------------------------------ Rol
 
+    /** Rol oculto: 0 civil, 1 armado, 2 ladrón. Nada en el aspecto ni el nombre lo delata. */
+    int role = -1;
+
     public boolean isCivil() {
-        return this.getType() == ModEntities.CIUDADANO_CIVIL.get();
+        return this.role <= 0;
     }
 
     public boolean isArmedType() {
-        return this.getType() == ModEntities.CIUDADANO_ARMADO.get();
+        return this.role == 1;
     }
 
     public boolean isThief() {
-        return this.getType() == ModEntities.CIUDADANO_LADRON.get();
+        return this.role == 2;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
 
     /** El civil ya entregó su "tributo" de lingotes de oro. */
@@ -175,11 +182,6 @@ public class CiudadanoEntity extends PathfinderMob {
         this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.3));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0f));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<Player>(this, Player.class, 10, false, false,
-                p -> CiudadanoEntity.this.isHostileKind() && isNight(CiudadanoEntity.this.level())
-                        && CiudadanoGoals.canSee(CiudadanoEntity.this, p)
-                        && !((Player) p).isCreative() && !p.isSpectator()
-                        && CiudadanoEntity.this.level().getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL));
     }
 
     /** Alguien (un jugador) le apuntó o le disparó: los armados contraatacan. */
@@ -187,12 +189,13 @@ public class CiudadanoEntity extends PathfinderMob {
         if (this.isCivil() || attacker.level().getDifficulty() == net.minecraft.world.Difficulty.PEACEFUL) {
             return;
         }
-        if (attacker instanceof Player p && (p.isCreative() || p.isSpectator())) {
+        if (attacker instanceof Player p && p.isSpectator()) {
             return;
         }
-        if (this.hasGun()) {
+        if (this.carriesGun()) {
             this.provoked = 600;
             this.setTarget(attacker);
+            this.drawGun();
         }
     }
 
@@ -233,17 +236,14 @@ public class CiudadanoEntity extends PathfinderMob {
             this.stealCooldown--;
         }
         // Los civiles desaparecen al anochecer
-        if (this.isCivil() && isNight(level) && this.random.nextInt(60) == 0) {
+        if (this.isCivil() && isNight(level) && this.random.nextInt(240) == 0) {
             this.vanish(level);
             return;
         }
         // Sacar el arma al ser provocado o de noche; guardarla cuando se calma
         if (this.isArmedType()) {
-            if (this.wantsToFight() && !this.hasGun() && this.holster.getItem() instanceof Gun) {
-                this.setItemSlot(EquipmentSlot.MAINHAND, this.holster);
-                this.holster = ItemStack.EMPTY;
-                this.setDropChance(EquipmentSlot.MAINHAND, 0.5f);
-                this.playSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_IRON.value(), 1.0f, 0.8f);
+            if (this.wantsToFight()) {
+                this.drawGun();
             } else if (!this.wantsToFight() && this.hasGun() && this.getTarget() == null && this.holster.isEmpty()
                     && this.tickCount % 20 == 0) {
                 this.holster = this.getMainHandItem().copy();
@@ -278,6 +278,26 @@ public class CiudadanoEntity extends PathfinderMob {
                 }
             }
         }
+        // Hostiles (armados / ladrones) de noche: buscan al jugador más cercano, también a través de cristales.
+        // Se asigna el objetivo a mano para que también funcione con jugadores en creativo.
+        if (this.tickCount % 10 == 0 && this.isHostileKind() && isNight(level) && this.getTarget() == null
+                && this.fleeTicks <= 0 && level.getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL) {
+            Player best = null;
+            double bd = 40.0 * 40.0;
+            for (Player p : level.players()) {
+                double d = p.distanceToSqr(this);
+                if (!p.isSpectator() && p.isAlive() && d < bd && CiudadanoGoals.canSee(this, p)) {
+                    best = p;
+                    bd = d;
+                }
+            }
+            if (best != null) {
+                this.setTarget(best);
+            }
+        }
+        if (this.getTarget() != null && this.provoked <= 0 && this.distanceToSqr(this.getTarget()) > 56.0 * 56.0) {
+            this.setTarget(null);
+        }
         // Armados sin motivo de día: se calman
         if (!this.isCivil() && !isNight(level) && this.provoked <= 0 && this.getTarget() != null
                 && !(this.isThief() && this.hasGun())) {
@@ -293,7 +313,7 @@ public class CiudadanoEntity extends PathfinderMob {
             this.fleeTicks--;
         }
         // Al amanecer, los ladrones sin arma y sin botín vuelven a ser gente normal (dejan de perseguir)
-        if (this.getTarget() instanceof Player p && (p.isCreative() || p.isSpectator() || !p.isAlive())) {
+        if (this.getTarget() instanceof Player p && (p.isSpectator() || !p.isAlive())) {
             this.setTarget(null);
         }
         this.setAggressive(this.getTarget() != null && this.hasGun());
@@ -308,6 +328,16 @@ public class CiudadanoEntity extends PathfinderMob {
         }
         this.loot.clearContent();
         this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+    }
+
+    /** Saca el arma de la cintura (si la lleva guardada). */
+    void drawGun() {
+        if (!this.hasGun() && this.holster.getItem() instanceof Gun) {
+            this.setItemSlot(EquipmentSlot.MAINHAND, this.holster);
+            this.holster = ItemStack.EMPTY;
+            this.setDropChance(EquipmentSlot.MAINHAND, 0.5f);
+            this.playSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_IRON.value(), 1.0f, 0.8f);
+        }
     }
 
     void vanish(ServerLevel level) {
@@ -372,6 +402,7 @@ public class CiudadanoEntity extends PathfinderMob {
         super.addAdditionalSaveData(tag);
         tag.putInt("Skin", this.getSkin());
         tag.putInt("Provoked", this.provoked);
+        tag.putInt("Role", Math.max(0, this.role));
         tag.putBoolean("Paid", this.paid);
         if (!this.holster.isEmpty()) {
             tag.put("Holster", this.holster.save(this.registryAccess()));
@@ -383,6 +414,7 @@ public class CiudadanoEntity extends PathfinderMob {
         super.readAdditionalSaveData(tag);
         this.setSkin(tag.getInt("Skin"));
         this.provoked = tag.getInt("Provoked");
+        this.role = tag.contains("Role") ? tag.getInt("Role") : 0;
         this.paid = tag.getBoolean("Paid");
         this.holster = tag.contains("Holster")
                 ? ItemStack.parse(this.registryAccess(), tag.getCompound("Holster")).orElse(ItemStack.EMPTY)
@@ -394,18 +426,19 @@ public class CiudadanoEntity extends PathfinderMob {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                         MobSpawnType reason, @Nullable SpawnGroupData data) {
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, reason, data);
-        if (this.isCivil()) {
-            this.setSkin(level.getRandom().nextInt(CIVIL_SKINS));
-        } else if (this.isArmedType()) {
-            this.setSkin(CIVIL_SKINS + level.getRandom().nextInt(ARMED_SKINS));
+        if (this.role < 0) {                                  // huevo o comando: rol al azar
+            boolean night = level.getLevel().getDayTime() % 24000L >= 13000L && level.getLevel().getDayTime() % 24000L < 23000L;
+            int r = level.getRandom().nextInt(10);
+            this.role = night ? (r < 3 ? 0 : r < 7 ? 1 : 2) : (r < 7 ? 0 : 1);
+        }
+        this.setSkin(level.getRandom().nextInt(TOTAL_SKINS));  // cualquier skin puede tener cualquier rol
+        if (this.isArmedType()) {
             Item gun = switch (level.getRandom().nextInt(3)) {
                 case 0 -> ModItems.PISTOLA.get();
                 case 1 -> ModItems.AK47.get();
                 default -> ModItems.ESCOPETA.get();
             };
-            this.holster = new ItemStack(gun);            // guardada hasta que haga falta
-        } else {
-            this.setSkin(CIVIL_SKINS + ARMED_SKINS + level.getRandom().nextInt(THIEF_SKINS));
+            this.holster = new ItemStack(gun);                // guardada hasta que haga falta
         }
         return result;
     }

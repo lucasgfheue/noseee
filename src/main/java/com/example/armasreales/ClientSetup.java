@@ -63,9 +63,7 @@ public class ClientSetup {
         // Hombre lobo (humano de día, bestia de noche)
         event.registerEntityRenderer(ModEntities.HOMBRE_LOBO.get(), WerewolfRenderer::new);
         event.registerEntityRenderer(ModEntities.CAMPISTA.get(), CampistaRenderer::new);
-        event.registerEntityRenderer(ModEntities.CIUDADANO_CIVIL.get(), CiudadanoRenderer::new);
-        event.registerEntityRenderer(ModEntities.CIUDADANO_ARMADO.get(), CiudadanoRenderer::new);
-        event.registerEntityRenderer(ModEntities.CIUDADANO_LADRON.get(), CiudadanoRenderer::new);
+        event.registerEntityRenderer(ModEntities.CIUDADANO.get(), CiudadanoRenderer::new);
         event.registerEntityRenderer(ModEntities.ANCIANO.get(), AncianoRenderer::new);
         event.registerEntityRenderer(ModEntities.SOLDADO.get(), SoldadoRenderer::new);
         event.registerEntityRenderer(ModEntities.SOBREVIVIENTE.get(), SobrevivienteRenderer::new);

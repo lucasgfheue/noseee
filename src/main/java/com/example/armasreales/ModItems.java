@@ -227,19 +227,9 @@ public class ModItems {
             props -> new SpawnEggItem(ModEntities.CAMPISTA.get(), 0x5B7A3A, 0xC9A66B, props),
             new Item.Properties());
 
-    public static final DeferredItem<SpawnEggItem> CIUDADANO_CIVIL_SPAWN_EGG = ITEMS.registerItem(
+    public static final DeferredItem<SpawnEggItem> CIUDADANO_SPAWN_EGG = ITEMS.registerItem(
             "ciudadano_spawn_egg",
-            props -> new SpawnEggItem(ModEntities.CIUDADANO_CIVIL.get(), 0x4A7FB5, 0xE0C9A6, props),
-            new Item.Properties());
-
-    public static final DeferredItem<SpawnEggItem> CIUDADANO_ARMADO_SPAWN_EGG = ITEMS.registerItem(
-            "ciudadano_armado_spawn_egg",
-            props -> new SpawnEggItem(ModEntities.CIUDADANO_ARMADO.get(), 0x3B3F45, 0xB5532E, props),
-            new Item.Properties());
-
-    public static final DeferredItem<SpawnEggItem> CIUDADANO_LADRON_SPAWN_EGG = ITEMS.registerItem(
-            "ladron_spawn_egg",
-            props -> new SpawnEggItem(ModEntities.CIUDADANO_LADRON.get(), 0x1E1E1E, 0x8A8A8A, props),
+            props -> new SpawnEggItem(ModEntities.CIUDADANO.get(), 0x4A7FB5, 0xE0C9A6, props),
             new Item.Properties());
 
     public static final DeferredItem<SpawnEggItem> ANCIANO_SPAWN_EGG = ITEMS.registerItem(

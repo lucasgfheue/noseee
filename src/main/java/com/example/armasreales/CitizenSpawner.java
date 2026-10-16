@@ -37,15 +37,15 @@ public final class CitizenSpawner {
                 else armed++;
             }
             for (int n = 0; n < 3; n++) {
-                EntityType<CiudadanoEntity> type;
+                int type;
                 if (civil < capCivil && (n != 2 || level.random.nextBoolean())) {
-                    type = ModEntities.CIUDADANO_CIVIL.get();
+                    type = 0;
                     civil++;
                 } else if (armed < capArmed && level.random.nextInt(3) != 0) {
-                    type = ModEntities.CIUDADANO_ARMADO.get();
+                    type = 1;
                     armed++;
                 } else if (thief < capThief) {
-                    type = ModEntities.CIUDADANO_LADRON.get();
+                    type = 2;
                     thief++;
                 } else {
                     break;
@@ -55,7 +55,7 @@ public final class CitizenSpawner {
         }
     }
 
-    private static void spawn(ServerLevel level, ServerPlayer player, EntityType<CiudadanoEntity> type) {
+    private static void spawn(ServerLevel level, ServerPlayer player, int type) {
         boolean indoor = level.random.nextBoolean();
         for (int attempt = 0; attempt < 14; attempt++) {
             double ang = level.random.nextDouble() * Math.PI * 2;
@@ -78,10 +78,11 @@ public final class CitizenSpawner {
             if (level.canSeeSky(pos) == indoor) {
                 continue;
             }
-            CiudadanoEntity e = type.create(level);
+            CiudadanoEntity e = ModEntities.CIUDADANO.get().create(level);
             if (e == null) {
                 return;
             }
+            e.setRole(type);
             e.moveTo(x + 0.5, y, z + 0.5, level.random.nextFloat() * 360f, 0f);
             if (!level.noCollision(e) || level.getNearestPlayer(e, 12.0) != null) {
                 e.discard();
