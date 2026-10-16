@@ -4,7 +4,7 @@
     "type": "armasreales:ciudad",
     "biome_source": {
       "type": "minecraft:fixed",
-      "biome": "armasreales:ciudad"
+      "biome": "minecraft:the_void"
     }
   }
 }
