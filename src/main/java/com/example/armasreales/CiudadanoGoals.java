@@ -112,7 +112,7 @@ final class CiudadanoGoals {
 
         private net.minecraft.core.BlockPos glass() {
             LivingEntity t = mob.getTarget();
-            if (t == null || !t.isAlive() || !mob.wantsToFight() || mob.hasGun()) {
+            if (t == null || !t.isAlive() || !mob.wantsToFight() || mob.carriesGun()) {
                 return null;
             }
             Look l = look(mob.level(), mob, mob.getEyePosition(), t.getEyePosition());
@@ -382,7 +382,7 @@ final class CiudadanoGoals {
                     || mob.level().getDifficulty() == net.minecraft.world.Difficulty.PEACEFUL) {
                 return false;
             }
-            if (!mob.hasGun() && !mob.isThief()) {
+            if (!mob.carriesGun() && !mob.isThief()) {
                 return false;
             }
             Player p = mob.level().getNearestPlayer(mob, 64.0);

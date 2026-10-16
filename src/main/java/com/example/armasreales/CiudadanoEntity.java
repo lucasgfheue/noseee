@@ -93,6 +93,14 @@ public class CiudadanoEntity extends PathfinderMob {
         return this.getType() == ModEntities.CIUDADANO_LADRON.get();
     }
 
+    /** Arma guardada (en la cintura) mientras no hay motivo para sacarla. */
+    ItemStack holster = ItemStack.EMPTY;
+
+    /** ¿Lleva un arma, en la mano o guardada? */
+    public boolean carriesGun() {
+        return this.hasGun() || this.holster.getItem() instanceof Gun;
+    }
+
     /** ¿Lleva un arma del mod en la mano? */
     public boolean hasGun() {
         return this.getMainHandItem().getItem() instanceof Gun;
@@ -113,10 +121,10 @@ public class CiudadanoEntity extends PathfinderMob {
         if (this.isCivil()) {
             return false;
         }
-        if (this.provoked > 0 && this.hasGun()) {
+        if (this.provoked > 0 && this.carriesGun()) {
             return true;
         }
-        return isNight(this.level()) && (this.hasGun() || this.isThief());
+        return isNight(this.level()) && (this.carriesGun() || this.isThief());
     }
 
     // ------------------------------------------------------------------ Objetivos
@@ -141,7 +149,7 @@ public class CiudadanoEntity extends PathfinderMob {
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.1, false) {
             @Override
             public boolean canUse() {
-                return CiudadanoEntity.this.wantsToFight() && !CiudadanoEntity.this.hasGun() && super.canUse();
+                return CiudadanoEntity.this.wantsToFight() && !CiudadanoEntity.this.carriesGun() && super.canUse();
             }
         });
         this.goalSelector.addGoal(5, new CiudadanoGoals.NightSeekGoal(this));
@@ -173,7 +181,7 @@ public class CiudadanoEntity extends PathfinderMob {
     public boolean hurt(DamageSource source, float amount) {
         boolean result = super.hurt(source, amount);
         if (result && !this.level().isClientSide && source.getEntity() instanceof Player player) {
-            if (this.hasGun()) {
+            if (this.carriesGun()) {
                 this.provoke(player);
             }
             // Los demás ciudadanos cercanos reaccionan: los armados contraatacan, los civiles huyen
@@ -182,7 +190,7 @@ public class CiudadanoEntity extends PathfinderMob {
             for (CiudadanoEntity c : near) {
                 if (c.isCivil()) {
                     c.setLastHurtByMob(player);
-                } else if (c.hasGun()) {
+                } else if (c.carriesGun()) {
                     c.provoke(player);
                 }
             }
@@ -209,6 +217,19 @@ public class CiudadanoEntity extends PathfinderMob {
             this.vanish(level);
             return;
         }
+        // Sacar el arma al ser provocado o de noche; guardarla cuando se calma
+        if (this.isArmedType()) {
+            if (this.wantsToFight() && !this.hasGun() && this.holster.getItem() instanceof Gun) {
+                this.setItemSlot(EquipmentSlot.MAINHAND, this.holster);
+                this.holster = ItemStack.EMPTY;
+                this.setDropChance(EquipmentSlot.MAINHAND, 0.5f);
+                this.playSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_IRON.value(), 1.0f, 0.8f);
+            } else if (!this.wantsToFight() && this.hasGun() && this.getTarget() == null && this.holster.isEmpty()
+                    && this.tickCount % 20 == 0) {
+                this.holster = this.getMainHandItem().copy();
+                this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+            }
+        }
         // Los ladrones solo existen de noche: al amanecer se esfuman (soltando lo robado si lo llevan)
         if (this.isThief() && !isNight(level) && this.random.nextInt(60) == 0) {
             this.dropLoot();
@@ -216,12 +237,12 @@ public class CiudadanoEntity extends PathfinderMob {
             return;
         }
         // Un jugador que apunta con un arma a un armado lo provoca (y a los armados de alrededor)
-        if (this.tickCount % 5 == 0 && !this.isCivil() && this.hasGun() && this.provoked <= 0) {
+        if (this.tickCount % 5 == 0 && !this.isCivil() && this.carriesGun() && this.provoked <= 0) {
             for (Player p : level.players()) {
                 if (p.distanceToSqr(this) < 28.0 * 28.0 && CiudadanoGoals.aimedAt(p, this)) {
                     this.provoke(p);
                     for (CiudadanoEntity c : level.getEntitiesOfClass(CiudadanoEntity.class,
-                            this.getBoundingBox().inflate(16.0), e -> e != this && e.isAlive() && e.hasGun())) {
+                            this.getBoundingBox().inflate(16.0), e -> e != this && e.isAlive() && e.carriesGun())) {
                         c.provoke(p);
                     }
                     break;
@@ -286,6 +307,10 @@ public class CiudadanoEntity extends PathfinderMob {
     @Override
     public void die(DamageSource source) {
         if (!this.level().isClientSide) {
+            if (!this.holster.isEmpty() && this.random.nextFloat() < 0.5f) {
+                this.spawnAtLocation(this.holster.copy());
+            }
+            this.holster = ItemStack.EMPTY;
             for (int i = 0; i < this.loot.getContainerSize(); i++) {
                 ItemStack st = this.loot.getItem(i);
                 if (!st.isEmpty() && !(st.getItem() instanceof Gun && ItemStack.isSameItemSameComponents(st, this.getMainHandItem()))) {
@@ -318,6 +343,9 @@ public class CiudadanoEntity extends PathfinderMob {
         super.addAdditionalSaveData(tag);
         tag.putInt("Skin", this.getSkin());
         tag.putInt("Provoked", this.provoked);
+        if (!this.holster.isEmpty()) {
+            tag.put("Holster", this.holster.save(this.registryAccess()));
+        }
     }
 
     @Override
@@ -325,6 +353,9 @@ public class CiudadanoEntity extends PathfinderMob {
         super.readAdditionalSaveData(tag);
         this.setSkin(tag.getInt("Skin"));
         this.provoked = tag.getInt("Provoked");
+        this.holster = tag.contains("Holster")
+                ? ItemStack.parse(this.registryAccess(), tag.getCompound("Holster")).orElse(ItemStack.EMPTY)
+                : ItemStack.EMPTY;
     }
 
     @Nullable
@@ -341,8 +372,7 @@ public class CiudadanoEntity extends PathfinderMob {
                 case 1 -> ModItems.AK47.get();
                 default -> ModItems.ESCOPETA.get();
             };
-            this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(gun));
-            this.setDropChance(EquipmentSlot.MAINHAND, 0.25f);
+            this.holster = new ItemStack(gun);            // guardada hasta que haga falta
         } else {
             this.setSkin(CIVIL_SKINS + ARMED_SKINS + level.getRandom().nextInt(THIEF_SKINS));
         }
