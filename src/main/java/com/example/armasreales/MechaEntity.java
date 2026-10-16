@@ -23,6 +23,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -36,6 +37,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
@@ -56,6 +58,7 @@ public class MechaEntity extends TankEntity {
     private static final double JUMP_VELOCITY = 1.5;       // unos 12 bloques de altura
     private static final int FLIGHT_HOLD_TICKS = 60;       // 3 s con Espacio pulsado
     private static final double RADIUS = 4.0;
+    private static final float STOMP_DAMAGE = 14.0f;
     private static final float AIM_LIMIT = 80.0f;             // los brazos apuntan casi a cualquier altura
     private static final int BOOST_FUEL_FACTOR = 3;           // los propulsores gastan el triple
 
@@ -75,6 +78,8 @@ public class MechaEntity extends TankEntity {
             SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_AIM_PITCH =
             SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> DATA_CHASE =
+            SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_FUEL =
             SynchedEntityData.defineId(MechaEntity.class, EntityDataSerializers.INT);
 
@@ -117,6 +122,7 @@ public class MechaEntity extends TankEntity {
         builder.define(DATA_FUEL, 0);
         builder.define(DATA_BOOST, false);
         builder.define(DATA_AUTO, false);
+        builder.define(DATA_CHASE, -1);
         builder.define(DATA_AUTO_TARGET, false);
         builder.define(DATA_AIM_YAW, 0.0f);
         builder.define(DATA_AIM_PITCH, 0.0f);
@@ -233,9 +239,33 @@ public class MechaEntity extends TankEntity {
         return (this.clientSprint && player.zza > 0.0f) ? speed * 1.9f : speed;
     }
 
+    /** Objetivo que persigue el modo automático cuando se queda sin munición (lo calcula el servidor). */
+    private Entity chaseTarget() {
+        int id = this.entityData.get(DATA_CHASE);
+        return id < 0 ? null : this.level().getEntity(id);
+    }
+
+    @Override
+    protected Vec3 getRiddenInput(Player player, Vec3 travelVector) {
+        if (this.chaseTarget() != null) {
+            return new Vec3(0.0, 0.0, 1.0);                    // avanza solo hacia el objetivo
+        }
+        return super.getRiddenInput(player, travelVector);
+    }
+
     @Override
     protected void tickRidden(Player player, Vec3 travelVector) {
         super.tickRidden(player, travelVector);
+        Entity chase = this.chaseTarget();
+        if (chase != null) {
+            double cx = chase.getX() - this.getX();
+            double cz = chase.getZ() - this.getZ();
+            float want = (float) (Mth.atan2(-cx, cz) * (180.0 / Math.PI));
+            float turn = Mth.clamp(Mth.wrapDegrees(want - this.getYRot()), -3.0f, 3.0f);
+            this.setRot(this.getYRot() + turn, 0.0f);
+            this.yBodyRot = this.getYRot();
+            this.yHeadRot = this.getYRot();
+        }
         boolean flying = this.isFlying();
         Vec3 dm = this.getDeltaMovement();
         if (flying) {
@@ -299,6 +329,7 @@ public class MechaEntity extends TankEntity {
         }
         this.jumpHeldTicks = this.jumpHeldServer ? this.jumpHeldTicks + 1 : 0;
         this.autoTick(level, pilot);
+        this.stompTick(level, pilot);
 
         boolean boost = this.isFlying() && this.sprintHeldServer;
         if (boost != this.isBoosting()) {
@@ -416,6 +447,7 @@ public class MechaEntity extends TankEntity {
         super.removePassenger(passenger);
         this.jumpHeldServer = false;
         this.sprintHeldServer = false;
+        this.entityData.set(DATA_CHASE, -1);
         this.entityData.set(DATA_FLYING, false);
         this.entityData.set(DATA_BOOST, false);
     }
@@ -478,12 +510,14 @@ public class MechaEntity extends TankEntity {
 
     private void autoTick(ServerLevel level, Player pilot) {
         if (!this.isAuto() || !(pilot instanceof ServerPlayer sp)) {
+            this.setChase(-1);
             if (this.hasAutoTarget()) {
                 this.entityData.set(DATA_AUTO_TARGET, false);
             }
             return;
         }
         long now = level.getGameTime();
+        boolean ammo = this.hasAmmo(sp);
         if (this.tickCount % 20 == 0) {
             this.attackers.values().removeIf(t -> t <= now);
         }
@@ -495,8 +529,8 @@ public class MechaEntity extends TankEntity {
         double bestScore = Double.MAX_VALUE;
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(48.0),
                 x -> this.isThreat(x, sp, now))) {
-            if (!this.hasLineOfSight(e)) {
-                continue;
+            if (ammo && !this.hasLineOfSight(e)) {
+                continue;                                       // para disparar necesita verlo; para pisarlo, no
             }
             double d = e.distanceToSqr(this);
             Long until = this.attackers.get(e.getUUID());
@@ -508,6 +542,7 @@ public class MechaEntity extends TankEntity {
             }
         }
         if (best == null) {
+            this.setChase(-1);
             if (this.hasAutoTarget()) {
                 this.entityData.set(DATA_AUTO_TARGET, false);
             }
@@ -526,9 +561,87 @@ public class MechaEntity extends TankEntity {
         if (Math.abs(pitch - this.autoAimPitch()) > 1.0f) {
             this.entityData.set(DATA_AIM_PITCH, pitch);
         }
-        if (this.cannonCooldown <= 0 && !this.tryFire(sp, yaw, pitch)) {
-            this.cannonCooldown = 20;                            // sin munición: reintenta más tarde
+        if (!ammo) {
+            this.setChase(best.getId());                         // sin munición: va a pisarlo
+            return;
         }
+        this.setChase(-1);
+        if (this.cannonCooldown <= 0 && !this.tryFire(sp, yaw, pitch)) {
+            this.cannonCooldown = 20;
+        }
+    }
+
+    private void setChase(int id) {
+        if (this.entityData.get(DATA_CHASE) != id) {
+            this.entityData.set(DATA_CHASE, id);
+        }
+    }
+
+    private boolean hasAmmo(ServerPlayer pilot) {
+        if (pilot.getAbilities().instabuild) {
+            return true;
+        }
+        return isAmmo(this.inventory.getItem(0)) || isAmmo(this.inventory.getItem(1));
+    }
+
+    // ------------------------------------------------------------------ Pisadas
+
+    private boolean canStomp(LivingEntity e, Player pilot, long now) {
+        if (e == this || e == pilot || !e.isAlive() || this.hasPassenger(e) || e instanceof TankEntity) {
+            return false;
+        }
+        if (e instanceof TamableAnimal pet && pilot != null && pet.isOwnedBy(pilot)) {
+            return false;
+        }
+        if (e instanceof Player) {
+            Long until = this.attackers.get(e.getUUID());
+            return until != null && until > now;                 // a los jugadores sólo si nos atacaron
+        }
+        return true;
+    }
+
+    private DamageSource stompSource(ServerLevel level, Player pilot) {
+        return pilot != null ? level.damageSources().playerAttack(pilot) : level.damageSources().mobAttack(this);
+    }
+
+    /** Mientras camina, cada pisada daña a lo que haya bajo los pies. */
+    private void stompTick(ServerLevel level, Player pilot) {
+        if (pilot == null || this.tickCount % 4 != 0 || !this.onGround()) {
+            return;
+        }
+        double dx = this.getX() - this.xo;
+        double dz = this.getZ() - this.zo;
+        if (dx * dx + dz * dz < 0.0009) {
+            return;
+        }
+        long now = level.getGameTime();
+        AABB feet = new AABB(this.getX() - 2.4, this.getY() - 0.3, this.getZ() - 2.4,
+                this.getX() + 2.4, this.getY() + 1.2, this.getZ() + 2.4);
+        boolean hit = false;
+        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, feet, x -> this.canStomp(x, pilot, now))) {
+            hit |= e.hurt(this.stompSource(level, pilot), STOMP_DAMAGE);
+        }
+        if (hit) {
+            level.playSound(null, this.blockPosition(), SoundEvents.IRON_GOLEM_STEP, SoundSource.PLAYERS, 2.0f, 0.5f);
+            level.sendParticles(ParticleTypes.CLOUD, this.getX(), this.getY() + 0.2, this.getZ(), 8, 1.2, 0.1, 1.2, 0.02);
+        }
+    }
+
+    /** Un aterrizaje desde bastante altura aplasta a los de alrededor. */
+    @Override
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+        if (fallDistance > 3.0f && this.level() instanceof ServerLevel level) {
+            Player pilot = this.getControllingPassenger() instanceof Player p ? p : null;
+            long now = level.getGameTime();
+            float damage = Math.min(40.0f, fallDistance * 2.0f);
+            AABB area = this.getBoundingBox().inflate(4.0, 1.0, 4.0);
+            for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, area, x -> this.canStomp(x, pilot, now))) {
+                e.hurt(this.stompSource(level, pilot), damage);
+            }
+            level.playSound(null, this.blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 2.0f, 0.4f);
+            level.sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY() + 0.3, this.getZ(), 3, 1.5, 0.1, 1.5, 0.0);
+        }
+        return false;                                            // el mecha no recibe daño por caída
     }
 
     // ------------------------------------------------------------------ Munición y disparo
