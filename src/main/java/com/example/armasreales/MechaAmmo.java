@@ -115,10 +115,7 @@ public final class MechaAmmo {
             Arrow arrow = new Arrow(level, player, new ItemStack(Items.ARROW), null);
             arrow.setPos(muzzle.x, muzzle.y, muzzle.z);
             arrow.shoot(dir.x, dir.y, dir.z, heavy ? 5.5f : 4.0f, 0.0f);
-            arrow.setBaseDamage(heavy ? 14.0 : 6.0);
-            if (heavy) {
-                arrow.setPierceLevel((byte) 3);
-            }
+            arrow.setBaseDamage(heavy ? 18.0 : 6.0);
             arrow.pickup = AbstractArrow.Pickup.DISALLOWED;
             level.addFreshEntity(arrow);
             sound(level, mecha, SoundEvents.CROSSBOW_SHOOT, 2.0f, heavy ? 0.5f : 0.7f);
