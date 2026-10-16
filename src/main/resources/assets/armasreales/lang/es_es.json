@@ -154,5 +154,6 @@
   "item.armasreales.mecha_hierro": "Mecha de Hierro",
   "entity.armasreales.mecha_hierro": "Mecha de Hierro",
   "key.armasreales.mecha_inventario": "Inventario del mecha",
-  "key.categories.armasreales": "Armas Reales"
+  "key.categories.armasreales": "Armas Reales",
+  "generator.armasreales.ciudad": "Ciudad (Armas Reales)"
 }
