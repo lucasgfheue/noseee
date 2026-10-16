@@ -1,33 +1,93 @@
 {
   "variants": {
-    "facing=north,lit=false": {
-      "model": "armasreales:block/parada_autobus"
+    "facing=north,part=0": {
+      "model": "armasreales:block/parada_autobus_p0"
     },
-    "facing=north,lit=true": {
-      "model": "armasreales:block/parada_autobus"
+    "facing=north,part=1": {
+      "model": "armasreales:block/parada_autobus_p1"
     },
-    "facing=east,lit=false": {
-      "model": "armasreales:block/parada_autobus",
+    "facing=north,part=2": {
+      "model": "armasreales:block/parada_autobus_p2"
+    },
+    "facing=north,part=3": {
+      "model": "armasreales:block/parada_autobus_p3"
+    },
+    "facing=north,part=4": {
+      "model": "armasreales:block/parada_autobus_p4"
+    },
+    "facing=north,part=5": {
+      "model": "armasreales:block/parada_autobus_p5"
+    },
+    "facing=east,part=0": {
+      "model": "armasreales:block/parada_autobus_p0",
       "y": 90
     },
-    "facing=east,lit=true": {
-      "model": "armasreales:block/parada_autobus",
+    "facing=east,part=1": {
+      "model": "armasreales:block/parada_autobus_p1",
       "y": 90
     },
-    "facing=south,lit=false": {
-      "model": "armasreales:block/parada_autobus",
+    "facing=east,part=2": {
+      "model": "armasreales:block/parada_autobus_p2",
+      "y": 90
+    },
+    "facing=east,part=3": {
+      "model": "armasreales:block/parada_autobus_p3",
+      "y": 90
+    },
+    "facing=east,part=4": {
+      "model": "armasreales:block/parada_autobus_p4",
+      "y": 90
+    },
+    "facing=east,part=5": {
+      "model": "armasreales:block/parada_autobus_p5",
+      "y": 90
+    },
+    "facing=south,part=0": {
+      "model": "armasreales:block/parada_autobus_p0",
       "y": 180
     },
-    "facing=south,lit=true": {
-      "model": "armasreales:block/parada_autobus",
+    "facing=south,part=1": {
+      "model": "armasreales:block/parada_autobus_p1",
       "y": 180
     },
-    "facing=west,lit=false": {
-      "model": "armasreales:block/parada_autobus",
+    "facing=south,part=2": {
+      "model": "armasreales:block/parada_autobus_p2",
+      "y": 180
+    },
+    "facing=south,part=3": {
+      "model": "armasreales:block/parada_autobus_p3",
+      "y": 180
+    },
+    "facing=south,part=4": {
+      "model": "armasreales:block/parada_autobus_p4",
+      "y": 180
+    },
+    "facing=south,part=5": {
+      "model": "armasreales:block/parada_autobus_p5",
+      "y": 180
+    },
+    "facing=west,part=0": {
+      "model": "armasreales:block/parada_autobus_p0",
       "y": 270
     },
-    "facing=west,lit=true": {
-      "model": "armasreales:block/parada_autobus",
+    "facing=west,part=1": {
+      "model": "armasreales:block/parada_autobus_p1",
+      "y": 270
+    },
+    "facing=west,part=2": {
+      "model": "armasreales:block/parada_autobus_p2",
+      "y": 270
+    },
+    "facing=west,part=3": {
+      "model": "armasreales:block/parada_autobus_p3",
+      "y": 270
+    },
+    "facing=west,part=4": {
+      "model": "armasreales:block/parada_autobus_p4",
+      "y": 270
+    },
+    "facing=west,part=5": {
+      "model": "armasreales:block/parada_autobus_p5",
       "y": 270
     }
   }

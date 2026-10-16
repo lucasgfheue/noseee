@@ -1,33 +1,33 @@
 {
   "variants": {
-    "facing=north,lit=false": {
-      "model": "armasreales:block/contenedor"
+    "facing=north,part=0": {
+      "model": "armasreales:block/contenedor_p0"
     },
-    "facing=north,lit=true": {
-      "model": "armasreales:block/contenedor"
+    "facing=north,part=1": {
+      "model": "armasreales:block/contenedor_p1"
     },
-    "facing=east,lit=false": {
-      "model": "armasreales:block/contenedor",
+    "facing=east,part=0": {
+      "model": "armasreales:block/contenedor_p0",
       "y": 90
     },
-    "facing=east,lit=true": {
-      "model": "armasreales:block/contenedor",
+    "facing=east,part=1": {
+      "model": "armasreales:block/contenedor_p1",
       "y": 90
     },
-    "facing=south,lit=false": {
-      "model": "armasreales:block/contenedor",
+    "facing=south,part=0": {
+      "model": "armasreales:block/contenedor_p0",
       "y": 180
     },
-    "facing=south,lit=true": {
-      "model": "armasreales:block/contenedor",
+    "facing=south,part=1": {
+      "model": "armasreales:block/contenedor_p1",
       "y": 180
     },
-    "facing=west,lit=false": {
-      "model": "armasreales:block/contenedor",
+    "facing=west,part=0": {
+      "model": "armasreales:block/contenedor_p0",
       "y": 270
     },
-    "facing=west,lit=true": {
-      "model": "armasreales:block/contenedor",
+    "facing=west,part=1": {
+      "model": "armasreales:block/contenedor_p1",
       "y": 270
     }
   }
