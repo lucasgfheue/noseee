@@ -1,0 +1,95 @@
+{
+  "textures": {
+    "veh_rueda": "armasreales:block/deco_veh_rueda",
+    "negro": "armasreales:block/deco_negro",
+    "bomb_comp": "armasreales:block/deco_bomb_comp",
+    "bomb_rojo": "armasreales:block/deco_bomb_rojo",
+    "particle": "armasreales:block/deco_veh_rueda"
+  },
+  "elements": [
+    {
+      "from": [
+        10,
+        0,
+        0
+      ],
+      "to": [
+        15,
+        9,
+        8
+      ],
+      "faces": {
+        "east": {
+          "texture": "#veh_rueda"
+        },
+        "south": {
+          "texture": "#veh_rueda"
+        },
+        "west": {
+          "texture": "#veh_rueda"
+        },
+        "up": {
+          "texture": "#veh_rueda"
+        },
+        "down": {
+          "texture": "#veh_rueda"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        4,
+        0
+      ],
+      "to": [
+        12,
+        9,
+        16
+      ],
+      "faces": {
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        9,
+        0
+      ],
+      "to": [
+        14,
+        16,
+        16
+      ],
+      "faces": {
+        "east": {
+          "texture": "#bomb_comp",
+          "uv": [
+            0.0,
+            9.778,
+            8.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#bomb_rojo"
+        },
+        "down": {
+          "texture": "#bomb_rojo"
+        }
+      }
+    }
+  ]
+}

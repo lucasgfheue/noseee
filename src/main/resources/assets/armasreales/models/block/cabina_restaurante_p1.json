@@ -1,0 +1,154 @@
+{
+  "textures": {
+    "vinilo": "armasreales:block/deco_vinilo",
+    "madera_oscura": "armasreales:block/deco_madera_oscura",
+    "particle": "armasreales:block/deco_madera_oscura"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        10
+      ],
+      "to": [
+        16,
+        6,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#vinilo"
+        },
+        "east": {
+          "texture": "#vinilo"
+        },
+        "south": {
+          "texture": "#vinilo"
+        },
+        "up": {
+          "texture": "#vinilo"
+        },
+        "down": {
+          "texture": "#vinilo"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        6,
+        13
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#vinilo"
+        },
+        "east": {
+          "texture": "#vinilo"
+        },
+        "south": {
+          "texture": "#vinilo"
+        },
+        "down": {
+          "texture": "#vinilo"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        3,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_oscura"
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "up": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        5,
+        0
+      ],
+      "to": [
+        16,
+        6,
+        2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#vinilo"
+        },
+        "east": {
+          "texture": "#vinilo"
+        },
+        "south": {
+          "texture": "#vinilo"
+        },
+        "up": {
+          "texture": "#vinilo"
+        },
+        "down": {
+          "texture": "#vinilo"
+        }
+      }
+    },
+    {
+      "from": [
+        15,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        6,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_oscura"
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "up": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    }
+  ]
+}

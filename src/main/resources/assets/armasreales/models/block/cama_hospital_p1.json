@@ -1,0 +1,262 @@
+{
+  "textures": {
+    "negro": "armasreales:block/deco_negro",
+    "acero": "armasreales:block/deco_acero",
+    "cama_hosp": "armasreales:block/deco_cama_hosp",
+    "almohada": "armasreales:block/deco_almohada",
+    "blanco": "armasreales:block/deco_blanco",
+    "particle": "armasreales:block/deco_negro"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        13
+      ],
+      "to": [
+        3,
+        3,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        13,
+        0,
+        13
+      ],
+      "to": [
+        15,
+        3,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        3,
+        0
+      ],
+      "to": [
+        14,
+        5,
+        16
+      ],
+      "faces": {
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        5,
+        0
+      ],
+      "to": [
+        14,
+        8,
+        15
+      ],
+      "faces": {
+        "east": {
+          "texture": "#cama_hosp"
+        },
+        "south": {
+          "texture": "#cama_hosp"
+        },
+        "west": {
+          "texture": "#cama_hosp"
+        },
+        "up": {
+          "texture": "#cama_hosp",
+          "uv": [
+            0.0,
+            8.0,
+            16.0,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#cama_hosp"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        8,
+        7
+      ],
+      "to": [
+        13,
+        10,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#almohada"
+        },
+        "east": {
+          "texture": "#almohada"
+        },
+        "south": {
+          "texture": "#almohada"
+        },
+        "west": {
+          "texture": "#almohada"
+        },
+        "up": {
+          "texture": "#almohada"
+        },
+        "down": {
+          "texture": "#almohada"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        3,
+        14
+      ],
+      "to": [
+        15,
+        14,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#blanco"
+        },
+        "east": {
+          "texture": "#blanco"
+        },
+        "south": {
+          "texture": "#blanco"
+        },
+        "west": {
+          "texture": "#blanco"
+        },
+        "up": {
+          "texture": "#blanco"
+        },
+        "down": {
+          "texture": "#blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        8,
+        0
+      ],
+      "to": [
+        2,
+        11,
+        6
+      ],
+      "faces": {
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    },
+    {
+      "from": [
+        14,
+        8,
+        0
+      ],
+      "to": [
+        15,
+        11,
+        6
+      ],
+      "faces": {
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "west": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    }
+  ]
+}

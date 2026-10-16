@@ -1,0 +1,103 @@
+{
+  "textures": {
+    "rojo_metal": "armasreales:block/deco_rojo_metal",
+    "plastico_rojo": "armasreales:block/deco_plastico_rojo",
+    "barrera_rayas": "armasreales:block/deco_barrera_rayas",
+    "particle": "armasreales:block/deco_rojo_metal"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        7,
+        10,
+        7
+      ],
+      "faces": {
+        "north": {
+          "texture": "#rojo_metal"
+        },
+        "east": {
+          "texture": "#rojo_metal"
+        },
+        "south": {
+          "texture": "#rojo_metal"
+        },
+        "west": {
+          "texture": "#rojo_metal"
+        },
+        "up": {
+          "texture": "#rojo_metal"
+        },
+        "down": {
+          "texture": "#rojo_metal"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        10,
+        2
+      ],
+      "to": [
+        6,
+        13,
+        6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#plastico_rojo"
+        },
+        "east": {
+          "texture": "#plastico_rojo"
+        },
+        "south": {
+          "texture": "#plastico_rojo"
+        },
+        "west": {
+          "texture": "#plastico_rojo"
+        },
+        "up": {
+          "texture": "#plastico_rojo"
+        },
+        "down": {
+          "texture": "#plastico_rojo"
+        }
+      }
+    },
+    {
+      "from": [
+        6.5,
+        8,
+        3.5
+      ],
+      "to": [
+        8.5,
+        16,
+        5.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#barrera_rayas"
+        },
+        "east": {
+          "texture": "#barrera_rayas"
+        },
+        "south": {
+          "texture": "#barrera_rayas"
+        },
+        "west": {
+          "texture": "#barrera_rayas"
+        },
+        "down": {
+          "texture": "#barrera_rayas"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "textures": {
+    "armero_tex": "armasreales:block/deco_armero_tex",
+    "metal": "armasreales:block/deco_metal",
+    "particle": "armasreales:block/deco_armero_tex"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        8
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#armero_tex",
+          "uv": [
+            0.0,
+            0.0,
+            8.0,
+            8.0
+          ]
+        },
+        "east": {
+          "texture": "#armero_tex"
+        },
+        "south": {
+          "texture": "#armero_tex"
+        },
+        "up": {
+          "texture": "#armero_tex"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        14,
+        4
+      ],
+      "to": [
+        16,
+        16,
+        8
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        14,
+        0,
+        4
+      ],
+      "to": [
+        16,
+        14,
+        8
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "textures": {
+    "bomb_frente": "armasreales:block/deco_bomb_frente",
+    "bomb_cab_lado": "armasreales:block/deco_bomb_cab_lado",
+    "bomb_rojo": "armasreales:block/deco_bomb_rojo",
+    "sirena_luz": "armasreales:block/deco_sirena_luz",
+    "particle": "armasreales:block/deco_bomb_frente"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        8,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bomb_frente",
+          "uv": [
+            10.909,
+            0.0,
+            16.0,
+            8.533
+          ]
+        },
+        "west": {
+          "texture": "#bomb_cab_lado",
+          "uv": [
+            0.0,
+            0.0,
+            8.0,
+            8.533
+          ]
+        },
+        "up": {
+          "texture": "#bomb_rojo"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        8,
+        4
+      ],
+      "to": [
+        16,
+        11,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bomb_rojo"
+        },
+        "west": {
+          "texture": "#bomb_rojo"
+        },
+        "up": {
+          "texture": "#bomb_rojo"
+        },
+        "down": {
+          "texture": "#bomb_rojo"
+        }
+      }
+    },
+    {
+      "from": [
+        14,
+        11,
+        12
+      ],
+      "to": [
+        16,
+        13,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#sirena_luz"
+        },
+        "west": {
+          "texture": "#sirena_luz"
+        },
+        "up": {
+          "texture": "#sirena_luz"
+        },
+        "down": {
+          "texture": "#sirena_luz"
+        }
+      }
+    }
+  ]
+}

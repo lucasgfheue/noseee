@@ -1,0 +1,71 @@
+{
+  "textures": {
+    "amb_lado_b": "armasreales:block/deco_amb_lado_b",
+    "amb_atras": "armasreales:block/deco_amb_atras",
+    "veh_blanco": "armasreales:block/deco_veh_blanco",
+    "particle": "armasreales:block/deco_amb_lado_b"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        14,
+        10,
+        15
+      ],
+      "faces": {
+        "east": {
+          "texture": "#amb_lado_b",
+          "uv": [
+            0.0,
+            0.0,
+            10.435,
+            8.0
+          ]
+        },
+        "south": {
+          "texture": "#amb_atras",
+          "uv": [
+            8.0,
+            0.0,
+            16.0,
+            8.0
+          ]
+        },
+        "up": {
+          "texture": "#veh_blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        10,
+        0
+      ],
+      "to": [
+        13,
+        11,
+        14
+      ],
+      "faces": {
+        "east": {
+          "texture": "#veh_blanco"
+        },
+        "south": {
+          "texture": "#veh_blanco"
+        },
+        "up": {
+          "texture": "#veh_blanco"
+        },
+        "down": {
+          "texture": "#veh_blanco"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "textures": {
+    "bomb_rojo": "armasreales:block/deco_bomb_rojo",
+    "bomb_comp": "armasreales:block/deco_bomb_comp",
+    "metal": "armasreales:block/deco_metal",
+    "particle": "armasreales:block/deco_bomb_rojo"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        14,
+        11,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bomb_rojo"
+        },
+        "east": {
+          "texture": "#bomb_comp",
+          "uv": [
+            8.0,
+            0.0,
+            16.0,
+            9.778
+          ]
+        },
+        "up": {
+          "texture": "#bomb_rojo"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        11,
+        0
+      ],
+      "to": [
+        8,
+        13,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        11,
+        2
+      ],
+      "to": [
+        6,
+        12,
+        4
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        11,
+        10
+      ],
+      "to": [
+        6,
+        12,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    }
+  ]
+}

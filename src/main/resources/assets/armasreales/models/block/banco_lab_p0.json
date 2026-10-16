@@ -1,0 +1,141 @@
+{
+  "textures": {
+    "blanco": "armasreales:block/deco_blanco",
+    "negro": "armasreales:block/deco_negro",
+    "frascos": "armasreales:block/deco_frascos",
+    "particle": "armasreales:block/deco_blanco"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        2
+      ],
+      "to": [
+        16,
+        13,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#blanco"
+        },
+        "south": {
+          "texture": "#blanco"
+        },
+        "west": {
+          "texture": "#blanco"
+        },
+        "up": {
+          "texture": "#blanco"
+        },
+        "down": {
+          "texture": "#blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        13,
+        1
+      ],
+      "to": [
+        16,
+        15,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        15,
+        4
+      ],
+      "to": [
+        16,
+        16,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#frascos"
+        },
+        "south": {
+          "texture": "#frascos"
+        },
+        "west": {
+          "texture": "#frascos"
+        },
+        "up": {
+          "texture": "#frascos",
+          "uv": [
+            0.0,
+            0.0,
+            8.0,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#frascos"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        15,
+        6
+      ],
+      "to": [
+        8,
+        16,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#frascos",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#frascos"
+        },
+        "south": {
+          "texture": "#frascos"
+        },
+        "west": {
+          "texture": "#frascos"
+        },
+        "up": {
+          "texture": "#frascos"
+        },
+        "down": {
+          "texture": "#frascos"
+        }
+      }
+    }
+  ]
+}

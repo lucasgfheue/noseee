@@ -1,0 +1,132 @@
+{
+  "textures": {
+    "veh_rueda": "armasreales:block/deco_veh_rueda",
+    "negro": "armasreales:block/deco_negro",
+    "bomb_frente": "armasreales:block/deco_bomb_frente",
+    "bomb_cab_lado": "armasreales:block/deco_bomb_cab_lado",
+    "bomb_rojo": "armasreales:block/deco_bomb_rojo",
+    "acero": "armasreales:block/deco_acero",
+    "particle": "armasreales:block/deco_veh_rueda"
+  },
+  "elements": [
+    {
+      "from": [
+        10,
+        0,
+        8
+      ],
+      "to": [
+        15,
+        9,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#veh_rueda"
+        },
+        "east": {
+          "texture": "#veh_rueda"
+        },
+        "west": {
+          "texture": "#veh_rueda"
+        },
+        "up": {
+          "texture": "#veh_rueda"
+        },
+        "down": {
+          "texture": "#veh_rueda"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        4,
+        1
+      ],
+      "to": [
+        12,
+        9,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        9,
+        0
+      ],
+      "to": [
+        14,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bomb_frente",
+          "uv": [
+            0.0,
+            8.533,
+            5.091,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#bomb_cab_lado",
+          "uv": [
+            8.0,
+            8.533,
+            16.0,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#bomb_rojo"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        4,
+        0
+      ],
+      "to": [
+        14,
+        8,
+        2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#acero"
+        },
+        "east": {
+          "texture": "#acero"
+        },
+        "south": {
+          "texture": "#acero"
+        },
+        "up": {
+          "texture": "#acero"
+        },
+        "down": {
+          "texture": "#acero"
+        }
+      }
+    }
+  ]
+}

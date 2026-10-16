@@ -1,0 +1,148 @@
+{
+  "textures": {
+    "negro": "armasreales:block/deco_negro",
+    "veh_blanco": "armasreales:block/deco_veh_blanco",
+    "amb_lado_b": "armasreales:block/deco_amb_lado_b",
+    "veh_vidrio": "armasreales:block/deco_veh_vidrio",
+    "amb_lado_a": "armasreales:block/deco_amb_lado_a",
+    "particle": "armasreales:block/deco_negro"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        3,
+        0
+      ],
+      "to": [
+        16,
+        6,
+        16
+      ],
+      "faces": {
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        6,
+        0
+      ],
+      "to": [
+        16,
+        13,
+        2
+      ],
+      "faces": {
+        "south": {
+          "texture": "#veh_blanco"
+        },
+        "west": {
+          "texture": "#amb_lado_b",
+          "uv": [
+            14.118,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "up": {
+          "texture": "#veh_blanco"
+        },
+        "down": {
+          "texture": "#veh_blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        13,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        2
+      ],
+      "faces": {
+        "south": {
+          "texture": "#veh_vidrio"
+        },
+        "west": {
+          "texture": "#veh_vidrio"
+        },
+        "down": {
+          "texture": "#veh_vidrio"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        13,
+        2
+      ],
+      "to": [
+        16,
+        14,
+        6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#veh_blanco"
+        },
+        "south": {
+          "texture": "#veh_blanco"
+        },
+        "west": {
+          "texture": "#veh_blanco"
+        },
+        "up": {
+          "texture": "#veh_blanco"
+        },
+        "down": {
+          "texture": "#veh_blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        6,
+        2
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#veh_blanco"
+        },
+        "west": {
+          "texture": "#amb_lado_a",
+          "uv": [
+            0.0,
+            8.0,
+            10.182,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#veh_blanco"
+        }
+      }
+    }
+  ]
+}

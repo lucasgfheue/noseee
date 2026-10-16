@@ -1,0 +1,47 @@
+{
+  "textures": {
+    "andan_lado": "armasreales:block/deco_andan_lado",
+    "andan_borde": "armasreales:block/deco_andan_borde",
+    "particle": "armasreales:block/deco_andan_lado"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#andan_lado"
+        },
+        "east": {
+          "texture": "#andan_lado"
+        },
+        "south": {
+          "texture": "#andan_lado"
+        },
+        "west": {
+          "texture": "#andan_lado"
+        },
+        "up": {
+          "texture": "#andan_borde",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "down": {
+          "texture": "#andan_lado"
+        }
+      }
+    }
+  ]
+}

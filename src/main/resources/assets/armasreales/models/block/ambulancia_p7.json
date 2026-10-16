@@ -1,0 +1,118 @@
+{
+  "textures": {
+    "veh_vidrio": "armasreales:block/deco_veh_vidrio",
+    "veh_blanco": "armasreales:block/deco_veh_blanco",
+    "amb_lado_a": "armasreales:block/deco_amb_lado_a",
+    "sirena_luz": "armasreales:block/deco_sirena_luz",
+    "particle": "armasreales:block/deco_veh_vidrio"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        12,
+        5,
+        2
+      ],
+      "faces": {
+        "east": {
+          "texture": "#veh_vidrio"
+        },
+        "south": {
+          "texture": "#veh_vidrio"
+        },
+        "up": {
+          "texture": "#veh_vidrio"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        10,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#veh_blanco"
+        },
+        "east": {
+          "texture": "#amb_lado_a",
+          "uv": [
+            5.818,
+            0.0,
+            16.0,
+            8.0
+          ]
+        },
+        "up": {
+          "texture": "#veh_blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        10,
+        4
+      ],
+      "to": [
+        13,
+        11,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#veh_blanco"
+        },
+        "east": {
+          "texture": "#veh_blanco"
+        },
+        "up": {
+          "texture": "#veh_blanco"
+        },
+        "down": {
+          "texture": "#veh_blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        11,
+        6
+      ],
+      "to": [
+        8,
+        13,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#sirena_luz"
+        },
+        "east": {
+          "texture": "#sirena_luz"
+        },
+        "south": {
+          "texture": "#sirena_luz"
+        },
+        "up": {
+          "texture": "#sirena_luz"
+        },
+        "down": {
+          "texture": "#sirena_luz"
+        }
+      }
+    }
+  ]
+}

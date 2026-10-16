@@ -1,0 +1,34 @@
+{
+  "textures": {
+    "vinilo": "armasreales:block/deco_vinilo",
+    "particle": "armasreales:block/deco_vinilo"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        13
+      ],
+      "to": [
+        16,
+        10,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#vinilo"
+        },
+        "south": {
+          "texture": "#vinilo"
+        },
+        "west": {
+          "texture": "#vinilo"
+        },
+        "up": {
+          "texture": "#vinilo"
+        }
+      }
+    }
+  ]
+}
