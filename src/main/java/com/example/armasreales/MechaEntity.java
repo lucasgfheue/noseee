@@ -399,9 +399,7 @@ public class MechaEntity extends TankEntity {
     // ------------------------------------------------------------------ Munición y disparo
 
     public static boolean isAmmo(ItemStack stack) {
-        return stack.is(Items.TNT) || stack.is(Items.FIRE_CHARGE) || stack.is(Items.ARROW)
-                || stack.is(ModItems.MUNICION_PISTOLA.get()) || stack.is(ModItems.MUNICION_FUSIL.get())
-                || stack.is(ModItems.MUNICION_FRANCOTIRADOR.get()) || stack.is(ModItems.MUNICION_MAGNUM.get());
+        return MechaAmmo.isAmmo(stack);
     }
 
     @Override
@@ -448,60 +446,7 @@ public class MechaEntity extends TankEntity {
                 .add(flat.scale(this.pivotForward())).add(side.scale(lateral));
         Vec3 muzzle = pivot.add(dir.scale(this.barrelLength()));
 
-        int cooldown;
-        if (ammo.is(Items.TNT)) {
-            TntProjectile shell = new TntProjectile(level, player);
-            shell.setPos(muzzle.x, muzzle.y - shell.getBbHeight() / 2.0, muzzle.z);
-            shell.shoot(dir.x, dir.y, dir.z, 3.2f, 0.0f);
-            level.addFreshEntity(shell);
-            level.playSound(null, this.blockPosition(), SoundEvents.FIREWORK_ROCKET_LARGE_BLAST,
-                    SoundSource.PLAYERS, 3.0f, 0.5f);
-            cooldown = 16;
-        } else if (ammo.is(Items.FIRE_CHARGE)) {
-            LargeFireball fireball = new LargeFireball(level, player, dir, 2);
-            fireball.setPos(muzzle.x, muzzle.y, muzzle.z);
-            level.addFreshEntity(fireball);
-            level.playSound(null, this.blockPosition(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 2.0f, 0.6f);
-            cooldown = 14;
-        } else if (ammo.is(Items.ARROW)) {
-            Arrow arrow = new Arrow(level, player, new ItemStack(Items.ARROW), null);
-            arrow.setPos(muzzle.x, muzzle.y, muzzle.z);
-            arrow.shoot(dir.x, dir.y, dir.z, 4.0f, 0.0f);
-            arrow.setBaseDamage(6.0);
-            arrow.pickup = AbstractArrow.Pickup.DISALLOWED;
-            level.addFreshEntity(arrow);
-            level.playSound(null, this.blockPosition(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 2.0f, 0.7f);
-            cooldown = 6;
-        } else {
-            float damage;
-            if (ammo.is(ModItems.MUNICION_FRANCOTIRADOR.get())) {
-                damage = 45.0f;
-                cooldown = 30;
-            } else if (ammo.is(ModItems.MUNICION_MAGNUM.get())) {
-                damage = 20.0f;
-                cooldown = 10;
-            } else if (ammo.is(ModItems.MUNICION_FUSIL.get())) {
-                damage = 10.0f;
-                cooldown = 4;
-            } else {
-                damage = 8.0f;
-                cooldown = 5;
-            }
-            Bullets.Hit hit = Bullets.trace(level, player, muzzle, dir, 120.0,
-                    e -> e != this && e != player);
-            if (hit.entity() != null) {
-                hit.entity().hurt(level.damageSources().playerAttack(player), damage);
-            }
-            for (double dd = 2.0; dd < hit.distance(); dd += 2.0) {
-                Vec3 p = muzzle.add(dir.scale(dd));
-                level.sendParticles(ParticleTypes.CRIT, p.x, p.y, p.z, 1, 0.0, 0.0, 0.0, 0.0);
-            }
-            level.playSound(null, this.blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST,
-                    SoundSource.PLAYERS, 2.0f, 0.8f);
-        }
-        level.sendParticles(ParticleTypes.FLAME, muzzle.x, muzzle.y, muzzle.z, 6, 0.1, 0.1, 0.1, 0.03);
-        level.sendParticles(ParticleTypes.LARGE_SMOKE, muzzle.x, muzzle.y, muzzle.z, 4, 0.15, 0.15, 0.15, 0.02);
-        return cooldown;
+        return MechaAmmo.fire(this, player, level, muzzle, dir, ammo);
     }
 
     // ------------------------------------------------------------------ Interacción, guardado y muerte
