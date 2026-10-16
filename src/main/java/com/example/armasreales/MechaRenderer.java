@@ -105,7 +105,7 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
         drawArm(ps, vc, light, 1, pitch, rightFired ? 0.0f : recoil);
         Minecraft mc = Minecraft.getInstance();
         boolean inside = mc.options.getCameraType().isFirstPerson() && mc.player != null && mecha.hasPassenger(mc.player);
-        drawHead(ps, vc, buffer.getBuffer(RenderType.entityTranslucent(TEXTURE)), light, pitch, inside);
+        drawHead(ps, vc, buffer, light, pitch, inside);
         ps.popPose();
         ps.popPose();
 
@@ -196,7 +196,7 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
      * La ventana es un hueco real cubierto por un cristal translúcido. En primera persona, sólo se dibuja el marco
      * para que el piloto vea hacia fuera.
      */
-    private void drawHead(PoseStack ps, VertexConsumer vc, VertexConsumer glass, int light, float pitch, boolean inside) {
+    private void drawHead(PoseStack ps, VertexConsumer vc, MultiBufferSource buffer, int light, float pitch, boolean inside) {
         ps.pushPose();
         ps.translate(0.0f, 1.0f, 0.0f);
         ps.mulPose(Axis.XP.rotationDegrees(pitch * 0.6f));
@@ -219,6 +219,8 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
         for (int s = -1; s <= 1; s += 2) {
             box(ps, vc, light, s * 0.5f - 0.02f, 0.15f, -0.2f, s * 0.58f, 0.45f, 0.2f, VENT);   // oídos
         }
+        // El cristal va lo último: pedir otro tipo de buffer cierra el anterior, así que ya no se dibuja nada opaco después
+        VertexConsumer glass = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE));
         box(ps, glass, light, -0.42f, 0.2f, 0.46f, 0.42f, 0.48f, 0.5f, VISOR);             // cristal translúcido
         ps.popPose();
     }
