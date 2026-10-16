@@ -1,0 +1,67 @@
+{
+  "textures": {
+    "tren_techo": "armasreales:block/deco_tren_techo",
+    "metal": "armasreales:block/deco_metal",
+    "particle": "armasreales:block/deco_tren_techo"
+  },
+  "elements": [
+    {
+      "from": [
+        5,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        3,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tren_techo"
+        },
+        "south": {
+          "texture": "#tren_techo"
+        },
+        "west": {
+          "texture": "#tren_techo"
+        },
+        "up": {
+          "texture": "#tren_techo"
+        },
+        "down": {
+          "texture": "#tren_techo"
+        }
+      }
+    },
+    {
+      "from": [
+        14,
+        3,
+        6
+      ],
+      "to": [
+        16,
+        5,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    }
+  ]
+}

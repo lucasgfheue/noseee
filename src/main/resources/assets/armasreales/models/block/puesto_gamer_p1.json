@@ -1,0 +1,74 @@
+{
+  "textures": {
+    "pantalla_gamer": "armasreales:block/deco_pantalla_gamer",
+    "negro": "armasreales:block/deco_negro",
+    "metal": "armasreales:block/deco_metal",
+    "particle": "armasreales:block/deco_pantalla_gamer"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        7
+      ],
+      "to": [
+        15,
+        12,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#pantalla_gamer",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            13.714
+          ]
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        0,
+        8
+      ],
+      "to": [
+        9,
+        1,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        }
+      }
+    }
+  ]
+}

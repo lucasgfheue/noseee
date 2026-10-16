@@ -1,0 +1,132 @@
+{
+  "textures": {
+    "tren_gris": "armasreales:block/deco_tren_gris",
+    "metal": "armasreales:block/deco_metal",
+    "negro": "armasreales:block/deco_negro",
+    "particle": "armasreales:block/deco_tren_gris"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        6,
+        1
+      ],
+      "to": [
+        12,
+        16,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tren_gris"
+        },
+        "east": {
+          "texture": "#tren_gris"
+        },
+        "south": {
+          "texture": "#tren_gris"
+        },
+        "up": {
+          "texture": "#tren_gris"
+        },
+        "down": {
+          "texture": "#tren_gris"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        5,
+        3
+      ],
+      "to": [
+        8,
+        12,
+        6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        5,
+        10
+      ],
+      "to": [
+        8,
+        12,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        8,
+        2
+      ],
+      "to": [
+        2,
+        12,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    }
+  ]
+}

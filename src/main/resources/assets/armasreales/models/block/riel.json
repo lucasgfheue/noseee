@@ -1,0 +1,266 @@
+{
+  "textures": {
+    "balasto": "armasreales:block/deco_balasto",
+    "durmiente": "armasreales:block/deco_durmiente",
+    "riel_acero": "armasreales:block/deco_riel_acero",
+    "particle": "armasreales:block/deco_balasto"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        2,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#balasto"
+        },
+        "east": {
+          "texture": "#balasto"
+        },
+        "south": {
+          "texture": "#balasto"
+        },
+        "west": {
+          "texture": "#balasto"
+        },
+        "up": {
+          "texture": "#balasto"
+        },
+        "down": {
+          "texture": "#balasto"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        2,
+        0
+      ],
+      "to": [
+        14,
+        3,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#balasto"
+        },
+        "east": {
+          "texture": "#balasto"
+        },
+        "south": {
+          "texture": "#balasto"
+        },
+        "west": {
+          "texture": "#balasto"
+        },
+        "up": {
+          "texture": "#balasto"
+        },
+        "down": {
+          "texture": "#balasto"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        2.5,
+        1
+      ],
+      "to": [
+        16,
+        3.5,
+        3
+      ],
+      "faces": {
+        "north": {
+          "texture": "#durmiente"
+        },
+        "east": {
+          "texture": "#durmiente"
+        },
+        "south": {
+          "texture": "#durmiente"
+        },
+        "west": {
+          "texture": "#durmiente"
+        },
+        "up": {
+          "texture": "#durmiente"
+        },
+        "down": {
+          "texture": "#durmiente"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        2.5,
+        5
+      ],
+      "to": [
+        16,
+        3.5,
+        7
+      ],
+      "faces": {
+        "north": {
+          "texture": "#durmiente"
+        },
+        "east": {
+          "texture": "#durmiente"
+        },
+        "south": {
+          "texture": "#durmiente"
+        },
+        "west": {
+          "texture": "#durmiente"
+        },
+        "up": {
+          "texture": "#durmiente"
+        },
+        "down": {
+          "texture": "#durmiente"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        2.5,
+        9
+      ],
+      "to": [
+        16,
+        3.5,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#durmiente"
+        },
+        "east": {
+          "texture": "#durmiente"
+        },
+        "south": {
+          "texture": "#durmiente"
+        },
+        "west": {
+          "texture": "#durmiente"
+        },
+        "up": {
+          "texture": "#durmiente"
+        },
+        "down": {
+          "texture": "#durmiente"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        2.5,
+        13
+      ],
+      "to": [
+        16,
+        3.5,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#durmiente"
+        },
+        "east": {
+          "texture": "#durmiente"
+        },
+        "south": {
+          "texture": "#durmiente"
+        },
+        "west": {
+          "texture": "#durmiente"
+        },
+        "up": {
+          "texture": "#durmiente"
+        },
+        "down": {
+          "texture": "#durmiente"
+        }
+      }
+    },
+    {
+      "from": [
+        1.5,
+        3.5,
+        0
+      ],
+      "to": [
+        3.5,
+        6,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#riel_acero"
+        },
+        "east": {
+          "texture": "#riel_acero"
+        },
+        "south": {
+          "texture": "#riel_acero"
+        },
+        "west": {
+          "texture": "#riel_acero"
+        },
+        "up": {
+          "texture": "#riel_acero"
+        },
+        "down": {
+          "texture": "#riel_acero"
+        }
+      }
+    },
+    {
+      "from": [
+        12.5,
+        3.5,
+        0
+      ],
+      "to": [
+        14.5,
+        6,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#riel_acero"
+        },
+        "east": {
+          "texture": "#riel_acero"
+        },
+        "south": {
+          "texture": "#riel_acero"
+        },
+        "west": {
+          "texture": "#riel_acero"
+        },
+        "up": {
+          "texture": "#riel_acero"
+        },
+        "down": {
+          "texture": "#riel_acero"
+        }
+      }
+    }
+  ]
+}

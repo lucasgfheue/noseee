@@ -1,0 +1,84 @@
+{
+  "textures": {
+    "tren_frontal_vidrio": "armasreales:block/deco_tren_frontal_vidrio",
+    "tren_ventana": "armasreales:block/deco_tren_ventana",
+    "tren_frontal_alta": "armasreales:block/deco_tren_frontal_alta",
+    "tren_alta": "armasreales:block/deco_tren_alta",
+    "particle": "armasreales:block/deco_tren_frontal_vidrio"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        14,
+        10,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tren_frontal_vidrio",
+          "uv": [
+            0.0,
+            0.0,
+            5.091,
+            13.333
+          ]
+        },
+        "east": {
+          "texture": "#tren_ventana",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            13.333
+          ]
+        },
+        "south": {
+          "texture": "#tren_ventana"
+        },
+        "up": {
+          "texture": "#tren_ventana"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        10,
+        0
+      ],
+      "to": [
+        14,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tren_frontal_alta",
+          "uv": [
+            0.0,
+            0.0,
+            5.091,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#tren_alta"
+        },
+        "south": {
+          "texture": "#tren_alta"
+        },
+        "up": {
+          "texture": "#tren_alta"
+        },
+        "down": {
+          "texture": "#tren_alta"
+        }
+      }
+    }
+  ]
+}

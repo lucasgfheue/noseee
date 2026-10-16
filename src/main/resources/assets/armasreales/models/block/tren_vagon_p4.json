@@ -1,0 +1,85 @@
+{
+  "textures": {
+    "tren_gris": "armasreales:block/deco_tren_gris",
+    "tren_pintura": "armasreales:block/deco_tren_pintura",
+    "tren_ventana": "armasreales:block/deco_tren_ventana",
+    "particle": "armasreales:block/deco_tren_gris"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        6,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tren_gris"
+        },
+        "south": {
+          "texture": "#tren_gris"
+        },
+        "up": {
+          "texture": "#tren_gris"
+        },
+        "down": {
+          "texture": "#tren_gris"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        6,
+        0
+      ],
+      "to": [
+        16,
+        14,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tren_pintura"
+        },
+        "south": {
+          "texture": "#tren_pintura"
+        },
+        "up": {
+          "texture": "#tren_pintura"
+        },
+        "down": {
+          "texture": "#tren_pintura"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        14,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tren_ventana"
+        },
+        "south": {
+          "texture": "#tren_ventana"
+        },
+        "down": {
+          "texture": "#tren_ventana"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "textures": {
+    "tren_pintura": "armasreales:block/deco_tren_pintura",
+    "tren_puerta_tex": "armasreales:block/deco_tren_puerta_tex",
+    "tren_alta": "armasreales:block/deco_tren_alta",
+    "particle": "armasreales:block/deco_tren_pintura"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        10,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tren_pintura"
+        },
+        "south": {
+          "texture": "#tren_pintura"
+        },
+        "west": {
+          "texture": "#tren_puerta_tex",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            8.0
+          ]
+        },
+        "up": {
+          "texture": "#tren_pintura"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        10,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tren_alta"
+        },
+        "south": {
+          "texture": "#tren_alta"
+        },
+        "west": {
+          "texture": "#tren_alta"
+        },
+        "up": {
+          "texture": "#tren_alta"
+        },
+        "down": {
+          "texture": "#tren_alta"
+        }
+      }
+    }
+  ]
+}

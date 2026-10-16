@@ -1,0 +1,61 @@
+{
+  "textures": {
+    "tren_gris": "armasreales:block/deco_tren_gris",
+    "negro": "armasreales:block/deco_negro",
+    "particle": "armasreales:block/deco_tren_gris"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        6,
+        1
+      ],
+      "to": [
+        16,
+        16,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#tren_gris"
+        },
+        "south": {
+          "texture": "#tren_gris"
+        },
+        "up": {
+          "texture": "#tren_gris"
+        },
+        "down": {
+          "texture": "#tren_gris"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        8,
+        2
+      ],
+      "to": [
+        16,
+        12,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    }
+  ]
+}

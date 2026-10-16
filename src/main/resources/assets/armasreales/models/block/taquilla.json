@@ -1,0 +1,79 @@
+{
+  "textures": {
+    "taquilla": "armasreales:block/deco_taquilla",
+    "metal": "armasreales:block/deco_metal",
+    "particle": "armasreales:block/deco_taquilla"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        2
+      ],
+      "to": [
+        15,
+        16,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#taquilla",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#taquilla"
+        },
+        "south": {
+          "texture": "#taquilla"
+        },
+        "west": {
+          "texture": "#taquilla"
+        },
+        "up": {
+          "texture": "#taquilla"
+        },
+        "down": {
+          "texture": "#taquilla"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        15,
+        1
+      ],
+      "to": [
+        16,
+        16,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#metal"
+        },
+        "east": {
+          "texture": "#metal"
+        },
+        "south": {
+          "texture": "#metal"
+        },
+        "west": {
+          "texture": "#metal"
+        },
+        "up": {
+          "texture": "#metal"
+        },
+        "down": {
+          "texture": "#metal"
+        }
+      }
+    }
+  ]
+}
