@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,lit=false": {
+      "model": "armasreales:block/tocador"
+    },
+    "facing=north,lit=true": {
+      "model": "armasreales:block/tocador"
+    },
+    "facing=east,lit=false": {
+      "model": "armasreales:block/tocador",
+      "y": 90
+    },
+    "facing=east,lit=true": {
+      "model": "armasreales:block/tocador",
+      "y": 90
+    },
+    "facing=south,lit=false": {
+      "model": "armasreales:block/tocador",
+      "y": 180
+    },
+    "facing=south,lit=true": {
+      "model": "armasreales:block/tocador",
+      "y": 180
+    },
+    "facing=west,lit=false": {
+      "model": "armasreales:block/tocador",
+      "y": 270
+    },
+    "facing=west,lit=true": {
+      "model": "armasreales:block/tocador",
+      "y": 270
+    }
+  }
+}
