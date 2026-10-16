@@ -20,6 +20,7 @@ public class ArmasRealesMod {
         ModBlocks.BLOCKS.register(modBus);
         ModItems.ITEMS.register(modBus);
         ModEntities.ENTITIES.register(modBus);
+        ModMenus.MENUS.register(modBus);
         ModStructures.TYPES.register(modBus);
         ModStructures.PIECES.register(modBus);
         modBus.addListener(this::addToCreativeTabs);
@@ -67,7 +68,8 @@ public class ArmasRealesMod {
 
     private void registerPayloads(RegisterPayloadHandlersEvent event) {
         event.registrar("1").playToServer(FirePayload.TYPE, FirePayload.STREAM_CODEC, FirePayload::handle)
-                .playToServer(SeatPayload.TYPE, SeatPayload.STREAM_CODEC, SeatPayload::handle);
+                .playToServer(SeatPayload.TYPE, SeatPayload.STREAM_CODEC, SeatPayload::handle)
+                .playToServer(MechaInputPayload.TYPE, MechaInputPayload.STREAM_CODEC, MechaInputPayload::handle);
     }
 
     private void addToCreativeTabs(BuildCreativeModeTabContentsEvent event) {

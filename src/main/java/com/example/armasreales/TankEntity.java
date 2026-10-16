@@ -440,7 +440,7 @@ public class TankEntity extends Mob {
     }
 
     /** Destruye todos los bloques que se crucen con el casco, para que nunca se atasque. */
-    private void crushBlocks(ServerLevel level) {
+    protected void crushBlocks(ServerLevel level) {
         Vec3 delta = this.getDeltaMovement();
         boolean moving = delta.x * delta.x + delta.z * delta.z > 1.0E-4;
         boolean turning = this.getControllingPassenger() instanceof Player p && Math.abs(p.xxa) > 0.0f;

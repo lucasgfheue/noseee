@@ -152,5 +152,7 @@
   "item.armasreales.tanque_reactor": "Reactor Viviente",
   "entity.armasreales.tanque_reactor": "Reactor Viviente",
   "item.armasreales.mecha_hierro": "Mecha de Hierro",
-  "entity.armasreales.mecha_hierro": "Mecha de Hierro"
+  "entity.armasreales.mecha_hierro": "Mecha de Hierro",
+  "key.armasreales.mecha_inventario": "Inventario del mecha",
+  "key.categories.armasreales": "Armas Reales"
 }
