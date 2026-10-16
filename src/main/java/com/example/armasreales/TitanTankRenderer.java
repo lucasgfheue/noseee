@@ -109,7 +109,6 @@ public class TitanTankRenderer extends EntityRenderer<TitanTankEntity> {
         }
         drawTurret(ps, vc, light, relYaw, pitch, recoil, flash);
 
-        TankInterior.draw(ps, buffer, light, tank);
         ps.popPose();
         super.render(tank, entityYaw, partialTick, ps, buffer, light);
     }

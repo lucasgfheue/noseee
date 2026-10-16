@@ -127,7 +127,6 @@ public class SingularityTankRenderer extends EntityRenderer<SingularityTankEntit
         VertexConsumer glass = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE));
         drawGlass(ps, glass, light);
 
-        TankInterior.draw(ps, buffer, light, tank);
         ps.popPose();
         super.render(tank, entityYaw, partialTick, ps, buffer, light);
     }

@@ -102,6 +102,8 @@ public class TankEntity extends Mob {
     public float wheelAngleL, wheelAngleR, wheelAngleLO, wheelAngleRO;
 
     protected int cannonCooldown = 0;
+    private long lastPickupClick = -1000L;
+    private UUID lastPickupPlayer = null;
 
     public TankEntity(EntityType<? extends TankEntity> type, Level level) {
         super(type, level);
@@ -360,11 +362,17 @@ public class TankEntity extends Mob {
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
-        // 2) Shift + mano vacía: lo recoge (sólo si está vacío)
+        // 2) Shift + mano vacía y cerca del tanque: lo recoge (sólo si está vacío) y el objeto va a tu inventario
         if (player.isSecondaryUseActive() && held.isEmpty() && !this.isVehicle()) {
+            if (this.getBoundingBox().distanceToSqr(player.getEyePosition()) > 9.0) {
+                return InteractionResult.PASS;   // demasiado lejos: no hace nada
+            }
             if (!this.level().isClientSide) {
                 if (!player.getAbilities().instabuild) {
-                    this.spawnAtLocation(this.getPickupItem());
+                    ItemStack stack = new ItemStack(this.getPickupItem());
+                    if (!player.getInventory().add(stack)) {
+                        player.drop(stack, false);
+                    }
                 }
                 this.discard();
             }

@@ -104,7 +104,6 @@ public class CitadelTankRenderer extends EntityRenderer<CitadelTankEntity> {
         }
         drawPlatform(ps, vc, light, relYaw, pitch, chargeFrac, afterglow);
 
-        TankInterior.draw(ps, buffer, light, tank);
         ps.popPose();
         super.render(tank, entityYaw, partialTick, ps, buffer, light);
     }

@@ -99,7 +99,6 @@ public class FortressTankRenderer extends EntityRenderer<FortressTankEntity> {
             drawShield(ps, buffer.getBuffer(RenderType.lightning()), shield, tank.tickCount + partialTick);
         }
 
-        TankInterior.draw(ps, buffer, light, tank);
         ps.popPose();
         super.render(tank, entityYaw, partialTick, ps, buffer, light);
     }

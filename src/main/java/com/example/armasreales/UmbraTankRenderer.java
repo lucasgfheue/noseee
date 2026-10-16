@@ -109,7 +109,6 @@ public class UmbraTankRenderer extends EntityRenderer<UmbraTankEntity> {
         }
         drawTurret(ps, vc, light, relYaw, pitch, coreK, chargeFrac, heatK, petals, overload);
 
-        TankInterior.draw(ps, buffer, light, tank);
         ps.popPose();
         super.render(tank, entityYaw, partialTick, ps, buffer, light);
     }

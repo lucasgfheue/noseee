@@ -111,7 +111,6 @@ public class ColosoTankRenderer extends EntityRenderer<ColosoTankEntity> {
         }
         drawTurret(ps, vc, light, relYaw, pitch, recoil, flash, berserk);
 
-        TankInterior.draw(ps, buffer, light, tank);
         ps.popPose();
         super.render(tank, entityYaw, partialTick, ps, buffer, light);
     }

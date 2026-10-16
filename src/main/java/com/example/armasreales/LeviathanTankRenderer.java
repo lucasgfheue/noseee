@@ -120,7 +120,6 @@ public class LeviathanTankRenderer extends EntityRenderer<LeviathanTankEntity> {
         }
         drawTurret(ps, vc, light, relYaw, pitch, recoil, flash, siege, charge);
 
-        TankInterior.draw(ps, buffer, light, tank);
         ps.popPose();
         super.render(tank, entityYaw, partialTick, ps, buffer, light);
     }
