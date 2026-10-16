@@ -1,0 +1,40 @@
+{
+  "textures": {
+    "alcantarilla": "armasreales:block/deco_alcantarilla",
+    "particle": "armasreales:block/deco_alcantarilla"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        1,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#alcantarilla"
+        },
+        "east": {
+          "texture": "#alcantarilla"
+        },
+        "south": {
+          "texture": "#alcantarilla"
+        },
+        "west": {
+          "texture": "#alcantarilla"
+        },
+        "up": {
+          "texture": "#alcantarilla"
+        },
+        "down": {
+          "texture": "#alcantarilla"
+        }
+      }
+    }
+  ]
+}

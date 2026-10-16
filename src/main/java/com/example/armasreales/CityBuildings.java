@@ -305,6 +305,20 @@ final class CityBuildings {
                 d(o, rel + 1, "cuadro", N);
             } else if (is(px, pz, fw / 2, fd - 2)) {
                 d(o, rel, "estanteria", N);
+            } else if (is(px, pz, fw - 6, fd - 2)) {
+                d(o, rel, "horno_empotrado", N);
+            } else if (is(px, pz, fw - 2, fd - 4)) {
+                d(o, rel, "cubo_basura", N);
+            } else if (is(px, pz, 2, 1)) {
+                d(o, rel, "perchero", S);
+            } else if (is(px, pz, 3, 1)) {
+                d(o, rel, "zapatero", S);
+            } else if (is(px, pz, fw / 2 + 2, fd - 2)) {
+                d(o, rel + 1, "reloj_pared", N);
+            } else if (is(px, pz, fw / 2, mid)) {
+                d(o, rel + 2, "ventilador", N);
+            } else if (pz == fd - 2 && px % 4 == 2 && px > 2 && px < fw - 2) {
+                d(o, rel + 1, "cortina", N);
             }
             return;
         }
@@ -344,6 +358,16 @@ final class CityBuildings {
             d(o, rel, "alfombra", N);
         } else if (is(px, pz, fw / 2 - 2, fd - 2)) {
             d(o, rel + 1, "cuadro", N);
+        } else if (is(px, pz, fw - 2, 6)) {
+            d(o, rel, "guitarra", W);
+        } else if (is(px, pz, fw - 2, fd - 6)) {
+            d(o, rel, "tocador", W);
+        } else if (is(px, pz, fw - 3, fd - 6)) {
+            d(o, rel, "taburete", E);
+        } else if (is(px, pz, fw / 2 + 2, fd - 2)) {
+            d(o, rel + 1, "reloj_pared", N);
+        } else if (is(px, pz, fw / 2, fd / 2)) {
+            d(o, rel + 2, "ventilador", N);
         }
     }
 
@@ -420,6 +444,23 @@ final class CityBuildings {
             d(o, rel, "lavadora", W);
         } else if (is(ux, pz, 2, fd - 2)) {
             d(o, rel, "lampara", N);
+        } else if (pz == fd - 2 && ux == 8) {
+            d(o, rel, "horno_empotrado", N);
+        } else if (pz == fd - 2 && ux == 9) {
+            d(o, rel, "mueble_cocina", N);
+            d(o, rel + 1, "tostadora", N);
+        } else if (pz == fd - 2 && ux == 10) {
+            d(o, rel + 1, "reloj_pared", N);
+        } else if (is(ux, pz, 6, fd - 3)) {
+            d(o, rel, "cubo_basura", N);
+        } else if (is(ux, pz, 11, 6)) {
+            d(o, rel, "guitarra", W);
+        } else if (is(ux, pz, 1, 1)) {
+            d(o, rel, "perchero", S);
+        } else if (is(ux, pz, 2, 1)) {
+            d(o, rel, "zapatero", S);
+        } else if (is(ux, pz, 6, mid)) {
+            d(o, rel + 2, "ventilador", N);
         } else if (ux >= 2 && ux <= 4 && pz >= mid - 4 && pz <= mid - 2) {
             d(o, rel, "alfombra", N);
         }
@@ -466,6 +507,12 @@ final class CityBuildings {
             d(o, rel, "maniqui", S);
         } else if (pz == fd - 2 && px % 9 == 6) {
             d(o, rel, "nevera", N);
+        } else if (pz == 2 && px % 10 == 3 && px > 2) {
+            d(o, rel, "zapatero", S);
+        } else if (pz == fd - 2 && px % 9 == 1) {
+            d(o, rel + 1, "reloj_pared", N);
+        } else if (pz == 8 && px % 12 == 6) {
+            d(o, rel + 2, "ventilador", N);
         }
     }
 
@@ -557,6 +604,16 @@ final class CityBuildings {
             d(o, rel, "dispensador_agua", S);
         } else if (pz == 1 && px % 24 == 17) {
             d(o, rel + 1, "botiquin", S);
+        } else if (pz == fd - 2 && px % 14 == 8) {
+            d(o, rel, "fotocopiadora", N);
+        } else if (pz == fd - 2 && px % 21 == 13 && k % 3 == 1) {
+            d(o, rel, "rack_servidores", N);
+        } else if (pz == fd - 2 && px % 21 == 6 && k % 3 == 0 && k > 0) {
+            d(o, rel, "caja_fuerte", N);
+        } else if (pz == fd - 2 && px % 16 == 10) {
+            d(o, rel + 1, "reloj_pared", N);
+        } else if (px % 12 == 7 && pz % 10 == 6) {
+            d(o, rel + 2, "ventilador", N);
         } else {
             o.set(rel, s(Blocks.LIGHT_GRAY_CARPET));
         }
@@ -581,6 +638,10 @@ final class CityBuildings {
             d(o, rel, "silla", S);
         } else if (k == 0 && pz == fd / 2 + 1 && px % 8 >= 3 && px % 8 <= 6 && px > 4 && px % 2 == 1) {
             d(o, rel, "silla", N);
+        } else if (k == 0 && pz == 3 && px % 10 == 9) {
+            d(o, rel, "mesa_billar", N);
+        } else if (k == 0 && is(px, pz, 1, 2)) {
+            d(o, rel, "perchero", E);
         }
     }
 
@@ -714,7 +775,11 @@ final class CityBuildings {
         if (pz == -1 && (st == SKY || st == OFFICE || st == SHOPS)) {
             int half = st == SKY ? 2 : 1;
             int mid = l.fw / 2;
-            if (px % 6 == 0 && Math.abs(px - mid) > half + 2) {
+            if (st == SHOPS && px % 12 == 3 && Math.abs(px - mid) > half + 2) {
+                d(o, 1, "mesa_terraza", N);
+            } else if (st == SHOPS && px % 12 == 9 && Math.abs(px - mid) > half + 2 && CityPlan.h(l.seed, px, 23) % 2 == 0) {
+                d(o, 1, "carrito_compras", E);
+            } else if (px % 6 == 0 && Math.abs(px - mid) > half + 2) {
                 d(o, 1, "bolardo", N);
             } else if (px == mid + half + 1 && CityPlan.h(l.seed, 5, 17) % 3 == 0) {
                 d(o, 1, "cajero", N);
@@ -1068,6 +1133,21 @@ final class CityBuildings {
             d(o, 1, "bebedero", W);
             return;
         }
+        if (w / 2 - lx > 5 && d / 2 - lz > 5) {
+            if (lx == 7 && lz == 7) {
+                d(o, 1, "columpio", N);
+                return;
+            } else if (lx == 7 && lz == 11) {
+                d(o, 1, "tobogan", E);
+                return;
+            } else if (lx == 11 && lz == 7) {
+                d(o, 1, "subibaja", N);
+                return;
+            } else if (lx >= 11 && lx <= 12 && lz >= 11 && lz <= 12) {
+                d(o, 1, "arenero", N);
+                return;
+            }
+        }
         if (lx == w / 2 - 2 && lz == d / 2 + 5) {
             d(o, 1, "banqueta", E);
             return;
@@ -1113,6 +1193,12 @@ final class CityBuildings {
                 d(o, r, "poste", N);
             }
             d(o, 6, lz < d / 2 ? "camara" : "farola", lx < w / 2 ? E : W);
+        } else if (lx == w / 2 - 10 && lz == d / 2 + 4) {
+            d(o, 1, "puesto_comida", E);
+        } else if (lx == w / 2 + 7 && (lz == d / 2 + 3 || lz == d / 2 - 3)) {
+            d(o, 1, "mesa_terraza", N);
+        } else if (lx == w / 2 && d / 2 > 14 && (lz == d / 2 - 12 || lz == d / 2 + 12)) {
+            d(o, 1, "estatua", lz < d / 2 ? S : N);
         } else if ((lx == w / 2 - 4 || lx == w / 2 + 4) && lz == d / 2 - 7) {
             d(o, 1, "banqueta", S);
         } else if ((lx == w / 2 - 4 || lx == w / 2 + 4) && lz == d / 2 + 7) {
@@ -1145,6 +1231,9 @@ final class CityBuildings {
 
     private static void fuel(CityPlan.Lot l, int lx, int lz, int w, int d, CityPlan.Out o) {
         o.ground = s(Blocks.GRAY_CONCRETE);
+        if (lz == 2 && lx % 5 == 2 && lx >= 3 && lx < w - 3) {
+            d(o, 1, "surtidor", S);
+        }
         cyl(lx - 13, lz - 13, o);
         cyl(lx - (w - 14), lz - (d - 14), o);
     }

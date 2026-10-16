@@ -60,11 +60,12 @@ final class CityRoads {
     }
 
     private static final String[] FURN = {"banqueta", "hidrante", "buzon", "papelera_calle", "parquimetro", "parada_autobus",
-            "cabina_telefonica", "maceta_urbana", "bolardo", "banqueta", "papelera_calle", "bolardo"};
+            "cabina_telefonica", "maceta_urbana", "bolardo", "banqueta", "papelera_calle", "bolardo", "contenedor_reciclaje",
+            "bicicletero", "cartel_calle", "transformador", "bicicletero", "contenedor_reciclaje"};
 
     /** Mobiliario urbano en la acera, junto a la fachada. */
     static void furniture(CityPlan.Out o, int ix, int iz, int a, int side, Direction toRoad) {
-        int k = CityPlan.h(ix * 31 + a / 16, iz, 90 + side) % 16;
+        int k = CityPlan.h(ix * 31 + a / 16, iz, 90 + side) % 20;
         if (k >= FURN.length) {
             return;
         }
@@ -94,6 +95,12 @@ final class CityRoads {
         int wZ = CityPlan.lineW(iz);
 
         if (rural) {
+            boolean rns = bx && !bz;
+            int ru = rns ? wx : wz;
+            int ra = Math.floorMod((rns ? z : x) + CityPlan.OFF, CityPlan.PITCH);
+            if ((bx ^ bz) && ru == 0 && ra % 16 == 8) {
+                deco(o, 1, "poste_electrico", Direction.NORTH);
+            }
             o.ground = CityPlan.h(x, z, 3) % 5 == 0 ? s(Blocks.COARSE_DIRT) : s(Blocks.GRAVEL);
             return;
         }
@@ -119,6 +126,13 @@ final class CityRoads {
             if (port) {
                 if (u == 1 || u == w - 2) {
                     o.ground = s(Blocks.YELLOW_CONCRETE);
+                }
+                if (!port && u == w - 1 && a % 16 == 8) {
+                    if (CityPlan.h(ix, iz, 150 + a) % 5 == 0) {
+                        deco(o, 1, "transformador", ns ? Direction.WEST : Direction.NORTH);
+                    } else {
+                        deco(o, 1, "poste_electrico", Direction.NORTH);
+                    }
                 }
                 if (u == 0 && a % 16 == 8) {
                     streetLamp(o, x, z, ns ? Direction.EAST : Direction.SOUTH, 0);
@@ -211,6 +225,9 @@ final class CityRoads {
                     }
                 }
             }
+        }
+        if (u == (avenue ? 5 : 7) && a % 32 == 20 && a > cw + 6) {
+            deco(o, 1, "alcantarilla", Direction.NORTH);
         }
     }
 

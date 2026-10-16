@@ -1,0 +1,73 @@
+{
+  "textures": {
+    "reciclaje": "armasreales:block/deco_reciclaje",
+    "negro": "armasreales:block/deco_negro",
+    "particle": "armasreales:block/deco_reciclaje"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        4
+      ],
+      "to": [
+        14,
+        12,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#reciclaje"
+        },
+        "east": {
+          "texture": "#reciclaje"
+        },
+        "south": {
+          "texture": "#reciclaje"
+        },
+        "west": {
+          "texture": "#reciclaje"
+        },
+        "up": {
+          "texture": "#reciclaje"
+        },
+        "down": {
+          "texture": "#reciclaje"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        12,
+        3
+      ],
+      "to": [
+        15,
+        13,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    }
+  ]
+}

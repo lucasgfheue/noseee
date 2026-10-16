@@ -1,0 +1,169 @@
+{
+  "textures": {
+    "hormigon": "armasreales:block/deco_hormigon",
+    "bronce": "armasreales:block/deco_bronce",
+    "particle": "armasreales:block/deco_hormigon"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        6,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hormigon"
+        },
+        "east": {
+          "texture": "#hormigon"
+        },
+        "south": {
+          "texture": "#hormigon"
+        },
+        "west": {
+          "texture": "#hormigon"
+        },
+        "up": {
+          "texture": "#hormigon"
+        },
+        "down": {
+          "texture": "#hormigon"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        6,
+        6
+      ],
+      "to": [
+        10,
+        13,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bronce"
+        },
+        "east": {
+          "texture": "#bronce"
+        },
+        "south": {
+          "texture": "#bronce"
+        },
+        "west": {
+          "texture": "#bronce"
+        },
+        "up": {
+          "texture": "#bronce"
+        },
+        "down": {
+          "texture": "#bronce"
+        }
+      }
+    },
+    {
+      "from": [
+        6.5,
+        13,
+        6.5
+      ],
+      "to": [
+        9.5,
+        16,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bronce"
+        },
+        "east": {
+          "texture": "#bronce"
+        },
+        "south": {
+          "texture": "#bronce"
+        },
+        "west": {
+          "texture": "#bronce"
+        },
+        "up": {
+          "texture": "#bronce"
+        },
+        "down": {
+          "texture": "#bronce"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        9,
+        7
+      ],
+      "to": [
+        6,
+        13,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bronce"
+        },
+        "east": {
+          "texture": "#bronce"
+        },
+        "south": {
+          "texture": "#bronce"
+        },
+        "west": {
+          "texture": "#bronce"
+        },
+        "up": {
+          "texture": "#bronce"
+        },
+        "down": {
+          "texture": "#bronce"
+        }
+      }
+    },
+    {
+      "from": [
+        10,
+        9,
+        7
+      ],
+      "to": [
+        12,
+        13,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bronce"
+        },
+        "east": {
+          "texture": "#bronce"
+        },
+        "south": {
+          "texture": "#bronce"
+        },
+        "west": {
+          "texture": "#bronce"
+        },
+        "up": {
+          "texture": "#bronce"
+        },
+        "down": {
+          "texture": "#bronce"
+        }
+      }
+    }
+  ]
+}
