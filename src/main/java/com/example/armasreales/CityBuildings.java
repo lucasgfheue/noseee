@@ -316,7 +316,7 @@ final class CityBuildings {
             } else if (is(px, pz, fw / 2 + 2, fd - 2)) {
                 d(o, rel + 1, "reloj_pared", N);
             } else if (is(px, pz, fw / 2, mid)) {
-                d(o, rel + 2, "ventilador", N);
+                d(o, rel + 2, "ventilador_techo", N);
             } else if (pz == fd - 2 && px % 4 == 2 && px > 2 && px < fw - 2) {
                 d(o, rel + 1, "cortina", N);
             }
@@ -363,11 +363,11 @@ final class CityBuildings {
         } else if (is(px, pz, fw - 2, fd - 6)) {
             d(o, rel, "tocador", W);
         } else if (is(px, pz, fw - 3, fd - 6)) {
-            d(o, rel, "taburete", E);
+            d(o, rel, "taburete_cocina", E);
         } else if (is(px, pz, fw / 2 + 2, fd - 2)) {
             d(o, rel + 1, "reloj_pared", N);
         } else if (is(px, pz, fw / 2, fd / 2)) {
-            d(o, rel + 2, "ventilador", N);
+            d(o, rel + 2, "ventilador_techo", N);
         }
     }
 
@@ -460,7 +460,7 @@ final class CityBuildings {
         } else if (is(ux, pz, 2, 1)) {
             d(o, rel, "zapatero", S);
         } else if (is(ux, pz, 6, mid)) {
-            d(o, rel + 2, "ventilador", N);
+            d(o, rel + 2, "ventilador_techo", N);
         } else if (ux >= 2 && ux <= 4 && pz >= mid - 4 && pz <= mid - 2) {
             d(o, rel, "alfombra", N);
         }
@@ -512,7 +512,7 @@ final class CityBuildings {
         } else if (pz == fd - 2 && px % 9 == 1) {
             d(o, rel + 1, "reloj_pared", N);
         } else if (pz == 8 && px % 12 == 6) {
-            d(o, rel + 2, "ventilador", N);
+            d(o, rel + 2, "ventilador_techo", N);
         }
     }
 
@@ -613,7 +613,7 @@ final class CityBuildings {
         } else if (pz == fd - 2 && px % 16 == 10) {
             d(o, rel + 1, "reloj_pared", N);
         } else if (px % 12 == 7 && pz % 10 == 6) {
-            d(o, rel + 2, "ventilador", N);
+            d(o, rel + 2, "ventilador_techo", N);
         } else {
             o.set(rel, s(Blocks.LIGHT_GRAY_CARPET));
         }

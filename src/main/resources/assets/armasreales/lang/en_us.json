@@ -194,7 +194,7 @@
   "block.armasreales.ducha": "Shower",
   "block.armasreales.radiador": "Radiator",
   "block.armasreales.aire_acondicionado": "Air conditioner",
-  "block.armasreales.ventilador": "Ceiling fan",
+  "block.armasreales.ventilador": "Fan",
   "block.armasreales.chimenea": "Fireplace",
   "block.armasreales.cafetera": "Coffee machine",
   "block.armasreales.vitrina": "Display cabinet",
@@ -268,5 +268,7 @@
   "block.armasreales.contenedor_reciclaje": "Recycling bin",
   "block.armasreales.estatua": "Statue",
   "block.armasreales.carrito_compras": "Shopping cart",
-  "block.armasreales.bicicletero": "Bike rack"
+  "block.armasreales.bicicletero": "Bike rack",
+  "block.armasreales.ventilador_techo": "Ceiling fan",
+  "block.armasreales.taburete_cocina": "Kitchen stool"
 }

@@ -194,7 +194,7 @@
   "block.armasreales.ducha": "Ducha",
   "block.armasreales.radiador": "Radiador",
   "block.armasreales.aire_acondicionado": "Aire acondicionado",
-  "block.armasreales.ventilador": "Ventilador de techo",
+  "block.armasreales.ventilador": "Ventilador",
   "block.armasreales.chimenea": "Chimenea",
   "block.armasreales.cafetera": "Cafetera",
   "block.armasreales.vitrina": "Vitrina",
@@ -268,5 +268,7 @@
   "block.armasreales.contenedor_reciclaje": "Contenedor de reciclaje",
   "block.armasreales.estatua": "Estatua",
   "block.armasreales.carrito_compras": "Carrito de compras",
-  "block.armasreales.bicicletero": "Bicicletero"
+  "block.armasreales.bicicletero": "Bicicletero",
+  "block.armasreales.ventilador_techo": "Ventilador de techo",
+  "block.armasreales.taburete_cocina": "Taburete de cocina"
 }
