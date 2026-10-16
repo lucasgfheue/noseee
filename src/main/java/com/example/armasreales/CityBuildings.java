@@ -14,7 +14,8 @@ final class CityBuildings {
     private CityBuildings() {}
 
     static final int SKY = 0, OFFICE = 1, APART = 2, SHOPS = 3, HOUSE = 4, VILLAGE = 5, HALL = 6, HANGAR = 7,
-            BARRACKS = 8, BARN = 9, MILL = 10;
+            BARRACKS = 8, BARN = 9, MILL = 10, RESTO = 11, POLICE = 12, FIRE = 13, HOSP = 14, CYBER = 15, UNIV = 16,
+            MALL = 17, HOTEL = 18, BANK = 19, CINEMA = 20, LIBRARY = 21, SCHOOL = 22, STATION = 23;
 
     static final Block[] FAC = {Blocks.ORANGE_CONCRETE, Blocks.YELLOW_CONCRETE, Blocks.LIME_CONCRETE,
             Blocks.LIGHT_BLUE_CONCRETE, Blocks.CYAN_CONCRETE, Blocks.RED_CONCRETE, Blocks.PINK_CONCRETE,
@@ -46,7 +47,7 @@ final class CityBuildings {
         Block b = switch (st) {
             case HOUSE, VILLAGE -> Blocks.SPRUCE_STAIRS;
             case SKY, OFFICE, APART, SHOPS -> Blocks.SMOOTH_QUARTZ_STAIRS;
-            default -> Blocks.STONE_BRICK_STAIRS;
+            default -> st >= RESTO ? CityCivic.stairBlock(st) : Blocks.STONE_BRICK_STAIRS;
         };
         return b.defaultBlockState().setValue(StairBlock.FACING, Direction.EAST);
     }
@@ -89,7 +90,7 @@ final class CityBuildings {
             case HANGAR -> s(Blocks.GRAY_CONCRETE);
             case BARRACKS -> s(Blocks.GREEN_TERRACOTTA);
             case BARN -> s(Blocks.RED_CONCRETE);
-            default -> s(Blocks.WHITE_CONCRETE);
+            default -> st >= RESTO ? CityCivic.wall(l, st) : s(Blocks.WHITE_CONCRETE);
         };
     }
 
@@ -102,13 +103,16 @@ final class CityBuildings {
             case HALL, HANGAR -> s(Blocks.GRAY_CONCRETE);
             case BARRACKS -> s(Blocks.BLACK_CONCRETE);
             case BARN -> s(Blocks.WHITE_CONCRETE);
-            default -> s(Blocks.BROWN_CONCRETE);
+            default -> st >= RESTO ? CityCivic.acc(l, st) : s(Blocks.BROWN_CONCRETE);
         };
     }
 
     private static BlockState glassB(CityPlan.Lot l, int st) {
         if (st == SKY) {
             return s(GLS[(l.palette >> 7) % GLS.length]);
+        }
+        if (st >= RESTO) {
+            return CityCivic.glass(l, st);
         }
         return s(st == OFFICE && l.palette % 2 == 0 ? Blocks.LIGHT_BLUE_STAINED_GLASS : Blocks.GLASS);
     }
@@ -121,7 +125,7 @@ final class CityBuildings {
             case VILLAGE -> s(Blocks.SPRUCE_PLANKS);
             case HALL, HANGAR -> s(Blocks.GRAY_CONCRETE);
             case BARRACKS -> s(Blocks.STONE);
-            default -> s(Blocks.STONE_BRICKS);
+            default -> st >= RESTO ? CityCivic.floor(st) : s(Blocks.STONE_BRICKS);
         };
     }
 
@@ -130,7 +134,7 @@ final class CityBuildings {
             case HOUSE, APART, SHOPS -> s(Blocks.GRAY_CONCRETE);
             case BARN -> s(Blocks.WHITE_CONCRETE);
             case VILLAGE -> s(PLANK[(l.palette + 2) % PLANK.length]);
-            default -> s(Blocks.GRAY_CONCRETE);
+            default -> st >= RESTO ? CityCivic.roof(st) : s(Blocks.GRAY_CONCRETE);
         };
     }
 
@@ -153,11 +157,17 @@ final class CityBuildings {
                     return null;
                 }
             } else {
-                int half = st == SKY ? 2 : 1;
+                int half = st == SKY ? 2 : st >= RESTO ? CityCivic.doorHalf(st) : 1;
                 if (pz == 0 && px >= fw / 2 - half && px < fw / 2 + half && rel <= 3) {
                     return null;
                 }
             }
+        }
+        if (st == FIRE && pz == 0 && rel <= 3 && CityCivic.fireBay(l, px)) {
+            return null;
+        }
+        if (st == STATION && pz == fd - 1 && rel <= 3 && Math.abs(px - fw / 2) <= 2) {
+            return null;
         }
         if (corner) {
             return acc;
@@ -203,13 +213,16 @@ final class CityBuildings {
             case BARRACKS:
                 return (m == 2 && col % 3 == 1) ? gl : wall;
             default:
+                if (st >= RESTO) {
+                    return CityCivic.windowAt(st, rel, m, col) ? gl : wall;
+                }
                 return (m >= 2 && col == (ns ? fw / 2 : fd / 2)) ? gl : wall;
         }
     }
 
     // ------------------------------------------------------------------ Edificio
 
-    private static void building(CityPlan.Lot l, int px, int pz, CityPlan.Out o, int st, int F) {
+    static void building(CityPlan.Lot l, int px, int pz, CityPlan.Out o, int st, int F) {
         int fw = l.fw;
         int fd = l.fd;
         boolean hall = st == HALL || st == HANGAR || st == BARN;
@@ -263,8 +276,20 @@ final class CityBuildings {
     private static final Direction S = Direction.SOUTH;
     private static final Direction W = Direction.WEST;
 
-    private static void d(CityPlan.Out o, int rel, String id, Direction f) {
-        CityDeco.place(o, rel, id, f, "lampara".equals(id) || "chimenea".equals(id));
+    static void d(CityPlan.Out o, int rel, String id, Direction f) {
+        CityDeco.place(o, rel, id, f, "lampara".equals(id) || "chimenea".equals(id) || "lampara_quirofano".equals(id));
+    }
+
+    static void officeFloor(CityPlan.Lot l, int px, int pz, int rel, int k, CityPlan.Out o) {
+        office(l, px, pz, rel, k, o, OFFICE);
+    }
+
+    static void barracksFloor(CityPlan.Lot l, int px, int pz, int rel, int k, CityPlan.Out o) {
+        barracks(l, px, pz, rel, k, o);
+    }
+
+    static void apartFloor(CityPlan.Lot l, int px, int pz, int rel, CityPlan.Out o) {
+        apart(l, px, pz, rel, o);
     }
 
     private static boolean is(int px, int pz, int x, int z) {
@@ -278,7 +303,13 @@ final class CityBuildings {
             case SHOPS -> shop(l, px, pz, rel, k, o, st);
             case HOUSE, VILLAGE -> house(l, px, pz, rel, k, o);
             case BARRACKS -> barracks(l, px, pz, rel, k, o);
-            default -> mill(l, px, pz, rel, k, o);
+            default -> {
+                if (st >= RESTO) {
+                    CityCivic.furnish(l, px, pz, rel, k, o, st);
+                } else {
+                    mill(l, px, pz, rel, k, o);
+                }
+            }
         }
     }
 
@@ -843,7 +874,11 @@ final class CityBuildings {
                     }
                 }
             }
-            default -> { }
+            default -> {
+                if (st >= RESTO) {
+                    CityCivic.roofTop(l, px, pz, H, o, st);
+                }
+            }
         }
     }
 
@@ -907,7 +942,7 @@ final class CityBuildings {
         }
     }
 
-    private static void treeGrid(CityPlan.Out o, int lx, int lz, int w, int d, int pitch, int salt, int chance, int margin) {
+    static void treeGrid(CityPlan.Out o, int lx, int lz, int w, int d, int pitch, int salt, int chance, int margin) {
         int cx = Math.floorDiv(lx, pitch);
         int cz = Math.floorDiv(lz, pitch);
         int tx = cx * pitch + pitch / 2;
@@ -1044,11 +1079,11 @@ final class CityBuildings {
 
     // ------------------------------------------------------------------ Parcelas
 
-    private static void paving(int lx, int lz, CityPlan.Out o) {
+    static void paving(int lx, int lz, CityPlan.Out o) {
         o.ground = ((lx / 6 + lz / 6) & 1) == 0 ? s(Blocks.LIGHT_GRAY_CONCRETE) : s(Blocks.WHITE_CONCRETE);
     }
 
-    private static void cornerTrees(CityPlan.Lot l, int lx, int lz, int w, int d, CityPlan.Out o) {
+    static void cornerTrees(CityPlan.Lot l, int lx, int lz, int w, int d, CityPlan.Out o) {
         int[][] c = {{2, 2}, {w - 3, 2}, {2, d - 3}, {w - 3, d - 3}};
         for (int[] p : c) {
             int ox = lx - p[0];
@@ -1098,6 +1133,14 @@ final class CityBuildings {
                 cornerTrees(l, lx, lz, w, d, o);
             }
             case HOUSE, VILLAGE, FARM -> house(l, x, z, lx, lz, w, d, px, pz, o);
+            case RESTO, POLICE, FIRE, HOSP, CYBER, UNIV, MALL, HOTEL, BANK, CINEMA, LIBRARY, SCHOOL -> {
+                int cst = CityCivic.style(l.t);
+                paving(lx, lz, o);
+                building(l, px, pz, o, cst, l.floors);
+                cornerTrees(l, lx, lz, w, d, o);
+                CityCivic.yard(l, cst, x, z, lx, lz, px, pz, w, d, o);
+            }
+            case RAIL, STATION -> CityRail.lot(l, x, z, lx, lz, px, pz, o);
             case PARK -> park(l, lx, lz, w, d, o);
             case PLAZA -> plaza(l, lx, lz, w, d, o);
             case WAREHOUSE -> {

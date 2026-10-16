@@ -108,7 +108,8 @@ public final class CityPlan {
 
     enum T {
         SKY, OFFICE, APART, SHOPS, HOUSE, PARK, PLAZA, WAREHOUSE, HANGAR, CONTAINERS, FUEL, BARRACKS, MOTOR, RADAR,
-        FACTORY, FIELD, ORCHARD, MEADOW, FARM, BARN, VILLAGE, WELL, WINDMILL, RIVER, EMPTY
+        FACTORY, FIELD, ORCHARD, MEADOW, FARM, BARN, VILLAGE, WELL, WINDMILL, RIVER, EMPTY,
+        RESTO, POLICE, FIRE, HOSP, CYBER, UNIV, MALL, HOTEL, BANK, CINEMA, LIBRARY, SCHOOL, RAIL, STATION
     }
 
     static final class Lot {
@@ -177,6 +178,9 @@ public final class CityPlan {
             l.t = r < 50 ? T.APART : r < 75 ? T.SHOPS : r < 80 ? T.OFFICE : r < 90 ? T.PARK : T.HOUSE;
         } else {
             l.t = r < 70 ? T.HOUSE : r < 80 ? T.PARK : r < 90 ? T.APART : T.SHOPS;
+        }
+        if (l.z0 < PORT_Z && l.cz >= RURAL_Z) {
+            l.t = CityCivic.pick(l.t, ix, iz, dist);
         }
 
         int lw = l.x1 - l.x0;
@@ -257,7 +261,7 @@ public final class CityPlan {
                 l.fz0 = l.z0 + 6;
                 l.floors = 2;
             }
-            default -> { }
+            default -> CityCivic.footprint(l, lw, ld, hh);
         }
         if (l.fw < 8 || l.fd < 8) {
             if (l.t == T.SKY || l.t == T.OFFICE || l.t == T.APART || l.t == T.SHOPS || l.t == T.WAREHOUSE
@@ -298,6 +302,8 @@ public final class CityPlan {
             o.waterTop = SEA;
             if (isRoadAxis(z)) {
                 CityRoads.bridge(x, z, o);
+            } else {
+                CityRail.bridge(x, z, o);
             }
             return;
         }
@@ -310,6 +316,9 @@ public final class CityPlan {
         boolean bz = isRoadAxis(z);
         if (bx || bz) {
             CityRoads.road(x, z, bx, bz, o);
+            if (bx && !bz) {
+                CityRail.crossing(x, z, o);
+            }
             return;
         }
         Lot l = lot(lineIdx(x), lineIdx(z), cache);

@@ -47,7 +47,13 @@ public final class DecoLoot {
             Map.entry("puesto_frutas", Kind.FOOD), Map.entry("cesta_compras", Kind.FOOD), Map.entry("caja_pago", Kind.VALUABLE),
             Map.entry("libreria", Kind.DRAWER), Map.entry("cajas_apiladas", Kind.JUNK), Map.entry("palet", Kind.JUNK),
             Map.entry("cubo_basura", Kind.JUNK), Map.entry("contenedor", Kind.JUNK),
-            Map.entry("contenedor_reciclaje", Kind.JUNK), Map.entry("papelera", Kind.JUNK));
+            Map.entry("contenedor_reciclaje", Kind.JUNK), Map.entry("papelera", Kind.JUNK),
+            Map.entry("taquilla", Kind.DRAWER), Map.entry("armero", Kind.VALUABLE), Map.entry("cocina_industrial", Kind.FOOD),
+            Map.entry("barra_bar", Kind.FOOD), Map.entry("estante_botellas", Kind.FOOD), Map.entry("mesa_mantel", Kind.FOOD),
+            Map.entry("horno_pizza", Kind.FOOD), Map.entry("palomitas", Kind.FOOD), Map.entry("ventanilla_banco", Kind.VALUABLE),
+            Map.entry("banco_lab", Kind.DRAWER), Map.entry("pupitre", Kind.DRAWER), Map.entry("puesto_gamer", Kind.DRAWER),
+            Map.entry("mesa_quirofano", Kind.DRAWER), Map.entry("cama_hospital", Kind.JUNK), Map.entry("camilla", Kind.JUNK),
+            Map.entry("butaca_cine", Kind.JUNK), Map.entry("manguera_carrete", Kind.JUNK));
 
     static boolean isSearchable(String id) {
         return KINDS.containsKey(id);
