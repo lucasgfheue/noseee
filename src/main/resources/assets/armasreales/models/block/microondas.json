@@ -1,0 +1,47 @@
+{
+  "textures": {
+    "microondas": "armasreales:block/deco_microondas",
+    "negro": "armasreales:block/deco_negro",
+    "particle": "armasreales:block/deco_negro"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        3
+      ],
+      "to": [
+        14,
+        8,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#microondas",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "textures": {
+    "alfombra": "armasreales:block/deco_alfombra",
+    "particle": "armasreales:block/deco_alfombra"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        1,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#alfombra"
+        },
+        "east": {
+          "texture": "#alfombra"
+        },
+        "south": {
+          "texture": "#alfombra"
+        },
+        "west": {
+          "texture": "#alfombra"
+        },
+        "up": {
+          "texture": "#alfombra",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "down": {
+          "texture": "#alfombra"
+        }
+      }
+    }
+  ]
+}

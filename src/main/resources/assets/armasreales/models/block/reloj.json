@@ -1,0 +1,79 @@
+{
+  "textures": {
+    "madera_oscura": "armasreales:block/deco_madera_oscura",
+    "reloj": "armasreales:block/deco_reloj",
+    "particle": "armasreales:block/deco_madera_oscura"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        3,
+        14
+      ],
+      "to": [
+        13,
+        13,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_oscura"
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "up": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        4,
+        13.5
+      ],
+      "to": [
+        12,
+        12,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#reloj",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#reloj"
+        },
+        "south": {
+          "texture": "#reloj"
+        },
+        "west": {
+          "texture": "#reloj"
+        },
+        "up": {
+          "texture": "#reloj"
+        },
+        "down": {
+          "texture": "#reloj"
+        }
+      }
+    }
+  ]
+}

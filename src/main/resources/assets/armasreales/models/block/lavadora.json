@@ -1,0 +1,47 @@
+{
+  "textures": {
+    "lavadora_frente": "armasreales:block/deco_lavadora_frente",
+    "blanco": "armasreales:block/deco_blanco",
+    "particle": "armasreales:block/deco_blanco"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#lavadora_frente",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#blanco"
+        },
+        "south": {
+          "texture": "#blanco"
+        },
+        "west": {
+          "texture": "#blanco"
+        },
+        "up": {
+          "texture": "#blanco"
+        },
+        "down": {
+          "texture": "#blanco"
+        }
+      }
+    }
+  ]
+}
