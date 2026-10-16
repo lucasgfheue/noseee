@@ -56,7 +56,9 @@ public final class CitizenSpawner {
     }
 
     private static void spawn(ServerLevel level, ServerPlayer player, int type) {
-        boolean indoor = level.random.nextBoolean();
+        boolean night = CiudadanoEntity.isNight(level);
+        // De noche, la mayoría de los armados esperan dentro de edificios y casas (emboscada)
+        boolean indoor = type == 1 && night ? level.random.nextFloat() < 0.7f : level.random.nextBoolean();
         for (int attempt = 0; attempt < 14; attempt++) {
             double ang = level.random.nextDouble() * Math.PI * 2;
             double dist = 14 + level.random.nextDouble() * 26;
@@ -83,6 +85,7 @@ public final class CitizenSpawner {
                 return;
             }
             e.setRole(type);
+            e.ambush = type == 1 && night && indoor;
             e.moveTo(x + 0.5, y, z + 0.5, level.random.nextFloat() * 360f, 0f);
             if (!level.noCollision(e) || level.getNearestPlayer(e, 12.0) != null) {
                 e.discard();

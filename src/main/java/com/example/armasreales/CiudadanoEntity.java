@@ -103,6 +103,9 @@ public class CiudadanoEntity extends PathfinderMob {
         this.role = role;
     }
 
+    /** Armado apostado dentro de un edificio: sólo te ataca si te acercas (emboscada sorpresa). */
+    boolean ambush;
+
     /** El civil ya entregó su "tributo" de lingotes de oro. */
     boolean paid;
 
@@ -196,6 +199,7 @@ public class CiudadanoEntity extends PathfinderMob {
             return;
         }
         if (this.carriesGun()) {
+            this.ambush = false;
             this.provoked = 600;
             this.setTarget(attacker);
             this.drawGun();
@@ -287,7 +291,7 @@ public class CiudadanoEntity extends PathfinderMob {
                 && this.fleeTicks <= 0 && level.getDifficulty() != net.minecraft.world.Difficulty.PEACEFUL) {
             // Los armados detectan al jugador desde muy lejos y a través de las paredes; el ladrón, sólo si lo ve.
             boolean gunner = this.carriesGun();
-            double reach = gunner ? 110.0 : 40.0;
+            double reach = gunner ? (this.ambush ? 11.0 : 110.0) : 40.0;
             Player best = null;
             double bd = reach * reach;
             for (Player p : level.players()) {
@@ -298,6 +302,7 @@ public class CiudadanoEntity extends PathfinderMob {
                 }
             }
             if (best != null) {
+                this.ambush = false;
                 this.setTarget(best);
             }
         }
@@ -410,6 +415,7 @@ public class CiudadanoEntity extends PathfinderMob {
         tag.putInt("Provoked", this.provoked);
         tag.putInt("Role", Math.max(0, this.role));
         tag.putBoolean("Paid", this.paid);
+        tag.putBoolean("Ambush", this.ambush);
         if (!this.holster.isEmpty()) {
             tag.put("Holster", this.holster.save(this.registryAccess()));
         }
@@ -422,6 +428,7 @@ public class CiudadanoEntity extends PathfinderMob {
         this.provoked = tag.getInt("Provoked");
         this.role = tag.contains("Role") ? tag.getInt("Role") : 0;
         this.paid = tag.getBoolean("Paid");
+        this.ambush = tag.getBoolean("Ambush");
         this.holster = tag.contains("Holster")
                 ? ItemStack.parse(this.registryAccess(), tag.getCompound("Holster")).orElse(ItemStack.EMPTY)
                 : ItemStack.EMPTY;
