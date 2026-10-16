@@ -234,7 +234,7 @@ final class CityBuildings {
     private static final Direction W = Direction.WEST;
 
     private static void d(CityPlan.Out o, int rel, String id, Direction f) {
-        o.set(rel, ModDeco.state(id, f, "lampara".equals(id)));
+        o.set(rel, ModDeco.state(id, f, "lampara".equals(id) || "chimenea".equals(id)));
     }
 
     private static boolean is(int px, int pz, int x, int z) {
@@ -265,7 +265,15 @@ final class CityBuildings {
                 d(o, rel, "sofa", W);
             } else if (is(px, pz, 3, mid)) {
                 d(o, rel, "mesa", N);
-                d(o, rel + 1, "planta", N);
+                d(o, rel + 1, "jarron", N);
+            } else if (is(px, pz, 1, mid - 3)) {
+                d(o, rel, "chimenea", E);
+            } else if (is(px, pz, 1, fd - 3)) {
+                d(o, rel, "piano", E);
+            } else if (is(px, pz, 4, mid - 3)) {
+                d(o, rel, "sillon", W);
+            } else if (is(px, pz, 3, mid + 2) || is(px, pz, 3, mid - 2)) {
+                d(o, rel, "puf", N);
             } else if (pz == fd - 2 && px == fw - 2) {
                 d(o, rel, "nevera", N);
             } else if (pz == fd - 2 && px == fw - 3) {
@@ -278,7 +286,8 @@ final class CityBuildings {
             } else if (is(px, pz, fw - 2, fd - 3)) {
                 d(o, rel, "lavadora", W);
             } else if (is(px, pz, fw - 4, fd - 5)) {
-                d(o, rel, "mesa", N);
+                d(o, rel, "mesa_redonda", N);
+                d(o, rel + 1, "jarron", N);
             } else if (is(px, pz, fw - 5, fd - 5)) {
                 d(o, rel, "silla", E);
             } else if (is(px, pz, fw - 3, fd - 5)) {
@@ -292,6 +301,7 @@ final class CityBuildings {
             } else if (is(px, pz, 2, fd - 2)) {
                 d(o, rel, "lampara", N);
             } else if (is(px, pz, fw / 2 - 2, fd - 2)) {
+                d(o, rel, "acuario", N);
                 d(o, rel + 1, "cuadro", N);
             } else if (is(px, pz, fw / 2, fd - 2)) {
                 d(o, rel, "estanteria", N);
@@ -309,7 +319,7 @@ final class CityBuildings {
             d(o, rel, "armario", W);
         } else if (is(px, pz, 3, fd - 2)) {
             d(o, rel, "escritorio", N);
-            d(o, rel + 1, "computadora", N);
+            d(o, rel + 1, k % 2 == 1 ? "laptop" : "computadora", N);
         } else if (is(px, pz, 3, fd - 3)) {
             d(o, rel, "silla_oficina", S);
         } else if (is(px, pz, 1, 3)) {
@@ -318,6 +328,14 @@ final class CityBuildings {
             d(o, rel, "inodoro", E);
         } else if (is(px, pz, 1, 7) && fd >= 11) {
             d(o, rel, "banera", E);
+        } else if (is(px, pz, 1, 7)) {
+            d(o, rel, "ducha", E);
+        } else if (is(px, pz, 1, 4)) {
+            d(o, rel + 1, "espejo", E);
+        } else if (is(px, pz, fw - 2, 3)) {
+            d(o, rel, "cuna", W);
+        } else if (is(px, pz, fw / 2 + 1, 1) && k == 1) {
+            d(o, rel, "radiador", S);
         } else if (is(px, pz, fw - 2, 2)) {
             d(o, rel, "planta", N);
         } else if (is(px, pz, fw / 2, fd - 2)) {
@@ -351,6 +369,12 @@ final class CityBuildings {
             d(o, rel, "sofa", W);
         } else if (is(ux, pz, 2, mid - 3)) {
             d(o, rel, "mesa", N);
+            d(o, rel + 1, "consola", E);
+        } else if (is(ux, pz, 1, mid - 2) || is(ux, pz, 1, mid - 4)) {
+            d(o, rel, "altavoz", E);
+        } else if (pz == fd - 2 && ux == 7) {
+            d(o, rel, "mueble_cocina", N);
+            d(o, rel + 1, "cafetera", N);
         } else if (pz == fd - 2 && ux == 3) {
             d(o, rel, "mueble_cocina", N);
             d(o, rel + 1, "microondas", N);
@@ -372,6 +396,8 @@ final class CityBuildings {
             d(o, rel, "silla", N);
         } else if (is(ux, pz, 10, 1)) {
             d(o, rel, "cama", S);
+        } else if (is(ux, pz, 8, 1)) {
+            d(o, rel, "puf", S);
         } else if (is(ux, pz, 9, 1)) {
             d(o, rel, "mesita_noche", S);
             d(o, rel + 1, "lampara", S);
@@ -413,18 +439,20 @@ final class CityBuildings {
             return;
         }
         if (pz == 4 && px % 8 >= 2 && px % 8 <= 5) {
-            d(o, rel, "escritorio", N);
+            d(o, rel, "mostrador", N);
             if (px % 8 == 3) {
-                d(o, rel + 1, "computadora", S);
+                d(o, rel + 1, "caja_registradora", S);
+            } else if (px % 8 == 4) {
+                d(o, rel + 1, "telefono", S);
             } else if (px % 8 == 5) {
-                d(o, rel + 1, "planta", N);
+                d(o, rel + 1, "jarron", N);
             }
         } else if (pz == 5 && px % 8 == 3) {
             d(o, rel, "silla_oficina", N);
         } else if (pz == fd - 2 && px % 4 < 2) {
             d(o, rel, "estanteria", N);
         } else if (pz == fd / 2 && px % 6 >= 2 && px % 6 <= 3 && px > 3) {
-            d(o, rel, "estanteria", px % 6 == 2 ? N : S);
+            d(o, rel, px % 12 < 6 ? "vitrina" : "estanteria", px % 6 == 2 ? N : S);
         } else if (pz == 10 && px % 9 == 4) {
             d(o, rel, "mesa", N);
             d(o, rel + 1, "lampara", N);
@@ -434,6 +462,8 @@ final class CityBuildings {
             d(o, rel, "silla", N);
         } else if (pz == 2 && px % 10 == 1 && px > 1) {
             d(o, rel, "planta", N);
+        } else if (pz == 2 && px % 10 == 6) {
+            d(o, rel, "maniqui", S);
         } else if (pz == fd - 2 && px % 9 == 6) {
             d(o, rel, "nevera", N);
         }
@@ -456,9 +486,11 @@ final class CityBuildings {
                 return;
             }
             if (pz == 6 && px >= cx - 5 && px <= cx + 4) {
-                d(o, rel, "escritorio", N);
+                d(o, rel, "mostrador", N);
                 if ((px - cx) % 3 == 0) {
                     d(o, rel + 1, "computadora", S);
+                } else if ((px - cx) % 3 == -1) {
+                    d(o, rel + 1, "telefono", S);
                 }
                 return;
             }
@@ -483,6 +515,10 @@ final class CityBuildings {
                 d(o, rel, "cuadro", N);
                 return;
             }
+            if (px == fw - 2 && pz >= 5 && pz <= 6) {
+                d(o, rel, pz == 5 ? "maquina_expendedora" : "dispensador_agua", W);
+                return;
+            }
         }
         boolean meeting = k % 3 == 2 && Math.abs(pz - cz) <= 3 && Math.abs(px - cx) <= 6;
         if (meeting) {
@@ -499,7 +535,7 @@ final class CityBuildings {
         }
         if (px % 6 == 2 && pz % 5 == 2 && px > 1 && pz > 2) {
             d(o, rel, "escritorio", N);
-            d(o, rel + 1, "computadora", N);
+            d(o, rel + 1, (px / 6) % 2 == 1 ? "laptop" : "computadora", N);
         } else if (px % 6 == 2 && pz % 5 == 1 && pz > 2) {
             d(o, rel, "silla_oficina", S);
         } else if (pz == fd - 2 && px % 7 == 3) {
@@ -508,6 +544,19 @@ final class CityBuildings {
             d(o, rel, "planta", N);
         } else if (pz == fd - 2 && px % 7 == 5) {
             d(o, rel, "papelera", N);
+        } else if (pz == fd - 2 && px % 14 == 1 && px > 1) {
+            d(o, rel, "mesa", N);
+            d(o, rel + 1, "impresora", N);
+        } else if (pz == 1 && px % 16 == 5) {
+            d(o, rel, "extintor", S);
+        } else if (pz == 1 && px % 16 == 9) {
+            d(o, rel + 1, "pizarra", S);
+        } else if (pz == 1 && px % 16 == 13) {
+            d(o, rel + 1, "aire_acondicionado", S);
+        } else if (pz == 2 && px % 16 == 3 && px > 3) {
+            d(o, rel, "dispensador_agua", S);
+        } else if (pz == 1 && px % 24 == 17) {
+            d(o, rel + 1, "botiquin", S);
         } else {
             o.set(rel, s(Blocks.LIGHT_GRAY_CARPET));
         }
@@ -519,9 +568,9 @@ final class CityBuildings {
         if (k == 0 && is(px, pz, 1, fd / 2)) {
             d(o, rel, "tv", E);
         } else if (pz == 1 && px % 3 == 1 && px > 2) {
-            d(o, rel, "cama", S);
+            d(o, rel, "litera", S);
         } else if (pz == fd - 2 && px % 3 == 1 && px > 2) {
-            d(o, rel, "cama", N);
+            d(o, rel, "litera", N);
         } else if ((pz == 2 || pz == fd - 3) && px % 3 == 2 && px > 2) {
             d(o, rel, "mesita_noche", pz == 2 ? S : N);
         } else if (px == fw - 2 && (pz == 4 || pz == 5 || pz == fd - 5)) {
@@ -996,8 +1045,8 @@ final class CityBuildings {
             }
             return;
         }
-        if ((lx == w / 2 - 3 || lx == w / 2 + 3) && lz % 8 < 3 && lz > 3 && lz < d - 3 && lx != 0) {
-            o.set(1, s(Blocks.OAK_SLAB));
+        if ((lx == w / 2 - 3 || lx == w / 2 + 3) && lz % 8 == 1 && lz > 3 && lz < d - 3 && lx != 0) {
+            d(o, 1, "banco", lx < w / 2 ? E : W);
             return;
         }
         if (Math.abs(lx - w / 2) > 3 && Math.abs(lz - d / 2) > 3) {
@@ -1025,8 +1074,8 @@ final class CityBuildings {
         for (int[] p : c) {
             tree(o, lx - p[0], lz - p[1], 2, 3);
         }
-        if ((lx == 3 || lx == w - 4) && lz % 8 < 3 && lz > 10 && lz < d - 10) {
-            o.set(1, s(Blocks.SPRUCE_SLAB));
+        if ((lx == 3 || lx == w - 4) && lz % 8 == 1 && lz > 10 && lz < d - 10) {
+            d(o, 1, "banco", lx == 3 ? E : W);
         }
     }
 
