@@ -1,0 +1,136 @@
+{
+  "textures": {
+    "carton": "armasreales:block/deco_carton",
+    "particle": "armasreales:block/deco_carton"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        2
+      ],
+      "to": [
+        10,
+        8,
+        10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#carton"
+        },
+        "east": {
+          "texture": "#carton"
+        },
+        "south": {
+          "texture": "#carton"
+        },
+        "west": {
+          "texture": "#carton"
+        },
+        "up": {
+          "texture": "#carton"
+        },
+        "down": {
+          "texture": "#carton"
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        0,
+        8
+      ],
+      "to": [
+        15,
+        6,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#carton"
+        },
+        "east": {
+          "texture": "#carton"
+        },
+        "south": {
+          "texture": "#carton"
+        },
+        "west": {
+          "texture": "#carton"
+        },
+        "up": {
+          "texture": "#carton"
+        },
+        "down": {
+          "texture": "#carton"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        8,
+        3
+      ],
+      "to": [
+        9,
+        13,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#carton"
+        },
+        "east": {
+          "texture": "#carton"
+        },
+        "south": {
+          "texture": "#carton"
+        },
+        "west": {
+          "texture": "#carton"
+        },
+        "up": {
+          "texture": "#carton"
+        },
+        "down": {
+          "texture": "#carton"
+        }
+      }
+    },
+    {
+      "from": [
+        10,
+        6,
+        9
+      ],
+      "to": [
+        15,
+        10,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#carton"
+        },
+        "east": {
+          "texture": "#carton"
+        },
+        "south": {
+          "texture": "#carton"
+        },
+        "west": {
+          "texture": "#carton"
+        },
+        "up": {
+          "texture": "#carton"
+        },
+        "down": {
+          "texture": "#carton"
+        }
+      }
+    }
+  ]
+}

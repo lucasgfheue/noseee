@@ -278,5 +278,18 @@
   "item.armasreales.ladron_spawn_egg": "Generar Ladrón",
   "msg.armasreales.vacio": "Ya lo registraron: está vacío.",
   "msg.armasreales.nada": "No hay nada aquí.",
-  "msg.armasreales.encontrado": "Encontraste: %s"
+  "msg.armasreales.encontrado": "Encontraste: %s",
+  "block.armasreales.cesta_compras": "Cesta de compras",
+  "block.armasreales.puesto_frutas": "Puesto de frutas",
+  "block.armasreales.cajas_apiladas": "Cajas apiladas",
+  "block.armasreales.palet": "Palé con mercancía",
+  "block.armasreales.cartel_oferta": "Cartel de ofertas",
+  "block.armasreales.felpudo": "Felpudo",
+  "block.armasreales.vajilla": "Vajilla y centro de mesa",
+  "block.armasreales.estante_super": "Estantería de supermercado",
+  "block.armasreales.nevera_expositor": "Nevera expositora",
+  "block.armasreales.congelador": "Congelador horizontal",
+  "block.armasreales.caja_pago": "Caja de supermercado",
+  "block.armasreales.libreria": "Librería grande",
+  "block.armasreales.lampara_pie": "Lámpara de pie"
 }

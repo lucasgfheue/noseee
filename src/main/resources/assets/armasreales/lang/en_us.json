@@ -278,5 +278,18 @@
   "item.armasreales.ladron_spawn_egg": "Thief Spawn Egg",
   "msg.armasreales.vacio": "Already searched: it's empty.",
   "msg.armasreales.nada": "Nothing here.",
-  "msg.armasreales.encontrado": "You found: %s"
+  "msg.armasreales.encontrado": "You found: %s",
+  "block.armasreales.cesta_compras": "Shopping basket",
+  "block.armasreales.puesto_frutas": "Fruit stand",
+  "block.armasreales.cajas_apiladas": "Stacked boxes",
+  "block.armasreales.palet": "Loaded pallet",
+  "block.armasreales.cartel_oferta": "Sale sign",
+  "block.armasreales.felpudo": "Doormat",
+  "block.armasreales.vajilla": "Tableware",
+  "block.armasreales.estante_super": "Supermarket shelf",
+  "block.armasreales.nevera_expositor": "Display fridge",
+  "block.armasreales.congelador": "Chest freezer",
+  "block.armasreales.caja_pago": "Checkout counter",
+  "block.armasreales.libreria": "Large bookcase",
+  "block.armasreales.lampara_pie": "Floor lamp"
 }

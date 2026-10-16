@@ -69,8 +69,8 @@ final class CityBuildings {
             }
             if (i == 3) {
                 o.set(base + 4, stair);
-            } else if (i >= 1) {
-                o.set(base + 4, s(Blocks.AIR));
+            } else {
+                o.set(base + 4, s(Blocks.AIR));         // el hueco empieza sobre el 1.er peldaño: la cabeza no choca
             }
         }
     }
@@ -417,7 +417,9 @@ final class CityBuildings {
             }
             return;
         }
-        if (CityDeco.part(o, rel, "cama", S, px - ux + 10, 2, px, pz)) {
+        if (CityDeco.part(o, rel, "cama", S, px - ux + 10, 2, px, pz)
+                || (px - ux + 7 <= fw - 2 && CityDeco.part(o, rel, "libreria", S, px - ux + 7, 1, px, pz))
+                || CityDeco.part(o, rel, "lampara_pie", N, px - ux + 5, mid - 1, px, pz)) {
             return;
         }
         if (is(ux, pz, 1, mid - 3)) {
@@ -443,6 +445,7 @@ final class CityBuildings {
             d(o, rel, "nevera", N);
         } else if (is(ux, pz, 9, fd - 4)) {
             d(o, rel, "mesa", N);
+            d(o, rel + 1, "vajilla", N);
         } else if (is(ux, pz, 8, fd - 4)) {
             d(o, rel, "silla", E);
         } else if (is(ux, pz, 10, fd - 4)) {
@@ -494,6 +497,10 @@ final class CityBuildings {
             d(o, rel + 2, "ventilador_techo", N);
         } else if (ux >= 2 && ux <= 4 && pz >= mid - 4 && pz <= mid - 2) {
             d(o, rel, "alfombra", N);
+        } else if ((ux == 1 || ux == 11) && pz == mid) {
+            d(o, rel, "felpudo", N);
+        } else if (is(ux, pz, 4, 1)) {
+            d(o, rel + 1, "cuadro", S);
         }
     }
 
@@ -504,44 +511,93 @@ final class CityBuildings {
             office(l, px, pz, rel, k, o, st);
             return;
         }
-        if (pz <= 2 && Math.abs(px - fw / 2) <= 2) {
-            if (pz == 1 && px >= fw / 2 - 1 && px <= fw / 2) {
-                d(o, rel, "alfombra", N);
+        int mx = fw / 2;
+        // entrada despejada, con felpudo
+        if (pz <= 3 && Math.abs(px - mx) <= 2) {
+            if (pz == 1 && px >= mx - 1 && px <= mx) {
+                d(o, rel, "felpudo", N);
             }
             return;
         }
-        if (pz == 4 && px % 8 >= 2 && px % 8 <= 5) {
-            d(o, rel, "mostrador", N);
-            if (px % 8 == 3) {
-                d(o, rel + 1, "caja_registradora", S);
-            } else if (px % 8 == 4) {
-                d(o, rel + 1, "telefono", S);
-            } else if (px % 8 == 5) {
-                d(o, rel + 1, "jarron", N);
+        // junto a la entrada: carritos, cestas, máquina expendedora
+        if (pz == 1 && px > 6 && px < fw - 3) {
+            if (px == mx - 4 || px == mx - 5) {
+                d(o, rel, "carrito_compras", E);
+                return;
+            } else if (px == mx + 4) {
+                d(o, rel, "cesta_compras", N);
+                return;
+            } else if (px == mx + 5) {
+                d(o, rel, "cesta_compras", S);
+                return;
+            } else if (px == mx + 7 || px == mx - 8) {
+                d(o, rel, "maquina_expendedora", S);
+                return;
             }
-        } else if (pz == 5 && px % 8 == 3) {
-            d(o, rel, "silla_oficina", N);
-        } else if (pz == fd - 2 && px % 4 < 2) {
-            d(o, rel, "estanteria", N);
-        } else if (pz == fd / 2 && px % 6 >= 2 && px % 6 <= 3 && px > 3) {
-            d(o, rel, px % 12 < 6 ? "vitrina" : "estanteria", px % 6 == 2 ? N : S);
-        } else if (pz == 10 && px % 9 == 4) {
-            d(o, rel, "mesa", N);
-            d(o, rel + 1, "lampara", N);
-        } else if (pz == 9 && px % 9 == 4) {
-            d(o, rel, "silla", S);
-        } else if (pz == 11 && px % 9 == 4) {
-            d(o, rel, "silla", N);
-        } else if (pz == 2 && px % 10 == 1 && px > 1) {
+        }
+        // cajas de pago
+        if (pz == 4 || pz == 5) {
+            int u = px % 8;
+            int ox = px - u + 2;
+            if ((u == 2 || u == 3) && ox >= 7 && ox + 1 <= fw - 4) {
+                if (pz == 4 && CityDeco.part(o, rel, "caja_pago", N, ox, 4, px, pz)) {
+                    return;
+                }
+                if (pz == 5 && u == 3) {
+                    d(o, rel, "silla_oficina", N);
+                    return;
+                }
+            }
+        }
+        // puestos de fruta
+        if (pz == 6 && px % 7 == 3 && px > 7 && px < fw - 4) {
+            d(o, rel, "puesto_frutas", N);
+            return;
+        }
+        // pasillos de góndolas (parejas espalda con espalda); cada 7 columnas hay un pasillo transversal
+        int u7 = px % 7;
+        if (pz >= 9 && u7 < 6) {
+            int pa = 9 + (pz - 9) / 5 * 5;
+            int r5 = (pz - 9) % 5;
+            int lx0 = px - (u7 % 2);
+            if (r5 <= 1 && pa + 1 <= fd - 6 && lx0 >= 7 && lx0 + 1 <= fw - 4) {
+                Direction f = r5 == 0 ? N : S;
+                if (CityDeco.part(o, rel, "estante_super", f, f == N ? lx0 : lx0 + 1, pz, px, pz)) {
+                    return;
+                }
+            }
+        }
+        if (pz >= 9 && u7 == 6 && (pz - 9) % 5 == 0 && px > 7 && px < fw - 4 && (pz - 9) / 5 % 2 == 0) {
+            d(o, rel + 2, "cartel_oferta", N);
+            return;
+        }
+        // congeladores contra las paredes laterales
+        if (pz >= 9 && (pz - 9) % 4 <= 1) {
+            int oz = pz - (pz - 9) % 4;
+            if (oz + 1 <= fd - 6) {
+                if (CityDeco.part(o, rel, "congelador", E, 1, oz, px, pz)
+                        || CityDeco.part(o, rel, "congelador", W, fw - 2, oz + 1, px, pz)) {
+                    return;
+                }
+            }
+        }
+        // pared del fondo: neveras expositoras y palés
+        if (pz == fd - 2) {
+            int left = px - px % 2;
+            if (left >= 8 && left + 1 <= fw - 5 && CityDeco.part(o, rel, "nevera_expositor", N, left, fd - 2, px, pz)) {
+                return;
+            }
+            if (px == 2 || px == fw - 3) {
+                d(o, rel, "palet", N);
+            } else if (px == 4 || px == fw - 5) {
+                d(o, rel, "cajas_apiladas", N);
+            } else if (px == 6 || px == fw - 7) {
+                d(o, rel, "cubo_basura", N);
+            }
+            return;
+        }
+        if (pz == 2 && px % 9 == 0 && px > 7 && Math.abs(px - mx) > 3) {
             d(o, rel, "planta", N);
-        } else if (pz == 2 && px % 10 == 6) {
-            d(o, rel, "maniqui", S);
-        } else if (pz == fd - 2 && px % 9 == 6) {
-            d(o, rel, "nevera", N);
-        } else if (pz == 2 && px % 10 == 3 && px > 2) {
-            d(o, rel, "zapatero", S);
-        } else if (pz == fd - 2 && px % 9 == 1) {
-            d(o, rel + 1, "reloj_pared", N);
         } else if (pz == 8 && px % 12 == 6) {
             d(o, rel + 2, "ventilador_techo", N);
         }
@@ -653,7 +709,7 @@ final class CityBuildings {
     private static void barracks(CityPlan.Lot l, int px, int pz, int rel, int k, CityPlan.Out o) {
         int fw = l.fw;
         int fd = l.fd;
-        if (px % 3 == 1 && px > 2 && (CityDeco.part(o, rel, "litera", S, px, 2, px, pz)
+        if (px % 3 == 1 && px > 6 && (CityDeco.part(o, rel, "litera", S, px, 2, px, pz)
                 || (fd >= 8 && CityDeco.part(o, rel, "litera", N, px, fd - 3, px, pz)))) {
             return;
         }

@@ -1,0 +1,103 @@
+{
+  "textures": {
+    "blanco": "armasreales:block/deco_blanco",
+    "negro": "armasreales:block/deco_negro",
+    "cinta": "armasreales:block/deco_cinta",
+    "particle": "armasreales:block/deco_blanco"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        2
+      ],
+      "to": [
+        16,
+        14,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#blanco"
+        },
+        "south": {
+          "texture": "#blanco"
+        },
+        "west": {
+          "texture": "#blanco"
+        },
+        "up": {
+          "texture": "#blanco"
+        },
+        "down": {
+          "texture": "#blanco"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        1.5
+      ],
+      "to": [
+        16,
+        2,
+        2
+      ],
+      "faces": {
+        "north": {
+          "texture": "#negro"
+        },
+        "south": {
+          "texture": "#negro"
+        },
+        "west": {
+          "texture": "#negro"
+        },
+        "up": {
+          "texture": "#negro"
+        },
+        "down": {
+          "texture": "#negro"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        14,
+        3
+      ],
+      "to": [
+        16,
+        15,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#cinta"
+        },
+        "south": {
+          "texture": "#cinta"
+        },
+        "west": {
+          "texture": "#cinta"
+        },
+        "up": {
+          "texture": "#cinta",
+          "uv": [
+            0.0,
+            0.0,
+            13.333,
+            16.0
+          ]
+        },
+        "down": {
+          "texture": "#cinta"
+        }
+      }
+    }
+  ]
+}

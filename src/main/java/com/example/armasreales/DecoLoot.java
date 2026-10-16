@@ -43,6 +43,9 @@ public final class DecoLoot {
             Map.entry("zapatero", Kind.DRAWER), Map.entry("estanteria", Kind.DRAWER), Map.entry("vitrina", Kind.DRAWER),
             Map.entry("mostrador", Kind.DRAWER), Map.entry("botiquin", Kind.DRAWER), Map.entry("mesa_redonda", Kind.DRAWER),
             Map.entry("caja_fuerte", Kind.VALUABLE), Map.entry("caja_registradora", Kind.VALUABLE),
+            Map.entry("estante_super", Kind.FOOD), Map.entry("nevera_expositor", Kind.FOOD), Map.entry("congelador", Kind.FOOD),
+            Map.entry("puesto_frutas", Kind.FOOD), Map.entry("cesta_compras", Kind.FOOD), Map.entry("caja_pago", Kind.VALUABLE),
+            Map.entry("libreria", Kind.DRAWER), Map.entry("cajas_apiladas", Kind.JUNK), Map.entry("palet", Kind.JUNK),
             Map.entry("cubo_basura", Kind.JUNK), Map.entry("contenedor", Kind.JUNK),
             Map.entry("contenedor_reciclaje", Kind.JUNK), Map.entry("papelera", Kind.JUNK));
 

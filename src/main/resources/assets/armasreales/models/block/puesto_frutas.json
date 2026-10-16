@@ -1,0 +1,182 @@
+{
+  "textures": {
+    "madera_clara": "armasreales:block/deco_madera_clara",
+    "frutas": "armasreales:block/deco_frutas",
+    "madera_oscura": "armasreales:block/deco_madera_oscura",
+    "particle": "armasreales:block/deco_madera_clara"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        2
+      ],
+      "to": [
+        16,
+        7,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_clara"
+        },
+        "east": {
+          "texture": "#madera_clara"
+        },
+        "south": {
+          "texture": "#madera_clara"
+        },
+        "west": {
+          "texture": "#madera_clara"
+        },
+        "up": {
+          "texture": "#madera_clara"
+        },
+        "down": {
+          "texture": "#madera_clara"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        7,
+        3
+      ],
+      "to": [
+        15,
+        8.5,
+        8
+      ],
+      "faces": {
+        "north": {
+          "texture": "#frutas"
+        },
+        "east": {
+          "texture": "#frutas"
+        },
+        "south": {
+          "texture": "#frutas"
+        },
+        "west": {
+          "texture": "#frutas"
+        },
+        "up": {
+          "texture": "#frutas",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "down": {
+          "texture": "#frutas"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        9
+      ],
+      "to": [
+        16,
+        11,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_clara"
+        },
+        "east": {
+          "texture": "#madera_clara"
+        },
+        "south": {
+          "texture": "#madera_clara"
+        },
+        "west": {
+          "texture": "#madera_clara"
+        },
+        "up": {
+          "texture": "#madera_clara"
+        },
+        "down": {
+          "texture": "#madera_clara"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        11,
+        10
+      ],
+      "to": [
+        15,
+        12.5,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#frutas"
+        },
+        "east": {
+          "texture": "#frutas"
+        },
+        "south": {
+          "texture": "#frutas"
+        },
+        "west": {
+          "texture": "#frutas"
+        },
+        "up": {
+          "texture": "#frutas",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "down": {
+          "texture": "#frutas"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        7,
+        2
+      ],
+      "to": [
+        16,
+        8,
+        3
+      ],
+      "faces": {
+        "north": {
+          "texture": "#madera_oscura"
+        },
+        "east": {
+          "texture": "#madera_oscura"
+        },
+        "south": {
+          "texture": "#madera_oscura"
+        },
+        "west": {
+          "texture": "#madera_oscura"
+        },
+        "up": {
+          "texture": "#madera_oscura"
+        },
+        "down": {
+          "texture": "#madera_oscura"
+        }
+      }
+    }
+  ]
+}

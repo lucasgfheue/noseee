@@ -22,6 +22,12 @@ final class DecoDims {
             Map.entry("mesa_terraza", new int[] {1, 2, 1, 3}),
             Map.entry("estatua", new int[] {1, 3, 1, 7}),
             Map.entry("tocador", new int[] {2, 2, 1, 15}),
-            Map.entry("contenedor", new int[] {2, 1, 1, 3})
+            Map.entry("contenedor", new int[] {2, 1, 1, 3}),
+            Map.entry("estante_super", new int[] {2, 2, 1, 15}),
+            Map.entry("nevera_expositor", new int[] {2, 2, 1, 15}),
+            Map.entry("congelador", new int[] {2, 1, 1, 3}),
+            Map.entry("caja_pago", new int[] {2, 1, 1, 3}),
+            Map.entry("libreria", new int[] {2, 2, 1, 15}),
+            Map.entry("lampara_pie", new int[] {1, 2, 1, 3})
     );
 }

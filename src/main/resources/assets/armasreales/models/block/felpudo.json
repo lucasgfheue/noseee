@@ -1,0 +1,46 @@
+{
+  "textures": {
+    "felpudo": "armasreales:block/deco_felpudo",
+    "particle": "armasreales:block/deco_felpudo"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        3
+      ],
+      "to": [
+        15,
+        1,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#felpudo"
+        },
+        "east": {
+          "texture": "#felpudo"
+        },
+        "south": {
+          "texture": "#felpudo"
+        },
+        "west": {
+          "texture": "#felpudo"
+        },
+        "up": {
+          "texture": "#felpudo",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "down": {
+          "texture": "#felpudo"
+        }
+      }
+    }
+  ]
+}
