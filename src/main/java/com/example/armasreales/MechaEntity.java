@@ -474,8 +474,16 @@ public class MechaEntity extends TankEntity {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (player.getItemInHand(hand).getItem() instanceof DyeItem) {
-            return InteractionResult.PASS;                 // el mecha no se tiñe
+        ItemStack held = player.getItemInHand(hand);
+        if (held.getItem() instanceof DyeItem dye) {      // cada tinte cambia el diseño y el modelo
+            int skin = dye.getDyeColor().getId() + 1;
+            if (skin == this.getSkin()) {
+                return InteractionResult.PASS;
+            }
+            return this.applySkin(player, held, skin);
+        }
+        if (held.is(Items.IRON_INGOT) && this.getSkin() != SKIN_DEFAULT) {
+            return this.applySkin(player, held, SKIN_DEFAULT);     // un lingote de hierro devuelve el diseño original
         }
         if (player.isSecondaryUseActive()) {
             if (player.getItemInHand(hand).isEmpty() && !this.inventory.isEmpty()) {
@@ -491,6 +499,17 @@ public class MechaEntity extends TankEntity {
         }
         if (!this.level().isClientSide) {
             player.startRiding(this);
+        }
+        return InteractionResult.sidedSuccess(this.level().isClientSide);
+    }
+
+    private InteractionResult applySkin(Player player, ItemStack held, int skin) {
+        if (!this.level().isClientSide) {
+            this.setSkin(skin);
+            this.level().playSound(null, this.blockPosition(), SoundEvents.ANVIL_USE, SoundSource.PLAYERS, 1.0f, 1.2f);
+            if (!player.getAbilities().instabuild) {
+                held.shrink(1);
+            }
         }
         return InteractionResult.sidedSuccess(this.level().isClientSide);
     }

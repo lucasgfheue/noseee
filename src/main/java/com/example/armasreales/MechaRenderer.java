@@ -20,8 +20,19 @@ import net.minecraft.world.entity.LivingEntity;
  * Ejes del modelo: +X = izquierda, +Y = arriba, +Z = delante. Mide unos 3,3 de alto (el doble en el juego).
  */
 public class MechaRenderer extends EntityRenderer<MechaEntity> {
-    private static final ResourceLocation TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID, "textures/entity/mecha_hierro.png");
+    /** Una textura por skin: 0 = hierro y 1..16 = los 16 tintes (en orden de DyeColor). */
+    private static final ResourceLocation[] TEXTURES = new ResourceLocation[17];
+
+    static {
+        for (int i = 0; i < TEXTURES.length; i++) {
+            TEXTURES[i] = ResourceLocation.fromNamespaceAndPath(ArmasRealesMod.MOD_ID,
+                    i == 0 ? "textures/entity/mecha_hierro.png" : "textures/entity/mecha_hierro_" + i + ".png");
+        }
+    }
+
+    /** Skin que se está dibujando (el render corre en un solo hilo). */
+    private int skin;
+    private ResourceLocation tex = TEXTURES[0];
 
     private record Mat(int[] c, int tile, boolean glow, int alpha) {
         Mat(int[] c, int tile) {
@@ -50,7 +61,7 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(MechaEntity entity) {
-        return TEXTURE;
+        return TEXTURES[Mth.clamp(entity.getSkin(), 0, TEXTURES.length - 1)];
     }
 
     @Override
@@ -64,7 +75,9 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
         ps.pushPose();
         ps.mulPose(Axis.YP.rotationDegrees(-entityYaw));
         ps.scale(TankEntity.SCALE, TankEntity.SCALE, TankEntity.SCALE);
-        VertexConsumer vc = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
+        this.skin = Mth.clamp(mecha.getSkin(), 0, TEXTURES.length - 1);
+        this.tex = TEXTURES[this.skin];
+        VertexConsumer vc = buffer.getBuffer(RenderType.entityCutoutNoCull(this.tex));
 
         // Marcha: cada pierna tiene su propia fase (una va adelante cuando la otra va atrás)
         float phase = Mth.lerp(partialTick, mecha.walkPhaseO, mecha.walkPhase);
@@ -120,6 +133,7 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
         ps.pushPose();
         ps.translate(side * 0.62f, 1.55f, 0.0f);
         ps.mulPose(Axis.XP.rotationDegrees(hip));
+        legExtras(ps, vc, light, side);
         box(ps, vc, light, -0.3f, -0.15f, -0.3f, 0.3f, 0.12f, 0.3f, JOINT);               // cadera
         box(ps, vc, light, -0.27f, -0.8f, -0.27f, 0.27f, -0.12f, 0.27f, IRON);            // muslo
         box(ps, vc, light, -0.3f, -0.8f, 0.27f, 0.3f, -0.3f, 0.34f, RIVET);               // placa frontal
@@ -173,6 +187,239 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
             box(ps, vc, light, s * 1.0f - 0.02f, 1.0f, -0.4f, s * 1.4f, 1.08f, 0.4f, RIVET);
             box(ps, vc, light, s * 1.43f - 0.02f, 0.66f, -0.3f, s * 1.47f, 0.96f, 0.3f, HAZARD);
         }
+        torsoExtras(ps, vc, light, time);
+    }
+
+    // ------------------------------------------------------------------ Variantes por tinte
+
+    /** Caja reflejada: side +1 = izquierda, -1 = derecha; xa..xb se miden hacia fuera desde el centro. */
+    private static void mb(PoseStack ps, VertexConsumer vc, int light, int side,
+                           float xa, float y1, float z1, float xb, float y2, float z2, Mat m) {
+        if (side > 0) {
+            box(ps, vc, light, xa, y1, z1, xb, y2, z2, m);
+        } else {
+            box(ps, vc, light, -xb, y1, z1, -xa, y2, z2, m);
+        }
+    }
+
+    /** Caja girada alrededor de un punto (axis: 0 = X, 1 = Y, 2 = Z). */
+    private static void rb(PoseStack ps, VertexConsumer vc, int light, float tx, float ty, float tz, int axis, float deg,
+                           float x1, float y1, float z1, float x2, float y2, float z2, Mat m) {
+        ps.pushPose();
+        ps.translate(tx, ty, tz);
+        ps.mulPose((axis == 0 ? Axis.XP : axis == 1 ? Axis.YP : Axis.ZP).rotationDegrees(deg));
+        box(ps, vc, light, x1, y1, z1, x2, y2, z2, m);
+        ps.popPose();
+    }
+
+    /** Piezas extra del torso y la mochila (origen: base del torso). */
+    private void torsoExtras(PoseStack ps, VertexConsumer vc, int light, float time) {
+        for (int s = -1; s <= 1; s += 2) {
+            switch (this.skin) {
+                case 1 -> {                                           // blanco: alas de placas
+                    for (int i = 0; i < 4; i++) {
+                        mb(ps, vc, light, s, 0.5f + i * 0.4f, 0.95f - i * 0.15f, -1.0f, 0.88f + i * 0.4f, 1.75f - i * 0.1f, -0.9f, IRON);
+                        mb(ps, vc, light, s, 0.5f + i * 0.4f, 0.9f - i * 0.15f, -1.0f, 0.88f + i * 0.4f, 0.95f - i * 0.15f, -0.9f, EMBER);
+                    }
+                }
+                case 2 -> {                                           // naranja: faros y rack de herramientas
+                    mb(ps, vc, light, s, 1.0f, 1.08f, 0.1f, 1.3f, 1.3f, 0.4f, EMBER);
+                    mb(ps, vc, light, s, 0.2f, 0.3f, -1.15f, 0.3f, 1.2f, -0.95f, JOINT);
+                    mb(ps, vc, light, s, 0.5f, 0.3f, -1.15f, 0.6f, 1.2f, -0.95f, JOINT);
+                }
+                case 3 -> {                                           // magenta: cristales
+                    rb(ps, vc, light, s * 1.2f, 1.05f, 0.0f, 2, -s * 18.0f, -0.12f, 0.0f, -0.12f, 0.12f, 1.0f, 0.12f, EMBER);
+                    rb(ps, vc, light, s * 1.35f, 1.0f, 0.25f, 2, -s * 38.0f, -0.09f, 0.0f, -0.09f, 0.09f, 0.7f, 0.09f, EMBER);
+                    rb(ps, vc, light, s * 1.35f, 1.0f, -0.25f, 2, -s * 38.0f, -0.09f, 0.0f, -0.09f, 0.09f, 0.7f, 0.09f, EMBER);
+                }
+                case 4 -> {                                           // celeste: carámbanos
+                    for (int i = 0; i < 3; i++) {
+                        rb(ps, vc, light, s * (1.05f + i * 0.14f), 1.05f, -0.3f + i * 0.3f, 2, -s * (10.0f + i * 12.0f),
+                                -0.07f, 0.0f, -0.07f, 0.07f, 0.8f - i * 0.12f, 0.07f, RIVET);
+                    }
+                    mb(ps, vc, light, s, 0.15f, 0.95f, -0.9f, 0.3f, 1.7f, -0.7f, RIVET);
+                }
+                case 5 -> {                                           // amarillo: aletas de rayo y baterías
+                    mb(ps, vc, light, s, 0.7f, 0.2f, -1.0f, 1.0f, 0.55f, -0.9f, EMBER);
+                    mb(ps, vc, light, s, 0.95f, 0.5f, -1.0f, 1.25f, 0.85f, -0.9f, EMBER);
+                    mb(ps, vc, light, s, 1.2f, 0.8f, -1.0f, 1.5f, 1.15f, -0.9f, EMBER);
+                    mb(ps, vc, light, s, 0.95f, -0.4f, -0.1f, 1.25f, 0.1f, 0.3f, DARK);
+                }
+                case 6 -> {                                           // lima: tubos del reactor y goteo
+                    mb(ps, vc, light, s, 0.25f, 0.1f, 0.6f, 0.4f, 0.85f, 0.7f, EMBER);
+                    mb(ps, vc, light, s, 0.25f, -0.35f, 0.62f, 0.32f, 0.1f, 0.68f, JOINT);
+                    mb(ps, vc, light, s, 1.0f, -0.1f, -0.2f, 1.18f, 0.6f, 0.0f, EMBER);
+                }
+                case 7 -> {                                           // rosa: lazo en la mochila
+                    mb(ps, vc, light, s, 0.0f, 0.55f, -1.02f, 0.45f, 0.95f, -0.9f, EMBER);
+                    box(ps, vc, light, -0.1f, 0.6f, -1.06f, 0.1f, 0.9f, -0.9f, IRON);
+                }
+                case 8 -> {                                           // gris: coraza reforzada y hombreras dobles
+                    mb(ps, vc, light, s, 0.0f, 0.0f, 0.62f, 0.95f, 0.8f, 0.8f, DARK);
+                    mb(ps, vc, light, s, 0.0f, 0.1f, 0.8f, 0.9f, 0.7f, 0.85f, RIVET);
+                    mb(ps, vc, light, s, 0.95f, 1.0f, -0.55f, 1.55f, 1.2f, 0.55f, DARK);
+                }
+                case 9 -> {                                           // gris claro: antenas largas
+                    mb(ps, vc, light, s, 0.5f, 0.95f, -0.8f, 0.56f, 2.1f, -0.74f, JOINT);
+                    mb(ps, vc, light, s, 0.5f, 2.1f, -0.82f, 0.58f, 2.2f, -0.72f, EMBER);
+                }
+                case 10 -> {                                          // cian: aletas y propulsores laterales
+                    box(ps, vc, light, -0.05f, 0.9f, -1.3f, 0.05f, 1.9f, -0.55f, IRON);
+                    mb(ps, vc, light, s, 0.95f, -0.3f, -0.5f, 1.3f, 0.2f, 0.1f, DARK);
+                    mb(ps, vc, light, s, 1.0f, -0.3f, -0.55f, 1.25f, -0.2f, -0.5f, EMBER);
+                }
+                case 11 -> {                                          // morado: cuchillas en los hombros y capa
+                    rb(ps, vc, light, s * 1.25f, 1.05f, 0.0f, 2, -s * 25.0f, -0.08f, 0.0f, -0.35f, 0.08f, 1.3f, 0.35f, DARK);
+                    box(ps, vc, light, -0.7f, -0.8f, -1.0f, 0.7f, 0.95f, -0.94f, DARK);
+                }
+                case 12 -> {                                          // azul: lanzamisiles en los hombros
+                    for (int a = 0; a < 2; a++) {
+                        for (int b = 0; b < 2; b++) {
+                            mb(ps, vc, light, s, 1.0f + a * 0.22f, 1.08f, -0.3f + b * 0.3f, 1.2f + a * 0.22f, 1.5f, -0.06f + b * 0.3f, DARK);
+                            mb(ps, vc, light, s, 1.04f + a * 0.22f, 1.5f, -0.26f + b * 0.3f, 1.16f + a * 0.22f, 1.56f, -0.1f + b * 0.3f, EMBER);
+                        }
+                    }
+                }
+                case 13 -> {                                          // marrón: chimeneas altas
+                    mb(ps, vc, light, s, 0.15f, 0.95f, -0.95f, 0.45f, 2.0f, -0.65f, JOINT);
+                    mb(ps, vc, light, s, 0.1f, 2.0f, -1.0f, 0.5f, 2.1f, -0.6f, DARK);
+                }
+                case 14 -> {                                          // verde: placas de hojas
+                    for (int i = 0; i < 3; i++) {
+                        mb(ps, vc, light, s, 0.95f + i * 0.0f, 1.0f + i * 0.12f, -0.5f + i * 0.35f, 1.5f - i * 0.1f, 1.12f + i * 0.12f, -0.15f + i * 0.35f, IRON);
+                    }
+                    mb(ps, vc, light, s, 0.3f, 0.2f, -1.0f, 0.4f, 1.0f, -0.9f, EMBER);
+                }
+                case 15 -> {                                          // rojo: pinchos y respiraderos de llama
+                    rb(ps, vc, light, s * 1.2f, 1.05f, 0.0f, 2, -s * 30.0f, -0.12f, 0.0f, -0.12f, 0.12f, 0.9f, 0.12f, DARK);
+                    rb(ps, vc, light, s * 1.35f, 0.95f, 0.3f, 2, -s * 50.0f, -0.1f, 0.0f, -0.1f, 0.1f, 0.7f, 0.1f, DARK);
+                    mb(ps, vc, light, s, 0.2f, 0.95f, -0.9f, 0.5f, 1.6f + 0.1f * Mth.sin(time * 0.6f + s), -0.7f, EMBER);
+                }
+                case 16 -> {                                          // negro: cuchillas dorsales
+                    rb(ps, vc, light, s * 0.5f, 0.9f, -0.8f, 2, -s * 12.0f, -0.05f, 0.0f, -0.25f, 0.05f, 1.6f, 0.25f, DARK);
+                    rb(ps, vc, light, s * 0.85f, 0.7f, -0.8f, 2, -s * 28.0f, -0.04f, 0.0f, -0.2f, 0.04f, 1.2f, 0.2f, DARK);
+                }
+                default -> { }
+            }
+        }
+        switch (this.skin) {
+            case 6 -> box(ps, vc, light, -0.2f, 0.1f, 0.62f, 0.2f, 0.8f, 0.68f, EMBER);
+            case 13 -> {                                              // pala excavadora
+                box(ps, vc, light, -1.15f, -0.45f, 0.75f, 1.15f, 0.55f, 0.85f, DARK);
+                box(ps, vc, light, -1.15f, -0.45f, 0.85f, 1.15f, -0.3f, 1.05f, IRON);
+                box(ps, vc, light, -0.1f, 0.0f, 0.55f, 0.1f, 0.4f, 0.75f, JOINT);
+            }
+            case 15 -> box(ps, vc, light, -0.35f, 0.25f, 0.62f, 0.35f, 0.65f, 0.7f, EMBER);
+            default -> { }
+        }
+    }
+
+    /** Piezas extra de la cabeza (origen: base de la cabeza). */
+    private void headExtras(PoseStack ps, VertexConsumer vc, int light) {
+        switch (this.skin) {
+            case 1 -> {                                               // halo
+                box(ps, vc, light, -0.45f, 1.1f, -0.45f, 0.45f, 1.16f, 0.45f, EMBER);
+                box(ps, vc, light, -0.3f, 1.1f, -0.3f, 0.3f, 1.16f, 0.3f, DARK);
+            }
+            case 2 -> {                                               // jaula antivuelco
+                for (int sx = -1; sx <= 1; sx += 2) {
+                    box(ps, vc, light, sx * 0.55f - 0.04f, 0.6f, -0.5f, sx * 0.55f + 0.04f, 0.9f, 0.5f, JOINT);
+                }
+                box(ps, vc, light, -0.55f, 0.86f, -0.5f, 0.55f, 0.94f, 0.5f, JOINT);
+                box(ps, vc, light, -0.2f, 0.7f, 0.5f, 0.2f, 0.82f, 0.6f, EMBER);
+            }
+            case 3 -> {                                               // corona de cristal
+                for (int i = -1; i <= 1; i++) {
+                    box(ps, vc, light, i * 0.25f - 0.07f, 0.68f, -0.07f, i * 0.25f + 0.07f, 0.95f - Math.abs(i) * 0.2f, 0.07f, EMBER);
+                }
+            }
+            case 4 -> {                                               // carámbanos en el casco
+                for (int i = -2; i <= 2; i++) {
+                    box(ps, vc, light, i * 0.18f - 0.05f, 0.68f, 0.1f, i * 0.18f + 0.05f, 0.9f - Math.abs(i) * 0.06f, 0.2f, RIVET);
+                }
+            }
+            case 5 -> {                                               // doble antena de rayo
+                box(ps, vc, light, -0.3f, 0.68f, -0.1f, -0.25f, 1.2f, -0.05f, JOINT);
+                box(ps, vc, light, 0.25f, 0.68f, -0.1f, 0.3f, 1.2f, -0.05f, JOINT);
+                box(ps, vc, light, -0.33f, 1.2f, -0.13f, -0.22f, 1.3f, -0.02f, EMBER);
+                box(ps, vc, light, 0.22f, 1.2f, -0.13f, 0.33f, 1.3f, -0.02f, EMBER);
+            }
+            case 6 -> {                                               // cresta
+                for (int i = 0; i < 5; i++) {
+                    box(ps, vc, light, -0.05f, 0.68f, -0.45f + i * 0.2f, 0.05f, 0.9f - Math.abs(i - 2) * 0.07f, -0.3f + i * 0.2f, EMBER);
+                }
+            }
+            case 7 -> {                                               // orejas de gato
+                for (int sx = -1; sx <= 1; sx += 2) {
+                    box(ps, vc, light, sx * 0.3f - 0.14f, 0.68f, -0.1f, sx * 0.3f + 0.14f, 0.82f, 0.1f, IRON);
+                    box(ps, vc, light, sx * 0.3f - 0.08f, 0.82f, -0.06f, sx * 0.3f + 0.08f, 0.95f, 0.06f, EMBER);
+                }
+            }
+            case 8 -> box(ps, vc, light, -0.55f, 0.55f, -0.55f, 0.55f, 0.65f, 0.55f, DARK);   // visera pesada
+            case 9 -> {                                               // radar
+                box(ps, vc, light, -0.04f, 0.68f, -0.04f, 0.04f, 0.95f, 0.04f, JOINT);
+                box(ps, vc, light, -0.4f, 0.95f, -0.4f, 0.4f, 1.0f, 0.4f, IRON);
+                box(ps, vc, light, -0.4f, 1.0f, -0.4f, 0.4f, 1.1f, -0.3f, IRON);
+                box(ps, vc, light, -0.06f, 1.0f, -0.04f, 0.06f, 1.2f, 0.06f, EMBER);
+            }
+            case 10 -> box(ps, vc, light, -0.05f, 0.68f, -0.5f, 0.05f, 1.15f, 0.0f, IRON);   // aleta
+            case 11 -> {                                              // cuernos
+                for (int sx = -1; sx <= 1; sx += 2) {
+                    rb(ps, vc, light, sx * 0.4f, 0.62f, 0.0f, 2, -sx * 20.0f, -0.07f, 0.0f, -0.07f, 0.07f, 0.55f, 0.07f, DARK);
+                    rb(ps, vc, light, sx * 0.55f, 1.12f, 0.0f, 2, sx * 40.0f, -0.05f, 0.0f, -0.05f, 0.05f, 0.35f, 0.05f, DARK);
+                }
+            }
+            case 12 -> {                                              // mástil y bandera
+                box(ps, vc, light, -0.03f, 0.68f, -0.3f, 0.03f, 1.2f, -0.24f, JOINT);
+                box(ps, vc, light, 0.03f, 0.95f, -0.3f, 0.4f, 1.15f, -0.26f, EMBER);
+            }
+            case 13 -> box(ps, vc, light, -0.3f, 0.68f, 0.1f, 0.3f, 0.8f, 0.4f, EMBER);      // faro de obras
+            case 14 -> {                                              // cornamenta
+                for (int sx = -1; sx <= 1; sx += 2) {
+                    rb(ps, vc, light, sx * 0.3f, 0.62f, 0.0f, 2, -sx * 25.0f, -0.05f, 0.0f, -0.05f, 0.05f, 0.7f, 0.05f, IRON);
+                    rb(ps, vc, light, sx * 0.5f, 1.2f, 0.0f, 2, sx * 35.0f, -0.04f, 0.0f, -0.04f, 0.04f, 0.4f, 0.04f, IRON);
+                    rb(ps, vc, light, sx * 0.43f, 0.95f, 0.0f, 2, -sx * 70.0f, -0.04f, 0.0f, -0.04f, 0.04f, 0.35f, 0.04f, IRON);
+                }
+            }
+            case 15 -> {                                              // grandes cuernos
+                for (int sx = -1; sx <= 1; sx += 2) {
+                    rb(ps, vc, light, sx * 0.4f, 0.6f, 0.1f, 2, -sx * 15.0f, -0.09f, 0.0f, -0.09f, 0.09f, 0.7f, 0.09f, DARK);
+                    rb(ps, vc, light, sx * 0.55f, 1.28f, 0.1f, 2, sx * 30.0f, -0.07f, 0.0f, -0.07f, 0.07f, 0.45f, 0.07f, EMBER);
+                }
+            }
+            case 16 -> {                                              // cuchillas laterales
+                for (int sx = -1; sx <= 1; sx += 2) {
+                    rb(ps, vc, light, sx * 0.5f, 0.45f, -0.1f, 2, -sx * 55.0f, -0.03f, 0.0f, -0.25f, 0.03f, 0.7f, 0.25f, DARK);
+                }
+            }
+            default -> { }
+        }
+    }
+
+    /** Piezas extra del antebrazo (origen: antebrazo-cañón; el cañón apunta a +Z). */
+    private void armExtras(PoseStack ps, VertexConsumer vc, int light, int side) {
+        switch (this.skin) {
+            case 3 -> box(ps, vc, light, -0.1f, 0.1f, 0.0f, 0.1f, 0.55f, 0.35f, EMBER);                // cristal
+            case 6 -> box(ps, vc, light, side * 0.3f - 0.04f, -0.5f, 0.0f, side * 0.3f + 0.04f, 0.1f, 0.6f, EMBER);   // tubo
+            case 8 -> mb(ps, vc, light, side, 0.3f, -0.45f, -0.3f, 0.4f, 0.15f, 0.7f, DARK);          // escudo lateral
+            case 10 -> box(ps, vc, light, -0.04f, 0.1f, -0.2f, 0.04f, 0.45f, 0.3f, IRON);              // aleta
+            case 12 -> box(ps, vc, light, -0.28f, -0.42f, 0.65f, 0.28f, -0.3f, 1.4f, DARK);            // segundo cañón
+            case 14 -> box(ps, vc, light, -0.32f, -0.2f, 0.0f, 0.32f, -0.12f, 0.6f, EMBER);            // enredadera
+            case 15 -> box(ps, vc, light, -0.04f, 0.1f, 0.6f, 0.04f, 0.4f, 1.1f, DARK);               // cuchilla
+            case 16 -> box(ps, vc, light, -0.03f, -0.36f, 0.3f, 0.03f, -0.28f, 1.6f, DARK);            // hoja
+            case 1 -> box(ps, vc, light, -0.34f, -0.1f, 0.0f, 0.34f, 0.0f, 0.5f, EMBER);
+            default -> { }
+        }
+    }
+
+    /** Piezas extra de las piernas (origen: cadera). */
+    private void legExtras(PoseStack ps, VertexConsumer vc, int light, int side) {
+        switch (this.skin) {
+            case 11, 15, 16 -> box(ps, vc, light, -0.06f, -1.05f, 0.34f, 0.06f, -0.8f, 0.6f, DARK);   // pincho en la rodilla
+            case 2, 13 -> box(ps, vc, light, -0.3f, -0.65f, -0.34f, 0.3f, -0.3f, -0.27f, HAZARD);
+            case 8 -> mb(ps, vc, light, side, 0.27f, -0.8f, -0.3f, 0.36f, -0.12f, 0.3f, DARK);
+            default -> { }
+        }
     }
 
     /** side: +1 = izquierda, -1 = derecha. Cuelga del hombro (origen en el torso, a 0,8 de altura). */
@@ -188,6 +435,7 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
         box(ps, vc, light, -0.17f, -0.27f, 0.65f, 0.17f, 0.0f, 1.45f, DARK);               // cañón
         box(ps, vc, light, -0.22f, -0.32f, 1.3f, 0.22f, 0.05f, 1.5f, JOINT);               // freno de boca
         box(ps, vc, light, -0.12f, -0.22f, 1.5f, 0.12f, -0.05f, 1.51f, EMBER);
+        armExtras(ps, vc, light, side);
         ps.popPose();
     }
 
@@ -200,6 +448,9 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
         ps.pushPose();
         ps.translate(0.0f, 1.0f, 0.0f);
         ps.mulPose(Axis.XP.rotationDegrees(pitch * 0.6f));
+        if (this.skin == 7 && !inside) {
+            ps.scale(1.35f, 1.35f, 1.35f);                                                 // cabezón
+        }
         if (inside) {
             box(ps, vc, light, -0.5f, 0.0f, 0.4f, 0.5f, 0.08f, 0.52f, DARK);               // salpicadero
             for (int sx = -1; sx <= 1; sx += 2) {
@@ -219,8 +470,9 @@ public class MechaRenderer extends EntityRenderer<MechaEntity> {
         for (int s = -1; s <= 1; s += 2) {
             box(ps, vc, light, s * 0.5f - 0.02f, 0.15f, -0.2f, s * 0.58f, 0.45f, 0.2f, VENT);   // oídos
         }
+        headExtras(ps, vc, light);
         // El cristal va lo último: pedir otro tipo de buffer cierra el anterior, así que ya no se dibuja nada opaco después
-        VertexConsumer glass = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE));
+        VertexConsumer glass = buffer.getBuffer(RenderType.entityTranslucent(this.tex));
         box(ps, glass, light, -0.42f, 0.2f, 0.46f, 0.42f, 0.48f, 0.5f, VISOR);             // cristal translúcido
         ps.popPose();
     }
