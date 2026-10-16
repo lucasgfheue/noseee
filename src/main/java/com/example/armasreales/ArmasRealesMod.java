@@ -31,6 +31,7 @@ public class ArmasRealesMod {
         modBus.addListener(this::registerSpawns);
         net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(CampSpawner::onCommands);
         net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(CityCommand::onCommands);
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(CitizenSpawner::onLevelTick);
     }
 
     private void registerAttributes(EntityAttributeCreationEvent event) {
@@ -49,6 +50,9 @@ public class ArmasRealesMod {
         event.put(ModEntities.ZOMBI.get(), Zombie.createAttributes().build());
         event.put(ModEntities.HOMBRE_LOBO.get(), WerewolfEntity.createAttributes().build());
         event.put(ModEntities.CAMPISTA.get(), CampistaEntity.createAttributes().build());
+        event.put(ModEntities.CIUDADANO_CIVIL.get(), CiudadanoEntity.createAttributes().build());
+        event.put(ModEntities.CIUDADANO_ARMADO.get(), CiudadanoEntity.createAttributes().build());
+        event.put(ModEntities.CIUDADANO_LADRON.get(), CiudadanoEntity.createAttributes().build());
         event.put(ModEntities.ANCIANO.get(), AncianoEntity.createAttributes().build());
         event.put(ModEntities.SOLDADO.get(), SoldadoEntity.createAttributes().build());
         event.put(ModEntities.SOBREVIVIENTE.get(), SobrevivienteEntity.createAttributes().build());
@@ -80,6 +84,9 @@ public class ArmasRealesMod {
             event.accept(ModItems.ZOMBI_SPAWN_EGG);
             event.accept(ModItems.HOMBRE_LOBO_SPAWN_EGG);
             event.accept(ModItems.CAMPISTA_SPAWN_EGG);
+            event.accept(ModItems.CIUDADANO_CIVIL_SPAWN_EGG);
+            event.accept(ModItems.CIUDADANO_ARMADO_SPAWN_EGG);
+            event.accept(ModItems.CIUDADANO_LADRON_SPAWN_EGG);
             event.accept(ModItems.ANCIANO_SPAWN_EGG);
             event.accept(ModItems.SOLDADO_SPAWN_EGG);
             event.accept(ModItems.ZOMBI_PRISIONERO_SPAWN_EGG);
@@ -167,6 +174,9 @@ public class ArmasRealesMod {
             event.accept(ModItems.ZOMBI_SPAWN_EGG);
             event.accept(ModItems.HOMBRE_LOBO_SPAWN_EGG);
             event.accept(ModItems.CAMPISTA_SPAWN_EGG);
+            event.accept(ModItems.CIUDADANO_CIVIL_SPAWN_EGG);
+            event.accept(ModItems.CIUDADANO_ARMADO_SPAWN_EGG);
+            event.accept(ModItems.CIUDADANO_LADRON_SPAWN_EGG);
             event.accept(ModItems.ANCIANO_SPAWN_EGG);
             event.accept(ModItems.SOLDADO_SPAWN_EGG);
             event.accept(ModItems.ZOMBI_PRISIONERO_SPAWN_EGG);

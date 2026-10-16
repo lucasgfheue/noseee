@@ -270,5 +270,12 @@
   "block.armasreales.carrito_compras": "Carrito de compras",
   "block.armasreales.bicicletero": "Bicicletero",
   "block.armasreales.ventilador_techo": "Ventilador de techo",
-  "block.armasreales.taburete_cocina": "Taburete de cocina"
+  "block.armasreales.taburete_cocina": "Taburete de cocina",
+  "entity.armasreales.ciudadano": "Ciudadano",
+  "entity.armasreales.ciudadano_armado": "Ciudadano armado",
+  "entity.armasreales.ladron": "Ladrón",
+  "item.armasreales.ciudadano_spawn_egg": "Generar Ciudadano",
+  "item.armasreales.ciudadano_armado_spawn_egg": "Generar Ciudadano armado",
+  "item.armasreales.ladron_spawn_egg": "Generar Ladrón",
+  "msg.armasreales.robado": "¡Te han robado: %s!"
 }

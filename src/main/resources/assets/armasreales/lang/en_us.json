@@ -270,5 +270,12 @@
   "block.armasreales.carrito_compras": "Shopping cart",
   "block.armasreales.bicicletero": "Bike rack",
   "block.armasreales.ventilador_techo": "Ceiling fan",
-  "block.armasreales.taburete_cocina": "Kitchen stool"
+  "block.armasreales.taburete_cocina": "Kitchen stool",
+  "entity.armasreales.ciudadano": "Citizen",
+  "entity.armasreales.ciudadano_armado": "Armed Citizen",
+  "entity.armasreales.ladron": "Thief",
+  "item.armasreales.ciudadano_spawn_egg": "Citizen Spawn Egg",
+  "item.armasreales.ciudadano_armado_spawn_egg": "Armed Citizen Spawn Egg",
+  "item.armasreales.ladron_spawn_egg": "Thief Spawn Egg",
+  "msg.armasreales.robado": "You were robbed: %s!"
 }
