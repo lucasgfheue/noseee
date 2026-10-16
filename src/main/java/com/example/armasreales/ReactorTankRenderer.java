@@ -488,7 +488,7 @@ public class ReactorTankRenderer extends EntityRenderer<ReactorTankEntity> {
         ps.mulPose(Axis.XP.rotationDegrees(ang));
         float body = len * 0.55f;
         box(ps, vc, light, -0.07f, -0.07f, 0.0f, 0.07f, 0.07f, body, PLATE);
-        box(ps, vc, light, -0.1f, -0.1f, 0.04f, 0.1f, 0.1f, 0.12f, RED);
+        box(ps, vc, light, -0.1f, -0.1f, 0.04f, 0.1f, 0.1f, 0.12f, CORNER);
         box(ps, vc, light, -0.1f, -0.1f, body - 0.12f, 0.1f, 0.1f, body - 0.04f, CORNER);
         box(ps, vc, light, -0.04f, -0.04f, body, 0.04f, 0.04f, len, BOLT);
         box(ps, vc, light, -0.1f, -0.1f, len - 0.05f, 0.1f, 0.1f, len, BLACK);
