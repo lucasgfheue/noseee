@@ -23,11 +23,13 @@ public class ArmasRealesMod {
         ModMenus.MENUS.register(modBus);
         ModStructures.TYPES.register(modBus);
         ModStructures.PIECES.register(modBus);
+        ModWorldgen.CHUNK_GENERATORS.register(modBus);
         modBus.addListener(this::addToCreativeTabs);
         modBus.addListener(this::registerPayloads);
         modBus.addListener(this::registerAttributes);
         modBus.addListener(this::registerSpawns);
         net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(CampSpawner::onCommands);
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(CityCommand::onCommands);
     }
 
     private void registerAttributes(EntityAttributeCreationEvent event) {
