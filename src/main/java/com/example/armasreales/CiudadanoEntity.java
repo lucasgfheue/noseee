@@ -93,6 +93,25 @@ public class CiudadanoEntity extends PathfinderMob {
         return this.getType() == ModEntities.CIUDADANO_LADRON.get();
     }
 
+    /** El civil ya entregó su "tributo" de lingotes de oro. */
+    boolean paid;
+
+    /** Al ser golpeado o apuntado, el civil suelta de 1 a 3 lingotes de oro (una sola vez). */
+    void payTribute(Player player) {
+        if (!this.isCivil() || this.paid || this.level().isClientSide) {
+            return;
+        }
+        this.paid = true;
+        int n = 1 + this.random.nextInt(3);
+        net.minecraft.world.entity.item.ItemEntity drop = this.spawnAtLocation(new ItemStack(net.minecraft.world.item.Items.GOLD_INGOT, n));
+        if (drop != null) {
+            Vec3 d = player.position().subtract(this.position()).multiply(1.0, 0.0, 1.0).normalize().scale(0.2);
+            drop.setDeltaMovement(d.x, 0.25, d.z);
+        }
+        this.level().playSound(null, this.blockPosition(), net.minecraft.sounds.SoundEvents.EXPERIENCE_ORB_PICKUP,
+                net.minecraft.sounds.SoundSource.NEUTRAL, 0.8f, 1.2f);
+    }
+
     /** Arma guardada (en la cintura) mientras no hay motivo para sacarla. */
     ItemStack holster = ItemStack.EMPTY;
 
@@ -181,6 +200,7 @@ public class CiudadanoEntity extends PathfinderMob {
     public boolean hurt(DamageSource source, float amount) {
         boolean result = super.hurt(source, amount);
         if (result && !this.level().isClientSide && source.getEntity() instanceof Player player) {
+            this.payTribute(player);
             if (this.carriesGun()) {
                 this.provoke(player);
             }
@@ -228,6 +248,15 @@ public class CiudadanoEntity extends PathfinderMob {
                     && this.tickCount % 20 == 0) {
                 this.holster = this.getMainHandItem().copy();
                 this.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+            }
+        }
+        // Un civil al que apuntan con un arma entrega oro
+        if (this.isCivil() && !this.paid && this.tickCount % 5 == 0) {
+            for (Player p : level.players()) {
+                if (p.distanceToSqr(this) < 28.0 * 28.0 && CiudadanoGoals.aimedAt(p, this)) {
+                    this.payTribute(p);
+                    break;
+                }
             }
         }
         // Los ladrones solo existen de noche: al amanecer se esfuman (soltando lo robado si lo llevan)
@@ -343,6 +372,7 @@ public class CiudadanoEntity extends PathfinderMob {
         super.addAdditionalSaveData(tag);
         tag.putInt("Skin", this.getSkin());
         tag.putInt("Provoked", this.provoked);
+        tag.putBoolean("Paid", this.paid);
         if (!this.holster.isEmpty()) {
             tag.put("Holster", this.holster.save(this.registryAccess()));
         }
@@ -353,6 +383,7 @@ public class CiudadanoEntity extends PathfinderMob {
         super.readAdditionalSaveData(tag);
         this.setSkin(tag.getInt("Skin"));
         this.provoked = tag.getInt("Provoked");
+        this.paid = tag.getBoolean("Paid");
         this.holster = tag.contains("Holster")
                 ? ItemStack.parse(this.registryAccess(), tag.getCompound("Holster")).orElse(ItemStack.EMPTY)
                 : ItemStack.EMPTY;
