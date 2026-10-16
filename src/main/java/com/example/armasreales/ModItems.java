@@ -89,6 +89,11 @@ public class ModItems {
             props -> new TankItem(props, () -> ModEntities.LEVIATHAN_TANK.get()),
             new Item.Properties().stacksTo(1));
 
+    public static final DeferredItem<TankItem> TANQUE_SINGULARIDAD = ITEMS.registerItem(
+            "tanque_singularidad",
+            props -> new TankItem(props, () -> ModEntities.SINGULARITY_TANK.get()),
+            new Item.Properties().stacksTo(1));
+
     public static final DeferredItem<TankItem> TANQUE_UMBRA = ITEMS.registerItem(
             "tanque_umbra",
             props -> new TankItem(props, () -> ModEntities.UMBRA_TANK.get()),

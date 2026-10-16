@@ -144,5 +144,7 @@
   "item.armasreales.tanque_titan": "Armored Titan",
   "entity.armasreales.tanque_titan": "Armored Titan",
   "item.armasreales.tanque_leviatan": "Leviathan Mk II",
-  "entity.armasreales.tanque_leviatan": "Leviathan Mk II"
+  "entity.armasreales.tanque_leviatan": "Leviathan Mk II",
+  "item.armasreales.tanque_singularidad": "Singularity Tank",
+  "entity.armasreales.tanque_singularidad": "Singularity Tank"
 }

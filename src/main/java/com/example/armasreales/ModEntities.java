@@ -123,6 +123,18 @@ public class ModEntities {
                             .updateInterval(1)
                             .build("tanque_leviatan"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<SingularityTankEntity>> SINGULARITY_TANK =
+            ENTITIES.register("tanque_singularidad", () ->
+                    EntityType.Builder.<SingularityTankEntity>of(SingularityTankEntity::new, MobCategory.MISC)
+                            // casco asimétrico de 3,8 de ancho con los módulos de estabilización; reactor y placas hasta 2,1
+                            .sized(3.6f * TankEntity.SCALE, 2.3f * TankEntity.SCALE)
+                            // cadera del conductor en la cabina central (suelo a 1,18 del modelo)
+                            .passengerAttachments(1.5f * TankEntity.SCALE)
+                            .fireImmune()
+                            .clientTrackingRange(16)
+                            .updateInterval(1)
+                            .build("tanque_singularidad"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<UmbraTankEntity>> UMBRA_TANK =
             ENTITIES.register("tanque_umbra", () ->
                     EntityType.Builder.<UmbraTankEntity>of(UmbraTankEntity::new, MobCategory.MISC)

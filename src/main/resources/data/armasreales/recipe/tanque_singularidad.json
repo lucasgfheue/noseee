@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "ANA",
+    "TKT",
+    "CEC"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_block"
+    },
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    },
+    "K": {
+      "item": "armasreales:tanque"
+    },
+    "C": {
+      "item": "minecraft:crying_obsidian"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    }
+  },
+  "result": {
+    "id": "armasreales:tanque_singularidad",
+    "count": 1
+  }
+}
